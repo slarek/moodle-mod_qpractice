@@ -16,7 +16,6 @@
 
 /**
  * This page displays an attempt of practice module
- 
  * @package    mod_qpractice
  * @copyright  2013 Jayesh Anandani
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -29,7 +28,7 @@ require_once(dirname(__FILE__) . '/attemptlib.php');
 
 // Get and validate question id.
 $cmid = required_param('id', PARAM_INT);
-$categoryid='8';
+$categoryid='1';
 $subcategories='false';
 $excludedqtypes=null;
 
@@ -61,10 +60,9 @@ $question = question_bank::load_question($cmid);
 // Get and validate display options.
 $options = new question_preview_options($question);
 print_object($options);
-    $quba = question_engine::make_questions_usage_by_activity(
-            'core_question_preview', context_user::instance($USER->id));
-    $quba->set_preferred_behaviour($options->behaviour);
-    $slot = $quba->add_question($question, $options->maxmark);
+    
+    
+    $slot = $quba->add_question($question);
 	echo $slot;
 	$timenow = time();
 	 if (true) {
@@ -76,16 +74,8 @@ print_object($options);
             new question_variant_pseudorandom_no_repeats_strategy($variantoffset), $timenow);
 	
 
-    $transaction = $DB->start_delegated_transaction();
-    question_engine::save_questions_usage_by_activity($quba);
-    $transaction->allow_commit();
-
-$options->behaviour = $quba->get_preferred_behaviour();
-$options->maxmark = $quba->get_question_max_mark($slot);
-
-
 // Process any actions from the buttons at the bottom of the form.
-if (data_submitted() && confirm_sesskey()) {
+if (data_submitted()) {
        if (optional_param('finish', null, PARAM_BOOL)) {
             $quba->process_all_actions();
             $quba->finish_all_questions();
@@ -115,10 +105,6 @@ if ($question->length) {
 } else {
     $displaynumber = 'ii';
 }
-
-// Prepare technical info to be output.
-$qa = $quba->get_question_attempt($slot);
-//print_object($qa);
 
 // Start output.
 $title = get_string('practicesession', 'qpractice', format_string($question->name));

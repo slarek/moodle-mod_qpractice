@@ -31,7 +31,7 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-/** example constant */
+
 //define('NEWMODULE_ULTIMATE_ANSWER', 42);
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -68,10 +68,10 @@ function qpractice_add_instance(stdClass $qpractice, mod_qpractice_mod_form $mfo
     global $DB;
 
     $qpractice->timecreated = time();
-    $test1=$mform->get_data()->test1;
-    $comma_separated = implode(",", array_keys($test1));
+    $behaviour=$qpractice->behaviour;
+    $comma_separated = implode(",", array_keys($behaviour));
     $qpractice->behaviour = $comma_separated;
-	
+    
 
     
     return $DB->insert_record('qpractice', $qpractice);
@@ -93,8 +93,8 @@ function qpractice_update_instance(stdClass $qpractice, mod_qpractice_mod_form $
 
     $qpractice->timemodified = time();
     $qpractice->id = $qpractice->instance;
-    $test1=$mform->get_data()->test1;
-    $comma_separated = implode(",", array_keys($test1));
+    $behaviour=$qpractice->behaviour;
+    $comma_separated = implode(",", array_keys($behaviour));
     $qpractice->behaviour = $comma_separated;
 
     return $DB->update_record('qpractice', $qpractice);

@@ -57,17 +57,17 @@ else {
 require_login($course, true, $cm);
 $context = context_module::instance($cm->id);
 // require_capability('mod/qpractice:view', $context);
-// add_to_log($course->id, 'qpractice', 'view', "view.php?id={$cm->id}", $qpractice->name, $cm->id);
+//add_to_log($course->id, 'qpractice', 'view', "view.php?id={$cm->id}", $qpractice->name, $cm->id);
 $PAGE->set_url('/mod/qpractice/view.php', array('id' => $cm->id));
 // $PAGE->set_title(format_string($qpractice->name));
 $PAGE->set_heading(format_string($course->fullname));
 $PAGE->set_context($context);
 
 
-$createurl = new moodle_url('/mod/qpractice/startattempt.php', array('id' => $cm->id)); // required, but you can use a string instead
-$createtext = 'Create a new session'; // Required
-$reporturl = new moodle_url('../../question/preview.php', array('id' => $cm->id)); // required, but you can use a string instead
-$reporttext = 'Show Past Sessions'; // Required
+$createurl = new moodle_url('/mod/qpractice/startattempt.php', array('id' => $cm->id)); 
+$createtext = get_string('createurl', 'qpractice');
+$reporturl = new moodle_url('../../question/preview.php', array('id' => $cm->id)); 
+$reporttext = get_string('reporturl', 'qpractice');
 
 echo $OUTPUT->header();
 

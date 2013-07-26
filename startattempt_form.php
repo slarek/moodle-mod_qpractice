@@ -31,33 +31,17 @@ require_once("$CFG->libdir/formslib.php");
 
 class mod_qpractice_startattempt_form extends moodleform {
 
-    /**
-     * Defines forms elements
-     */
     public function definition() {
 
         $mform = $this->_form;
-
+        
         //-------------------------------------------------------------------------------
         // Adding the "general" fieldset, where all the common settings are showed
         $mform->addElement('header', 'general', get_string('general', 'form'));
-        $options = array(
-                        '0' => 'Topic-1',
-                        '1' => 'Topic-2',
-                        '2' => 'Topic-3'      
-                    );
-        $select = $mform->addElement('select', 'categories', get_string('category'), $options);
-        $select->setSelected('0');
+        $select = $mform->addElement('select', 'categories', get_string('category'), $this->_customdata['categories']);
 
         $mform->addElement('header', 'qpracticebehaviour', get_string('qpracticebehaviour', 'qpractice'));
-        $options = array(
-                        '0' => 'Adaptive Mode',
-                        '1' => 'Adaptive Mode with no Penalties',
-                        '2' => 'Interactive Mode'      
-                    );
-        $select = $mform->addElement('select', 'categories', get_string('category'), $options);
-        $select->setSelected('0');
-
+        $select = $mform->addElement('select', 'behaviour', get_string('category'), $this->_customdata['behaviours']);
 
         $mform->addElement('header', 'qpracticeset', get_string('qpracticeset', 'qpractice'));
 
@@ -77,15 +61,14 @@ class mod_qpractice_startattempt_form extends moodleform {
 
         $mform->setDefault('optiontype', 1);
 
-        // add standard buttons, common to all modules
-        $this->add_action_buttons();
+        $this->add_action_buttons(true,'Start Practice');
 
-        $mform->addElement('hidden', 'id', 0);
+$mform->addElement('hidden', 'id', 0);
         $mform->setType('id', PARAM_INT);
-        $mform->addElement('hidden', 'returnurl', 0);
-        $mform->setType('returnurl', PARAM_LOCALURL);
-        $mform->addElement('hidden', 'nexturl', 0);
-        $mform->setType('nexturl', PARAM_LOCALURL);
+        $mform->addElement('hidden', 'instanceid', $this->_customdata['instanceid']);
+        $mform->setType('instanceid', PARAM_INT);
+
+        
     }
 }
 

@@ -29,6 +29,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->dirroot.'/course/moodleform_mod.php');
+require_once($CFG->libdir . '/questionlib.php');
 
 /**
  * Module instance settings form
@@ -65,10 +66,26 @@ class mod_qpractice_mod_form extends moodleform_mod {
         //$mform->addElement('static', 'label1', 'qpracticesetting1', 'Your qpractice fields go here. Replace me!');
 
         $mform->addElement('header', 'qpracticefieldset', get_string('qpracticebehaviour', 'qpractice'));
-        $mform->addElement('checkbox', 'test1[0]', null, 'Adaptive Mode');
-        $mform->addElement('checkbox', 'test1[1]', null, 'Adaptive Mode with no penalties');
-        $mform->addElement('checkbox', 'test1[2]', null, 'Interactive Mode');
-        $mform->addElement('checkbox', 'test1[3]', null, 'Immediate Feedback Mode');
+       
+
+       /* $behaviours = question_engine::get_behaviour_options();
+        $mform->addElement('select', 'behaviour',
+                get_string('howquestionsbehave', 'question'), $behaviours);
+        $mform->addHelpButton('behaviour', 'howquestionsbehave', 'question');*/
+
+        if (!empty($this->current->preferredbehaviour)) {
+            $currentbehaviour = $this->current->preferredbehaviour;
+        } else {
+            $currentbehaviour = '';
+        }
+
+        $behaviours = question_engine::get_behaviour_options($currentbehaviour);
+       
+        foreach ($behaviours as $key => $langstring) {   
+            if (!in_array('correctness', question_engine::get_behaviour_unused_display_options($key))) {
+                $mform->addElement('checkbox', 'behaviour['.$key.']' , null, $langstring);      
+           }
+        }
 
         //-------------------------------------------------------------------------------
         // add standard elements, common to all modules
@@ -77,4 +94,18 @@ class mod_qpractice_mod_form extends moodleform_mod {
         // add standard buttons, common to all modules
         $this->add_action_buttons();
     }
+
+     public function data_preprocessing(&$toform) {
+
+     }
+
+     public function validation($data, $files) {
+        
+        $errors = parent::validation($data, $files);
+
+        if (!isset($data['behaviour'])) {
+                $errors['behaviour[adaptive]'] =  'You must select at least on behaviour';
+            }
+      return $errors;
+     }
 }

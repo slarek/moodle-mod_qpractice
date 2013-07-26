@@ -30,10 +30,10 @@ require_once(dirname(dirname(dirname(__FILE__))).'/config.php');
 require_once(dirname(__FILE__).'/lib.php');
 require_once(dirname(__FILE__).'/startattempt_form.php');
 require_once("$CFG->libdir/formslib.php");
+require_once($CFG->libdir . '/questionlib.php');
 
 $id = required_param('id', PARAM_INT); // course_module ID, or
-$returnurl = optional_param('returnurl', '', PARAM_LOCALURL);
-$nexturl = optional_param('nexturl', '', PARAM_LOCALURL);
+
 
 $PAGE->set_url('/mod/qpractice/startattempt.php', array('id' => $id));
 
@@ -50,42 +50,93 @@ if ($id) {
 require_login($course, true, $cm);
 $context = context_module::instance($cm->id);
 
-if ($returnurl) {
-    $returnurl = new moodle_url($returnurl);
-} else {
-    $returnurl = new moodle_url('/mod/qpractice/view.php', array('id' => $cm->id));
-}
-if ($nexturl) {
-    $nexturl = new moodle_url($nexturl);
-} else {
-    $nexturl = new moodle_url('/mod/qpractice/attempt.php', array('id' => $cm->id));
+global $DB,$CFG;
+$behaviour=$DB->get_record('qpractice', array('id'=>$cm->instance),'behaviour');
+
+
+$fd=array();
+$fd=$behaviour->behaviour;
+$comma=explode(",",$behaviour->behaviour);
+$currentbehaviour='';
+$behaviours = question_engine::get_behaviour_options($currentbehaviour);
+$ab=array();
+foreach ($comma as $id => $values) {
+   foreach ($behaviours as $key => $values1) {
+        if($values==$key) {
+        $ab[$key]=$values1;
+        }
+    }   
 }
 
-$mform = new mod_qpractice_startattempt_form();
+
+$table = 'question_categories'; 
+$conditions = array('contextid'=>$context->id); 
+$sort = 'name'; 
+$fields = 'id, name'; 
+ 
+$categories = $DB->get_records_menu($table,$conditions,$sort,$fields);  
+
+$ar=array();
+$ar['categories'] = $categories;
+$ar['behaviours'] = $ab;
+$ar['instanceid'] = $cm->instance;
+
+
+
+
+$mform = new mod_qpractice_startattempt_form(null,$ar);
 
  
 if ($mform->is_cancelled()){
-    
+    $returnurl = new moodle_url('/mod/qpractice/view.php', array('id' => $cm->id));
     redirect($returnurl);
  
 } else if ($fromform=$mform->get_data()){
+    $qpractice = new stdClass();
     
+    $value = $fromform->optiontype;
+
+    if($value == 1) {
+       $qpractice->time = null;
+       $qpractice->goalpercentage = null;
+       $qpractice->noofquestions = null;
+
+    }
+
+    if($value == 2) {
+       $qpractice->goalpercentage = null;
+       $qpractice->noofquestions = null;
+       $qpractice->time = $fromform->timelimit;
+
+    }
+
+    if($value == 3) {
+       $qpractice->time = NULL;
+       $qpractice->goalpercentage = $fromform->name1;
+       $qpractice->noofquestions = $fromform->name2;
+
+    }
+
+$quba = question_engine::make_questions_usage_by_activity(
+            'mod_qpractice', $context);
+
+$qpractice->typeofpractice = $value;
+$qpractice->categoryid = $fromform->categories;
+$behaviour= $fromform->behaviour;
+$qpractice->userid = $USER->id;
+$quba->set_preferred_behaviour($behaviour);
+$qpractice->qpracticeid = $fromform->instanceid;
+
+print_object($qpractice);
+print_object($quba);
+
+   $nexturl = new moodle_url('/mod/qpractice/startattempt.php', array('id' => $fromform->id));
     redirect($nexturl);
 }
 
-global $DB,$CFG;
-$DB->set_debug(true);
-$ar=$DB->get_record('qpractice', array('id'=>$cm->instance),'behaviour');
-print_object($ar->behaviour);
-$ar1=$DB->get_record('question_categories', array('contextid'=>$context->id), 'name');
-print_object($ar1->name);
-$DB->set_debug(false);
-
 $mform->set_data(array(
-    'returnurl' => $returnurl,
     'id' => $cm->id,
 ));
-
 
 //add_to_log($course->id, 'qpractice', 'view', "view.php?id={$cm->id}", $qpractice->name, $cm->id);
 
