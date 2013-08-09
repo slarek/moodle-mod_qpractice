@@ -16,33 +16,24 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * The main qpractice configuration form
+ * Internal library of functions for module qpractice
  *
- * It uses the standard core Moodle formslib. For more info about them, please
- * visit: http://docs.moodle.org/en/Development:lib/formslib.php
+ * All the qpractice specific functions, needed to implement the module
+ * logic, should go here. Never include this file from your lib.php!
  *
- * @package    mod
- * @subpackage qpractice
- * @copyright  2011 Your Name
+ * @package    mod_qpractice
+ * @copyright  2013 Jayesh Anandani
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-require_once("$CFG->libdir/formslib.php");
+defined('MOODLE_INTERNAL') || die();
 
-
-
-class mod_qpractice_view extends moodleform {
-
-    /**
-     * Defines forms elements
-     */
-    public function definition() {
-
-        $mform = $this->_form;
-
-       $mform->addElement('submit', 'create', get_string('createsessions', 'qpractice'));
-       $mform->addElement('submit', 'show', get_string('viewpastsessions', 'qpractice'));
-       
-       
-    }
-   }
+/**
+ * Does something really useful with the passed things
+ *
+ * @param array $things
+ * @return object
+ */
+//function qpractice_do_something_useful(array $things) {
+//    return new stdClass();
+//}
