@@ -13,7 +13,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-copyright 2013 Jayesh Anandani (http://skodak.org)
+copyright 2013 Jayesh Anandani
 license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
 
 
