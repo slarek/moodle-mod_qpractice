@@ -54,7 +54,7 @@ class question_preview_options extends question_display_options {
         $this->variant = null;
         $this->correctness = self::VISIBLE;
         $this->marks = self::MARK_AND_MAX;
-        $this->markdp = get_config('qpractice', 'decimalpoints');
+        $this->markdp = get_config('quiz', 'decimalpoints');
         $this->feedback = self::VISIBLE;
         $this->numpartscorrect = $this->feedback;
         $this->generalfeedback = self::VISIBLE;
@@ -281,5 +281,4 @@ function question_preview_cron() {
 
     question_engine::delete_questions_usage_by_activities($oldpreviews);
     mtrace('done.');
-}
 }

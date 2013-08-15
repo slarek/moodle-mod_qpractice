@@ -31,7 +31,7 @@ require_once(dirname(__FILE__).'/locallib.php');
 require_once(dirname(__FILE__).'/startattempt_form.php');
 require_once($CFG->libdir . '/questionlib.php');
 
-$id = required_param('id', PARAM_INT); // course_module ID
+$id = required_param('id', PARAM_INT); // Course_module ID.
 
 
 $PAGE->set_url('/mod/qpractice/startattempt.php', array('id' => $id));
@@ -67,7 +67,7 @@ if ($mform->is_cancelled()) {
 
 } else if ($fromform=$mform->get_data()) {
 
-    $sessionid = qpractice_session_create($fromform,$context);     
+    $sessionid = qpractice_session_create($fromform, $context);
     $nexturl = new moodle_url('/mod/qpractice/attempt.php', array('id' => $sessionid));
     redirect($nexturl);
 }
@@ -78,15 +78,15 @@ $mform->set_data(array(
 
 // add_to_log($course->id, 'qpractice', 'view', "view.php?id={$cm->id}", $qpractice->name, $cm->id);
 
-// Print the page header
+// Print the page header.
 $PAGE->set_title(format_string($qpractice->name));
 $PAGE->set_heading(format_string($qpractice->name));
 $PAGE->set_context($context);
 
-// Output starts here*/
+// Output starts here.
 echo $OUTPUT->header();
 
 $mform->display();
 
- // Finish the page
+ // Finish the page.
 echo $OUTPUT->footer();

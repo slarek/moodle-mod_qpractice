@@ -1,4 +1,5 @@
 <?php
+
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -29,8 +30,8 @@ require_once(dirname(dirname(dirname(__FILE__))).'/config.php');
 require_once(dirname(__FILE__).'/lib.php');
 require_once("$CFG->libdir/formslib.php");
 
-$id = optional_param('id', 0, PARAM_INT); // Course_module ID.
-$n  = optional_param('n', 0, PARAM_INT);  // Qpractice instance ID - it should be named as the first character of the module.
+$id = optional_param('id', 0, PARAM_INT); // course_module ID, or
+$n  = optional_param('n', 0, PARAM_INT);  // qpractice instance ID - it should be named as the first character of the module
 
 if ($id) {
     if (!$cm = get_coursemodule_from_id('qpractice', $id)) {
@@ -39,8 +40,8 @@ if ($id) {
     if (!$course = $DB->get_record('course', array('id' => $cm->course))) {
         print_error('coursemisconf');
     }
-    $qpractice = $DB->get_record('qpractice', array('id' => $cm->instance));
-} else {
+}
+else {
     if (!$qpractice = $DB->get_record('qpractice', array('id' => $n))) {
         print_error('invalidpracticeid', 'quiz');
     }
@@ -56,16 +57,16 @@ if ($id) {
 require_login($course, true, $cm);
 $context = context_module::instance($cm->id);
 // require_capability('mod/qpractice:view', $context);
-// add_to_log($course->id, 'qpractice', 'view', "view.php?id={$cm->id}", $qpractice->name, $cm->id);
+//add_to_log($course->id, 'qpractice', 'view', "view.php?id={$cm->id}", $qpractice->name, $cm->id);
 $PAGE->set_url('/mod/qpractice/view.php', array('id' => $cm->id));
-$PAGE->set_title(format_string($qpractice->name));
+// $PAGE->set_title(format_string($qpractice->name));
 $PAGE->set_heading(format_string($course->fullname));
 $PAGE->set_context($context);
 
 
-$createurl = new moodle_url('/mod/qpractice/startattempt.php', array('id' => $cm->id));
+$createurl = new moodle_url('/mod/qpractice/startattempt.php', array('id' => $cm->id)); 
 $createtext = get_string('createurl', 'qpractice');
-$reporturl = new moodle_url('../../question/preview.php', array('id' => $cm->id));
+$reporturl = new moodle_url('../../question/preview.php', array('id' => $cm->id)); 
 $reporttext = get_string('reporturl', 'qpractice');
 
 echo $OUTPUT->header();
@@ -74,5 +75,9 @@ echo html_writer::link($createurl, $createtext);
 echo html_writer::empty_tag('br');
 echo html_writer::link($reporturl, $reporttext);
 
-// Finish the page.
+/*if ($qpractice->intro) { // Conditions to show the intro can change to look for own settings or whatever
+    echo $OUTPUT->box(format_module_intro('qpractice', $qpractice, $cm->id), 'generalbox mod_introbox', 'qpracticeintro');
+}*/
+
+// Finish the page
 echo $OUTPUT->footer();

@@ -25,28 +25,32 @@
 require_once(dirname(dirname(dirname(__FILE__))).'/config.php');
 require_once($CFG->libdir . '/questionlib.php');
 require_once(dirname(__FILE__) . '/attemptlib.php');
+require_once(dirname(__FILE__) . '/locallib.php');
 
 // Get and validate question id.
-$cmid = required_param('id', PARAM_INT);
-$categoryid='1';
-$subcategories='false';
-$excludedqtypes=null;
+$sessionid = required_param('id', PARAM_INT);
+$displaynumber = optional_param('displaynumber',false,PARAM_INT);
+$session = $DB->get_record('qpractice_session', array('id' => $sessionid));
+$categoryid = $session->categoryid;
+$subcategories = array_keys($DB->get_records_menu('question_categories', array('parent'=>$categoryid), 'id', 'id'));
+$excludedqtypes =null;
 
         
-        if ($subcategories) {
-            $categoryids = question_categorylist($categoryid);
+        $quba = question_engine::load_questions_usage_by_activity($session->questionusageid);
+
+        $results = $DB->get_records_menu('question_attempts', array('questionusageid'=>$session->questionusageid), 'id', 'id, questionid');  
+        
+        $idss=choose_other_question($categoryid, $subcategories, $results);
+        $results = $idss->id;
+
+        $question = question_bank::load_question($idss->id);
+
+        if ($displaynumber) {
+             $displaynumber = $displaynumber+1;
+
         } else {
-            $categoryids = array($categoryid);
+            $displaynumber = '1';
         }
-
-        $questionids = question_bank::get_finder()->get_questions_from_categories(
-                $categoryids, $excludedqtypes);
-        
-		print_object($questionids);
-     
-
-$question = question_bank::load_question($cmid);
-//print_object($question);
 
     require_login();
     $category = $DB->get_record('question_categories',
@@ -59,20 +63,21 @@ $question = question_bank::load_question($cmid);
 
 // Get and validate display options.
 $options = new question_preview_options($question);
-print_object($options);
-    
-    
+
     $slot = $quba->add_question($question);
-	echo $slot;
+
 	$timenow = time();
 	 if (true) {
         $variantoffset = rand(1, 100);
     } else {
         $variantoffset = '1';
     }
+    
     $quba->start_all_questions(
             new question_variant_pseudorandom_no_repeats_strategy($variantoffset), $timenow);
 	
+$actionurl = new moodle_url('/mod/qpractice/attempt.php', array('id' => $sessionid, 'displaynumber' => $displaynumber));
+$actionurl = new moodle_url('/mod/qpractice/view.php', array('id' => 5));
 
 // Process any actions from the buttons at the bottom of the form.
 if (data_submitted()) {
@@ -96,22 +101,21 @@ if (data_submitted()) {
             if ($scrollpos !== '') {
                 $actionurl->param('scrollpos', (int) $scrollpos);
             }
-            redirect($actionurl);
+            redirect($stopurl);
         }
 }
 
-if ($question->length) {
-    $displaynumber = '2';
-} else {
-    $displaynumber = 'ii';
-}
 
 // Start output.
 $title = get_string('practicesession', 'qpractice', format_string($question->name));
-$headtags = question_engine::initialise_js() . $quba->render_question_head_html($slot);
+//$headtags = question_engine::initialise_js() . $quba->render_question_head_html($slot);
 $PAGE->set_title($title);
 $PAGE->set_heading($title);
 echo $OUTPUT->header();
+
+// Start the question form.
+echo html_writer::start_tag('form', array('method' => 'post', 'action' => $actionurl,
+        'enctype' => 'multipart/form-data', 'id' => 'responseform'));
 
 
 // Output the question.
@@ -125,6 +129,7 @@ echo html_writer::empty_tag('input', array('type' => 'submit',
         'name' => 'finish',  'value' => get_string('stoppractice', 'qpractice')));
 echo html_writer::end_tag('div');
 echo html_writer::end_tag('form');
+
 
 // Display the settings form.
 

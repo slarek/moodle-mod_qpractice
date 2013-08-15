@@ -30,9 +30,6 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-/** example constant */
-// define('NEWMODULE_ULTIMATE_ANSWER', 42);
-
 /**
  * Returns the information on whether the module supports a feature
  *
@@ -42,8 +39,10 @@ defined('MOODLE_INTERNAL') || die();
  */
 function qpractice_supports($feature) {
     switch($feature) {
-        case FEATURE_MOD_INTRO:         return true;
-        default:                        return null;
+        case FEATURE_MOD_INTRO:
+             return true;
+        default:
+             return null;
     }
 }
 
@@ -64,8 +63,8 @@ function qpractice_add_instance(stdClass $qpractice, mod_qpractice_mod_form $mfo
 
     $qpractice->timecreated = time();
     $behaviour=$qpractice->behaviour;
-    $comma_separated = implode(",", array_keys($behaviour));
-    $qpractice->behaviour = $comma_separated;
+    $comma = implode(",", array_keys($behaviour));
+    $qpractice->behaviour = $comma;
 
     return $DB->insert_record('qpractice', $qpractice);
 }
@@ -87,8 +86,8 @@ function qpractice_update_instance(stdClass $qpractice, mod_qpractice_mod_form $
     $qpractice->timemodified = time();
     $qpractice->id = $qpractice->instance;
     $behaviour = $qpractice->behaviour;
-    $comma_separated = implode(",", array_keys($behaviour));
-    $qpractice->behaviour = $comma_separated;
+    $comma = implode(",", array_keys($behaviour));
+    $qpractice->behaviour = $comma;
 
     return $DB->update_record('qpractice', $qpractice);
 }
@@ -153,7 +152,7 @@ function qpractice_user_complete($course, $user, $mod, $qpractice) {
  * @return boolean
  */
 function qpractice_print_recent_activity($course, $viewfullnames, $timestart) {
-    return false;  //  True if anything was printed, otherwise false
+    return false;  //  True if anything was printed, otherwise false.
 }
 
 /**
@@ -278,7 +277,7 @@ function qpractice_update_grades(stdClass $qpractice, $userid = 0) {
     global $CFG, $DB;
     require_once($CFG->libdir.'/gradelib.php');
 
-    $grades = array(); // populate array of grade objects indexed by userid
+    $grades = array(); // Populate array of grade objects indexed by userid.
 
     grade_update('mod/qpractice', $qpractice->course, 'mod', 'qpractice', $qpractice->id, 0, $grades);
 }

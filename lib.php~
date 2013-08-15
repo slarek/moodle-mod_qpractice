@@ -1,5 +1,4 @@
 <?php
-
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -31,12 +30,8 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-
-//define('NEWMODULE_ULTIMATE_ANSWER', 42);
-
-////////////////////////////////////////////////////////////////////////////////
-// Moodle core API                                                            //
-////////////////////////////////////////////////////////////////////////////////
+/** example constant */
+// define('NEWMODULE_ULTIMATE_ANSWER', 42);
 
 /**
  * Returns the information on whether the module supports a feature
@@ -71,9 +66,7 @@ function qpractice_add_instance(stdClass $qpractice, mod_qpractice_mod_form $mfo
     $behaviour=$qpractice->behaviour;
     $comma_separated = implode(",", array_keys($behaviour));
     $qpractice->behaviour = $comma_separated;
-    
 
-    
     return $DB->insert_record('qpractice', $qpractice);
 }
 
@@ -93,7 +86,7 @@ function qpractice_update_instance(stdClass $qpractice, mod_qpractice_mod_form $
 
     $qpractice->timemodified = time();
     $qpractice->id = $qpractice->instance;
-    $behaviour=$qpractice->behaviour;
+    $behaviour = $qpractice->behaviour;
     $comma_separated = implode(",", array_keys($behaviour));
     $qpractice->behaviour = $comma_separated;
 
@@ -116,8 +109,6 @@ function qpractice_delete_instance($id) {
     if (! $qpractice = $DB->get_record('qpractice', array('id' => $id))) {
         return false;
     }
-
-    # Delete any dependent records here #
 
     $DB->delete_records('qpractice', array('id' => $qpractice->id));
 
@@ -213,9 +204,6 @@ function qpractice_get_extra_capabilities() {
     return array();
 }
 
-////////////////////////////////////////////////////////////////////////////////
-// Gradebook API                                                              //
-////////////////////////////////////////////////////////////////////////////////
 
 /**
  * Is a given scale used by the instance of qpractice?
@@ -231,7 +219,6 @@ function qpractice_get_extra_capabilities() {
 function qpractice_scale_used($qpracticeid, $scaleid) {
     global $DB;
 
-    /** @example */
     if ($scaleid and $DB->record_exists('qpractice', array('id' => $qpracticeid, 'grade' => -$scaleid))) {
         return true;
     } else {
@@ -250,7 +237,6 @@ function qpractice_scale_used($qpracticeid, $scaleid) {
 function qpractice_scale_used_anywhere($scaleid) {
     global $DB;
 
-    /** @example */
     if ($scaleid and $DB->record_exists('qpractice', array('grade' => -$scaleid))) {
         return true;
     } else {
@@ -270,7 +256,6 @@ function qpractice_grade_item_update(stdClass $qpractice) {
     global $CFG;
     require_once($CFG->libdir.'/gradelib.php');
 
-    /** @example */
     $item = array();
     $item['itemname'] = clean_param($qpractice->name, PARAM_NOTAGS);
     $item['gradetype'] = GRADE_TYPE_VALUE;
@@ -293,15 +278,10 @@ function qpractice_update_grades(stdClass $qpractice, $userid = 0) {
     global $CFG, $DB;
     require_once($CFG->libdir.'/gradelib.php');
 
-    /** @example */
     $grades = array(); // populate array of grade objects indexed by userid
 
     grade_update('mod/qpractice', $qpractice->course, 'mod', 'qpractice', $qpractice->id, 0, $grades);
 }
-
-////////////////////////////////////////////////////////////////////////////////
-// File API                                                                   //
-////////////////////////////////////////////////////////////////////////////////
 
 /**
  * Returns the lists of all browsable file areas within the given module context
@@ -365,10 +345,6 @@ function qpractice_pluginfile($course, $cm, $context, $filearea, array $args, $f
     send_file_not_found();
 }
 
-////////////////////////////////////////////////////////////////////////////////
-// Navigation API                                                             //
-////////////////////////////////////////////////////////////////////////////////
-
 /**
  * Extends the global navigation tree by adding qpractice nodes if there is a relevant content
  *
@@ -380,8 +356,6 @@ function qpractice_pluginfile($course, $cm, $context, $filearea, array $args, $f
  * @param cm_info $cm
  */
 function qpractice_extend_navigation(navigation_node $navref, stdclass $course, stdclass $module, cm_info $cm) {
-
-    
 }
 
 /**
@@ -394,8 +368,7 @@ function qpractice_extend_navigation(navigation_node $navref, stdclass $course, 
  * @param navigation_node $qpracticenode {@link navigation_node}
  */
 function qpractice_extend_settings_navigation(settings_navigation $settingsnav, navigation_node $qpracticenode=null) {
-global $PAGE, $CFG;
+    global $PAGE, $CFG;
     require_once($CFG->libdir . '/questionlib.php');
-
     question_extend_settings_navigation($settingsnav, $PAGE->cm->context)->trim_if_empty();
 }

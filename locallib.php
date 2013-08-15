@@ -99,9 +99,9 @@ function qpractice_delete_attempt($sessionid) {
 
 }
 
-function get_available_questions_from_category($categoryid, $subcategories) {
+function get_available_questions_from_category($categoryid) {
 
-    if ($subcategories) {
+    if (question_categorylist($categoryid)) {
          $categoryids = question_categorylist($categoryid);
     } else {
          $categoryids = array($categoryid);
@@ -112,8 +112,8 @@ function get_available_questions_from_category($categoryid, $subcategories) {
         return $questionids;
 }
 
-function choose_other_question($categoryid, $subcategories, $excludedquestions, $allowshuffle = true) {
-    $available = get_available_questions_from_category($categoryid, $subcategories);
+function choose_other_question($categoryid, $excludedquestions, $allowshuffle = true) {
+    $available = get_available_questions_from_category($categoryid);
     shuffle($available);
 
     foreach ($available as $questionid) {
