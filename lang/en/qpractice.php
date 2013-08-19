@@ -28,6 +28,7 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+$string['backpractice'] = 'Resume Practice';
 $string['createsessions'] = 'Create a new session';
 $string['createurl'] = 'Create a new session';
 $string['modulename'] = 'qpractice';
@@ -45,7 +46,12 @@ $string['qpracticename_help'] = 'This is the content of the help tooltip associa
 $string['qpracticeset'] = 'Select any one type of Practice';
 $string['reporturl'] = 'Show Past Sessions';
 $string['stoppractice'] = 'Stop practice';
+$string['submitandfinish'] = 'Submit and Finish Practice';
+$string['totalmarks'] = 'Total marks obtained';
+$string['totalquestions'] = 'Total questions attempted';
 $string['viewpastsessions'] = 'View all past session';
+
+
 
 
 

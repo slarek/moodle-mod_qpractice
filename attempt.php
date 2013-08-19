@@ -72,30 +72,23 @@ $quba->start_all_questions(
             new question_variant_pseudorandom_no_repeats_strategy($variantoffset), $timenow);
 
 $actionurl = new moodle_url('/mod/qpractice/attempt.php', array('id' => $sessionid, 'displaynumber' => $displaynumber));
-$actionurl = new moodle_url('/mod/qpractice/view.php', array('id' => 5));
+$stopurl = new moodle_url('/mod/qpractice/summary.php', array('id' => $sessionid));
 
 // Process any actions from the buttons at the bottom of the form.
 if (data_submitted()) {
-    if (optional_param('finish', null, PARAM_BOOL)) {
+    if (optional_param('next', null, PARAM_BOOL)) {
             $quba->process_all_actions();
             $quba->finish_all_questions();
-
             $transaction = $DB->start_delegated_transaction();
             question_engine::save_questions_usage_by_activity($quba);
             $transaction->allow_commit();
             redirect($actionurl);
 
-    } else {
+    } if (optional_param('finish', null, PARAM_BOOL)) {
             $quba->process_all_actions();
-
             $transaction = $DB->start_delegated_transaction();
             question_engine::save_questions_usage_by_activity($quba);
             $transaction->allow_commit();
-
-            $scrollpos = optional_param('scrollpos', '', PARAM_RAW);
-        if ($scrollpos !== '') {
-                $actionurl->param('scrollpos', (int) $scrollpos);
-        }
             redirect($stopurl);
     }
 }

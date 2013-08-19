@@ -121,6 +121,66 @@ function xmldb_qpractice_upgrade($oldversion) {
         upgrade_mod_savepoint(true, 2013070500, 'qpractice');
     }
 
+    if ($oldversion < 2013081700) {
+
+        // Define index qpracticeid-userid-sessionnumber (unique) to be dropped form qpractice_session.
+        $table = new xmldb_table('qpractice_session');
+        $index = new xmldb_index('qpracticeid-userid-sessionnumber', XMLDB_INDEX_UNIQUE, array('qpracticeid', 'userid', 'sessionnumber'));
+
+        // Conditionally launch drop index qpracticeid-userid-sessionnumber.
+        if ($dbman->index_exists($table, $index)) {
+            $dbman->drop_index($table, $index);
+        }
+
+        // Qpractice savepoint reached.
+        upgrade_mod_savepoint(true, 2013081700, 'qpractice');
+    }
+
+    if ($oldversion < 2013081700) {
+
+        // Define field sessionnumber to be dropped from qpractice_session.
+        $table = new xmldb_table('qpractice_session');
+        $field = new xmldb_field('sessionnumber');
+
+        // Conditionally launch drop field categoryid.
+        if ($dbman->field_exists($table, $field)) {
+            $dbman->drop_field($table, $field);
+        }
+
+        // Qpractice savepoint reached.
+        upgrade_mod_savepoint(true, 2013081700, 'qpractice');
+    }
+
+    if ($oldversion < 2013081800) {
+
+        // Define field practicedate to be added to qpractice_session.
+        $table = new xmldb_table('qpractice_session');
+        $field = new xmldb_field('practicedate', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null, 'noofquestions');
+
+        // Conditionally launch add field practicedate.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Qpractice savepoint reached.
+        upgrade_mod_savepoint(true, 2013081800, 'qpractice');
+    }
+
+    if ($oldversion < 2013081800) {
+
+        // Define field timecreated to be added to qpractice_session.
+        $table = new xmldb_table('qpractice_session');
+        $field = new xmldb_field('timecreated', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null, 'practicedate');
+
+        // Conditionally launch add field timecreated.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Qpractice savepoint reached.
+        upgrade_mod_savepoint(true, 2013081800, 'qpractice');
+    }
+
     // Lines above (this included) MUST BE DELETED once you get the first version of
     // yout module working. Each time you need to modify something in the module (DB
     // related, you'll raise the version and add one upgrade block here.
