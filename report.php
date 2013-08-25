@@ -51,9 +51,7 @@ $output = $PAGE->get_renderer('mod_qpractice');
 
 echo $OUTPUT->header();
 
-echo $output->summary_table();
-
-echo $output->summary_form();
+echo $output->report_table($cm->id);
 
 // Finish the page.
 echo $OUTPUT->footer();

@@ -26,90 +26,108 @@ require_once(dirname(dirname(dirname(__FILE__))).'/config.php');
 require_once($CFG->libdir . '/questionlib.php');
 require_once(dirname(__FILE__) . '/attemptlib.php');
 require_once(dirname(__FILE__) . '/locallib.php');
+require_once($CFG->libdir . '/filelib.php');
 
-// Get and validate question id.
 $sessionid = required_param('id', PARAM_INT);
-$displaynumber = optional_param('displaynumber', false, PARAM_INT);
+$scrollpos = optional_param('scrollpos', '1', PARAM_INT);
 $session = $DB->get_record('qpractice_session', array('id' => $sessionid));
+$resultid = optional_param ('resultid', '', PARAM_INT);
 $categoryid = $session->categoryid;
-$excludedqtypes =null;
+
+require_login();
+
+$cm = get_coursemodule_from_instance('qpractice', $session->qpracticeid);
+$course = $DB->get_record('course', array('id' => $cm->course));
+
+require_login($course, true, $cm);
+$context = context_module::instance($cm->id);
 
 $quba = question_engine::load_questions_usage_by_activity($session->questionusageid);
 
 $results = $DB->get_records_menu('question_attempts', array('questionusageid'=>$session->questionusageid), 'id', 'id, questionid');
 
-$idss=choose_other_question($categoryid, $results);
-$results = $idss->id;
+if ($scrollpos=='1') {
+       $questionid=choose_other_question($categoryid, $results);
 
-$question = question_bank::load_question($idss->id);
-
-if ($displaynumber) {
-     $displaynumber = $displaynumber+1;
-} else {
-     $displaynumber = '1';
+    if ($questionid==null) {
+          $viewurl = new moodle_url('/mod/qpractice/summary.php', array('id'=>$sessionid));
+          redirect($viewurl, 'Sorry.No more questions to display.Try different category');
+    } else {
+           $resultid = $questionid->id;
+    }
 }
 
-require_login();
-$category = $DB->get_record('question_categories',
-            array('id' => $question->category), '*', MUST_EXIST);
-$context = context::instance_by_id($category->contextid);
-$PAGE->set_context($context);
-// Note that in the other cases, require_login will set the correct page context.
-question_require_capability_on($question, 'use');
-$PAGE->set_pagelayout('popup');
-// Get and validate display options.
-$options = new question_preview_options($question);
+$question = question_bank::load_question($resultid, false);
+
+$options = new question_display_options();
+
 $slot = $quba->add_question($question);
 
-$timenow = time();
-if (true) {
-    $variantoffset = rand(1, 100);
-} else {
-     $variantoffset = '1';
-}
+$quba->start_question($slot);
 
-$quba->start_all_questions(
-            new question_variant_pseudorandom_no_repeats_strategy($variantoffset), $timenow);
+$updatesql2 = "UPDATE {qpractice_session}
+                          SET totalnoofquestions = ?
+                        WHERE id=?";
+            $return = $DB->execute($updatesql2, array($slot, $sessionid));
 
-$actionurl = new moodle_url('/mod/qpractice/attempt.php', array('id' => $sessionid, 'displaynumber' => $displaynumber));
+$actionurl = new moodle_url('/mod/qpractice/attempt.php', array('id' => $sessionid));
 $stopurl = new moodle_url('/mod/qpractice/summary.php', array('id' => $sessionid));
 
-// Process any actions from the buttons at the bottom of the form.
 if (data_submitted()) {
     if (optional_param('next', null, PARAM_BOOL)) {
-            $quba->process_all_actions();
-            $quba->finish_all_questions();
-            $transaction = $DB->start_delegated_transaction();
+            // $transaction = $DB->start_delegated_transaction();
             question_engine::save_questions_usage_by_activity($quba);
-            $transaction->allow_commit();
+            // $transaction->allow_commit();
             redirect($actionurl);
 
-    } if (optional_param('finish', null, PARAM_BOOL)) {
-            $quba->process_all_actions();
-            $transaction = $DB->start_delegated_transaction();
+    } else if (optional_param('finish', null, PARAM_BOOL)) {
+            $DB->set_field('qpractice_session', 'status', 'finished', array('id' => $sessionid));
             question_engine::save_questions_usage_by_activity($quba);
-            $transaction->allow_commit();
             redirect($stopurl);
+    } else {
+            $quba->process_all_actions();
+            $fraction = $quba->get_question_fraction($slot);
+            $maxmarks = $quba->get_question_max_mark($slot);
+            $obtainedmarks = $fraction*$maxmarks;
+            $updatesql = "UPDATE {qpractice_session}
+                          SET marksobtained = marksobtained + ?, totalmarks = totalmarks + ?
+                        WHERE id=?";
+            $return = $DB->execute($updatesql, array($obtainedmarks, $maxmarks, $sessionid));
+
+            if ($fraction>0) {
+                $updatesql1 = "UPDATE {qpractice_session}
+                          SET totalnoofquestionsright = totalnoofquestionsright + '1'
+                        WHERE id=?";
+                $return = $DB->execute($updatesql1, array($sessionid));
+            }
+            $scrollpos = '';
     }
 }
 
 
 // Start output.
+$PAGE->set_url('/mod/qpractice/attempt.php', array('id' => $sessionid));
 $title = get_string('practicesession', 'qpractice', format_string($question->name));
 $PAGE->set_title($title);
 $PAGE->set_heading($title);
+$PAGE->set_context($context);
 echo $OUTPUT->header();
 
 // Start the question form.
 echo html_writer::start_tag('form', array('method' => 'post', 'action' => $actionurl,
         'enctype' => 'multipart/form-data', 'id' => 'responseform'));
-
+echo html_writer::start_tag('div');
+echo html_writer::empty_tag('input', array('type' => 'hidden', 'name' => 'sesskey', 'value' => sesskey()));
+echo html_writer::empty_tag('input', array('type' => 'hidden', 'name' => 'slots', 'value' => $slot));
+echo html_writer::empty_tag('input', array('type' => 'hidden', 'name' => 'resultid', 'value' => $resultid));
+echo html_writer::empty_tag('input', array('type' => 'hidden', 'name' => 'scrollpos', 'value' => '0', 'id' => 'scrollpos'));
+echo html_writer::end_tag('div');
 
 // Output the question.
-echo $quba->render_question($slot, $options, $displaynumber);
+echo $quba->render_question($slot, $options, $slot);
 
 // Finish the question form.
-echo html_writer::start_tag('div', array('id' => 'previewcontrols', 'class' => 'controls'));
+echo html_writer::start_tag('div');
 echo html_writer::empty_tag('input', array('type' => 'submit',
         'name' => 'next', 'value' => get_string('nextquestion', 'qpractice')));
 echo html_writer::empty_tag('input', array('type' => 'submit',

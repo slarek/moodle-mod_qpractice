@@ -33,20 +33,34 @@ $sessionid = required_param('id', PARAM_INT); // Sessionid.
 $session = $DB->get_record('qpractice_session', array('id' => $sessionid));
 $cm = get_coursemodule_from_instance('qpractice', $session->qpracticeid);
 $course = $DB->get_record('course', array('id' => $cm->course));
+$qpractice = $DB->get_record('qpractice', array('id' => $cm->instance));
 
 require_login($course, true, $cm);
 $context = context_module::instance($cm->id);
-$PAGE->set_title('Testing');
-$PAGE->set_heading('Testing');
+
+$actionurl = new moodle_url('/mod/qpractice/attempt.php', array('id' => $sessionid));
+$stopurl = new moodle_url('/mod/qpractice/view.php', array('id' => $cm->id));
+
+if (data_submitted()) {
+    if (optional_param('back', null, PARAM_BOOL)) {
+            redirect($actionurl);
+
+    } if (optional_param('finish', null, PARAM_BOOL)) {
+            $DB->set_field('qpractice_session', 'status', 'finished', array('id' => $sessionid));
+            redirect($stopurl);
+    }
+}
+$PAGE->set_title($qpractice->name);
+$PAGE->set_heading($course->fullname);
 $PAGE->set_context($context);
 $PAGE->set_url('/mod/qpractice/summary.php', array('id' => $sessionid));
 $output = $PAGE->get_renderer('mod_qpractice');
 
 echo $OUTPUT->header();
 
-echo $output->summary_table();
+echo $output->summary_table($sessionid);
 
-echo $output->summary_form();
+echo $output->summary_form($sessionid);
 
 // Finish the page.
 echo $OUTPUT->footer();

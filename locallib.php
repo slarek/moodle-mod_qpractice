@@ -65,13 +65,14 @@ function qpractice_session_create($fromform, $context) {
 
     $quba = question_engine::make_questions_usage_by_activity('mod_qpractice', $context);
 
+    $qpractice->timecreated = time();
+    $qpractice->practicedate = time();
     $qpractice->typeofpractice = $value;
     $qpractice->categoryid = $fromform->categories;
     $behaviour = $fromform->behaviour;
     $qpractice->userid = $USER->id;
     $quba->set_preferred_behaviour($behaviour);
     $qpractice->qpracticeid = $fromform->instanceid;
-    $qpractice->sessionnumber = 3;
     question_engine::save_questions_usage_by_activity($quba);
     $qpractice->questionusageid = $quba->get_id();
     $sessionid=$DB->insert_record('qpractice_session', $qpractice);

@@ -35,6 +35,7 @@ $id = required_param('id', PARAM_INT); // Course_module ID.
 
 
 $PAGE->set_url('/mod/qpractice/startattempt.php', array('id' => $id));
+$DB->set_field('qpractice_session', 'status', 'finished', null);
 
 if ($id) {
     if (!$cm = get_coursemodule_from_id('qpractice', $id)) {

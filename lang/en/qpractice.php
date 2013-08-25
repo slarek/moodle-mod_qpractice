@@ -29,6 +29,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 $string['backpractice'] = 'Resume Practice';
+$string['continueurl'] = 'Continue last session';
 $string['createsessions'] = 'Create a new session';
 $string['createurl'] = 'Create a new session';
 $string['modulename'] = 'qpractice';
@@ -50,6 +51,14 @@ $string['submitandfinish'] = 'Submit and Finish Practice';
 $string['totalmarks'] = 'Total marks obtained';
 $string['totalquestions'] = 'Total questions attempted';
 $string['viewpastsessions'] = 'View all past session';
+$string['practicedate'] = 'Practice Date';
+$string['typeofpractice'] = 'Type of Practice';
+$string['category'] = 'Topic Selected';
+$string['score'] = 'Marks Obtained';
+$string['timegoalset'] = 'Time/Goal Set';
+$string['noofquestionsattempted'] = 'No of Questions attempted';
+$string['noofquestionsright'] = 'No of questions right';
+$string['noofquestionsnotattempted'] = 'No of questions not attempted';
 
 
 

@@ -181,6 +181,96 @@ function xmldb_qpractice_upgrade($oldversion) {
         upgrade_mod_savepoint(true, 2013081800, 'qpractice');
     }
 
+    if ($oldversion < 2013082600) {
+
+        // Define field practicedate to be dropped from qpractice_session.
+        $table = new xmldb_table('qpractice_session');
+        $field = new xmldb_field('timecreated');
+
+        // Conditionally launch drop field practicedate.
+        if ($dbman->field_exists($table, $field)) {
+            $dbman->drop_field($table, $field);
+        }
+
+        // Qpractice savepoint reached.
+        upgrade_mod_savepoint(true, 2013082600, 'qpractice');
+    }
+
+    if ($oldversion < 2013082600) {
+
+        // Define field status to be added to qpractice_session.
+        $table = new xmldb_table('qpractice_session');
+        $field = new xmldb_field('status', XMLDB_TYPE_CHAR, '20', null, XMLDB_NOTNULL, null, 'inprogress', 'practicedate');
+
+        // Conditionally launch add field status.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Qpractice savepoint reached.
+        upgrade_mod_savepoint(true, 2013082600, 'qpractice');
+    }
+
+    if ($oldversion < 2013082606) {
+
+        // Define field totalnoofquestions to be added to qpractice_session.
+        $table = new xmldb_table('qpractice_session');
+        $field = new xmldb_field('totalnoofquestions', XMLDB_TYPE_INTEGER, '20', null, XMLDB_NOTNULL, null, '0', 'status');
+
+        // Conditionally launch add field totalnoofquestions.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Qpractice savepoint reached.
+        upgrade_mod_savepoint(true, 2013082606, 'qpractice');
+    }
+
+    if ($oldversion < 2013082606) {
+
+        // Define field totalnoofquestionsright to be added to qpractice_session.
+        $table = new xmldb_table('qpractice_session');
+        $field = new xmldb_field('totalnoofquestionsright', XMLDB_TYPE_INTEGER, '20', null, XMLDB_NOTNULL, null, '0', 'totalnoofquestions');
+
+        // Conditionally launch add field totalnoofquestionsright.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Qpractice savepoint reached.
+        upgrade_mod_savepoint(true, 2013082606, 'qpractice');
+    }
+
+    if ($oldversion < 2013082609) {
+
+        // Define field marksobtained to be added to qpractice_session.
+        $table = new xmldb_table('qpractice_session');
+        $field = new xmldb_field('marksobtained', XMLDB_TYPE_NUMBER, '10, 2', null, XMLDB_NOTNULL, null, '0', 'totalnoofquestionsright');
+
+        // Conditionally launch add field marksobtained.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Qpractice savepoint reached.
+        upgrade_mod_savepoint(true, 2013082609, 'qpractice');
+    }
+
+    if ($oldversion < 2013082609) {
+
+        // Define field totalmarks to be added to qpractice_session.
+        $table = new xmldb_table('qpractice_session');
+        $field = new xmldb_field('totalmarks', XMLDB_TYPE_NUMBER, '10, 2', null, XMLDB_NOTNULL, null, '0', 'marksobtained');
+
+        // Conditionally launch add field totalmarks.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Qpractice savepoint reached.
+        upgrade_mod_savepoint(true, 2013082609, 'qpractice');
+    }
+
     // Lines above (this included) MUST BE DELETED once you get the first version of
     // yout module working. Each time you need to modify something in the module (DB
     // related, you'll raise the version and add one upgrade block here.

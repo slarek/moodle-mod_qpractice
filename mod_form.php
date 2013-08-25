@@ -83,6 +83,20 @@ class mod_qpractice_mod_form extends moodleform_mod {
 
     public function data_preprocessing(&$toform) {
 
+        $reviewfields = array();
+        $reviewfields = explode(',', $toform['behaviour']);
+        $behaviours = question_engine::get_behaviour_options(null);
+
+        foreach ($behaviours as $key => $langstring) {
+            foreach ($reviewfields as $field => $used) {
+                if ($key == $used) {
+                    $toform['behaviour[' . $key . ']'] = 1;
+                    break;
+                } else {
+                    $toform['behaviour[' . $key . ']'] = 0;
+                }
+            }
+        }
     }
 
     public function validation($data, $files) {

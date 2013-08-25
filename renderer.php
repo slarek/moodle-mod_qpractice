@@ -29,8 +29,10 @@ defined('MOODLE_INTERNAL') || die();
 
 class mod_qpractice_renderer extends plugin_renderer_base {
 
-    public function summary_table() {
+    public function summary_table($sessionid) {
+        global $DB;
 
+        $session = $DB->get_record('qpractice_session', array('id' => $sessionid));
         $table = new html_table();
         $table->attributes['class'] = 'generaltable qpracticesummaryofattempt boxaligncenter';
         $table->caption = 'Hello';
@@ -38,14 +40,15 @@ class mod_qpractice_renderer extends plugin_renderer_base {
         $table->align = array('left', 'left');
         $table->size = array('', '');
         $table->data = array();
-        $table->data[] = array('100', '23/100');
+        $table->data[] = array($session->totalnoofquestions, $session->marksobtained.'/'.$session->totalmarks);
         echo html_writer::table($table);
     }
 
-    public function summary_form() {
+    public function summary_form($sessionid) {
 
+        $actionurl = new moodle_url('/mod/qpractice/summary.php', array('id'=>$sessionid));
         $output='';
-        $output .= html_writer::start_tag('form', array('method' => 'post', 'action' => '',
+        $output .= html_writer::start_tag('form', array('method' => 'post', 'action' => $actionurl,
                 'enctype' => 'multipart/form-data', 'id' => 'responseform'));
         $output .= html_writer::start_tag('div', array('align'=> 'center'));
         $output .= html_writer::empty_tag('input', array('type' => 'submit',
@@ -59,4 +62,32 @@ class mod_qpractice_renderer extends plugin_renderer_base {
 
         echo $output;
     }
+
+    public function report_table($id) {
+        global $DB;
+        $cm = get_coursemodule_from_id('qpractice', $id);
+        $session = $DB->get_records('qpractice_session', array('qpracticeid' => $cm->instance));
+        if ($session!=null) {
+            $table = new html_table();
+            $table->attributes['class'] = 'generaltable qpracticesummaryofpractices boxaligncenter';
+            $table->caption = 'Hello';
+            $table->head = array(get_string('practicedate', 'qpractice'), get_string('category', 'qpractice'),
+                                get_string('typeofpractice', 'qpractice'), get_string('score', 'qpractice'),
+                                get_string('timegoalset', 'qpractice'), get_string('noofquestionsattempted', 'qpractice'),
+                                get_string('noofquestionsright', 'qpractice'));
+            $table->align = array('left', 'left', 'left', 'left', 'left', 'left', 'left');
+            $table->size = array('', '', '', '', '', '', '', '');
+            $table->data = array();
+            foreach ($session as $qpractice) {
+                $date = $qpractice->practicedate;
+                $table->data[] = array(userdate($date), 'Topic-1', 'Goal', $qpractice->marksobtained.'/'.$qpractice->totalmarks, '10%',
+                                       $qpractice->totalnoofquestions, $qpractice->totalnoofquestionsright);
+            }
+            echo html_writer::table($table);
+        } else {
+            $viewurl = new moodle_url('/mod/qpractice/view.php', array('id'=>'5'));
+            redirect($viewurl, 'No Records exist');
+        }
+    }
+
 }
