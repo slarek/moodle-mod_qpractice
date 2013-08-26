@@ -81,6 +81,13 @@ if (data_submitted()) {
             redirect($actionurl);
 
     } else if (optional_param('finish', null, PARAM_BOOL)) {
+            $fraction = $quba->get_question_fraction($slot);
+            $maxmarks = $quba->get_question_max_mark($slot);
+            $obtainedmarks = $fraction*$maxmarks;
+            $updatesql = "UPDATE {qpractice_session}
+                          SET marksobtained = marksobtained + ?, totalmarks = totalmarks + ?
+                        WHERE id=?";
+            $return = $DB->execute($updatesql, array($obtainedmarks, $maxmarks, $sessionid));
             $DB->set_field('qpractice_session', 'status', 'finished', array('id' => $sessionid));
             question_engine::save_questions_usage_by_activity($quba);
             redirect($stopurl);
@@ -139,4 +146,3 @@ echo html_writer::end_tag('form');
 // Display the settings form.
 
 echo $OUTPUT->footer();
-

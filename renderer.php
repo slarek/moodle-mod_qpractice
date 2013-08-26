@@ -80,8 +80,24 @@ class mod_qpractice_renderer extends plugin_renderer_base {
             $table->data = array();
             foreach ($session as $qpractice) {
                 $date = $qpractice->practicedate;
-                $table->data[] = array(userdate($date), 'Topic-1', 'Goal', $qpractice->marksobtained.'/'.$qpractice->totalmarks, '10%',
-                                       $qpractice->totalnoofquestions, $qpractice->totalnoofquestionsright);
+                $value = $qpractice->typeofpractice;
+                $categoryid = $qpractice->categoryid;
+
+                $category = $DB->get_records_menu('question_categories', array('id'=>$categoryid), 'name');
+
+                if ($value =='1') {
+                    $value = 'Normal';
+                    $timegoal = '-';
+
+                } else if ($value == '2') {
+                    $value = 'Time Achiever';
+                    $timegoal = $qpractice->time;
+                } else {
+                    $value = 'Goal Achiever';
+                    $timegoal = $qpractice->goalpercentage;
+                }
+                $table->data[] = array(userdate($date), $category[$categoryid], $value, $qpractice->marksobtained.'/'.$qpractice->totalmarks, $timegoal,
+                                        $qpractice->totalnoofquestions, $qpractice->totalnoofquestionsright);
             }
             echo html_writer::table($table);
         } else {
@@ -89,5 +105,4 @@ class mod_qpractice_renderer extends plugin_renderer_base {
             redirect($viewurl, 'No Records exist');
         }
     }
-
 }
