@@ -82,7 +82,7 @@ class mod_qpractice_mod_form extends moodleform_mod {
     }
 
     public function data_preprocessing(&$toform) {
-        if(isset($toform['behaviour']) {
+        if (isset($toform['behaviour'])) {
             $reviewfields = array();
             $reviewfields = explode(',', $toform['behaviour']);
             $behaviours = question_engine::get_behaviour_options(null);
