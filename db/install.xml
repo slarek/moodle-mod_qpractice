@@ -28,7 +28,6 @@
         <FIELD NAME="qpracticeid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
         <FIELD NAME="questionusageid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
         <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="Id of user"/>
-        <FIELD NAME="sessionnumber" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
         <FIELD NAME="categoryid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
         <FIELD NAME="typeofpractice" TYPE="char" LENGTH="20" NOTNULL="true" SEQUENCE="false"/>
         <FIELD NAME="time" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false"/>
@@ -48,9 +47,6 @@
         <KEY NAME="qpracticeid" TYPE="foreign" FIELDS="qpracticeid" REFTABLE="qpractice" REFFIELDS="id"/>
         <KEY NAME="categoryid" TYPE="foreign" FIELDS="categoryid" REFTABLE="question_categories" REFFIELDS="id"/>
       </KEYS>
-      <INDEXES>
-        <INDEX NAME="qpracticeid-userid-sessionnumber" UNIQUE="true" FIELDS="qpracticeid, userid, sessionnumber"/>
-      </INDEXES>
     </TABLE>
   </TABLES>
 </XMLDB>

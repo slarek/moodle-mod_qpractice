@@ -95,7 +95,6 @@ function xmldb_qpractice_upgrade($oldversion) {
         $table->add_field('qpracticeid', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
         $table->add_field('questionusageid', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
         $table->add_field('userid', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
-        $table->add_field('sessionnumber', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
         $table->add_field('categoryid', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
         $table->add_field('typeofpractice', XMLDB_TYPE_CHAR, '20', null, XMLDB_NOTNULL, null, null);
         $table->add_field('time', XMLDB_TYPE_INTEGER, '10', null, null, null, null);
@@ -109,9 +108,6 @@ function xmldb_qpractice_upgrade($oldversion) {
         $table->add_key('qpracticeid', XMLDB_KEY_FOREIGN, array('qpracticeid'), 'qpractice', array('id'));
         $table->add_key('categoryid', XMLDB_KEY_FOREIGN, array('categoryid'), 'question_categories', array('id'));
 
-        // Adding indexes to table qpractice_session.
-        $table->add_index('qpracticeid-userid-sessionnumber', XMLDB_INDEX_UNIQUE, array('qpracticeid', 'userid', 'sessionnumber'));
-
         // Conditionally launch create table for qpractice_session.
         if (!$dbman->table_exists($table)) {
             $dbman->create_table($table);
@@ -119,36 +115,6 @@ function xmldb_qpractice_upgrade($oldversion) {
 
         // Qpractice savepoint reached.
         upgrade_mod_savepoint(true, 2013070500, 'qpractice');
-    }
-
-    if ($oldversion < 2013081700) {
-
-        // Define index qpracticeid-userid-sessionnumber (unique) to be dropped form qpractice_session.
-        $table = new xmldb_table('qpractice_session');
-        $index = new xmldb_index('qpracticeid-userid-sessionnumber', XMLDB_INDEX_UNIQUE, array('qpracticeid', 'userid', 'sessionnumber'));
-
-        // Conditionally launch drop index qpracticeid-userid-sessionnumber.
-        if ($dbman->index_exists($table, $index)) {
-            $dbman->drop_index($table, $index);
-        }
-
-        // Qpractice savepoint reached.
-        upgrade_mod_savepoint(true, 2013081700, 'qpractice');
-    }
-
-    if ($oldversion < 2013081700) {
-
-        // Define field sessionnumber to be dropped from qpractice_session.
-        $table = new xmldb_table('qpractice_session');
-        $field = new xmldb_field('sessionnumber');
-
-        // Conditionally launch drop field categoryid.
-        if ($dbman->field_exists($table, $field)) {
-            $dbman->drop_field($table, $field);
-        }
-
-        // Qpractice savepoint reached.
-        upgrade_mod_savepoint(true, 2013081700, 'qpractice');
     }
 
     if ($oldversion < 2013081800) {
