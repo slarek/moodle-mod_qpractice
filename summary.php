@@ -47,7 +47,7 @@ if (data_submitted()) {
             redirect($actionurl);
 
     } if (optional_param('finish', null, PARAM_BOOL)) {
-    	       $quba = question_engine::load_questions_usage_by_activity($session->questionusageid);
+            $quba = question_engine::load_questions_usage_by_activity($session->questionusageid);
             $DB->set_field('qpractice_session', 'status', 'finished', array('id' => $sessionid));
             $slots = $quba->get_slots();
             $slot = end($slots);

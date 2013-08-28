@@ -81,10 +81,10 @@ if (data_submitted()) {
             $slots = $quba->get_slots();
             $slot = end($slots);
             question_engine::save_questions_usage_by_activity($quba);
-            redirect($actionurl);       
+            redirect($actionurl);
     }
-    
-    }  else {
+
+} else {
     // We are just viewing the page again. Is there a currently active question?
     $slots = $quba->get_slots();
     $slot = end($slots);
@@ -108,12 +108,11 @@ if (data_submitted()) {
     } else {
         // The current question is still in progress. Continue with it.
         $question = $quba->get_question($slot);
-     }
- }
+    }
+}
 
- 
 $options = new question_display_options();
- 
+
 // Start output.
 $title = get_string('practicesession', 'qpractice', format_string($question->name));
 $PAGE->set_title($title);
