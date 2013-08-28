@@ -49,9 +49,14 @@ $PAGE->set_context($context);
 $PAGE->set_url('/mod/qpractice/report.php', array('id' => $cm->id));
 $output = $PAGE->get_renderer('mod_qpractice');
 
+$backurl = new moodle_url('/mod/qpractice/view.php', array('id' => $cm->id));
+$backtext = get_string('backurl', 'qpractice');
+
 echo $OUTPUT->header();
 
 echo $output->report_table($cm->id);
+echo html_writer::empty_tag('br');
+echo html_writer::link($backurl, $backtext);
 
 // Finish the page.
 echo $OUTPUT->footer();

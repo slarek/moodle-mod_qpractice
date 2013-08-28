@@ -73,7 +73,7 @@ class mod_qpractice_renderer extends plugin_renderer_base {
             $table->caption = 'Hello';
             $table->head = array(get_string('practicedate', 'qpractice'), get_string('category', 'qpractice'),
                                 get_string('typeofpractice', 'qpractice'), get_string('score', 'qpractice'),
-                                get_string('timegoalset', 'qpractice'), get_string('noofquestionsattempted', 'qpractice'),
+                                get_string('timegoalset', 'qpractice'), get_string('noofquestionsviewed', 'qpractice'),
                                 get_string('noofquestionsright', 'qpractice'));
             $table->align = array('left', 'left', 'left', 'left', 'left', 'left', 'left');
             $table->size = array('', '', '', '', '', '', '', '');

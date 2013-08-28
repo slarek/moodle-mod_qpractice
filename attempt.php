@@ -28,9 +28,7 @@ require_once(dirname(__FILE__) . '/locallib.php');
 require_once($CFG->libdir . '/filelib.php');
 
 $sessionid = required_param('id', PARAM_INT);
-$scrollpos = optional_param('scrollpos', '1', PARAM_INT);
 $session = $DB->get_record('qpractice_session', array('id' => $sessionid));
-$resultid = optional_param ('resultid', '', PARAM_INT);
 $categoryid = $session->categoryid;
 
 require_login();
@@ -45,72 +43,77 @@ $quba = question_engine::load_questions_usage_by_activity($session->questionusag
 
 $results = $DB->get_records_menu('question_attempts', array('questionusageid'=>$session->questionusageid), 'id', 'id, questionid');
 
-if ($scrollpos=='1') {
-       $questionid=choose_other_question($categoryid, $results);
-
-    if ($questionid==null) {
-          $viewurl = new moodle_url('/mod/qpractice/summary.php', array('id'=>$sessionid));
-          redirect($viewurl, 'Sorry.No more questions to display.Try different category');
-    } else {
-           $resultid = $questionid->id;
-    }
-}
-
-$question = question_bank::load_question($resultid, false);
-
-$options = new question_display_options();
-
-$slot = $quba->add_question($question);
-
-$quba->start_question($slot);
-
-$updatesql2 = "UPDATE {qpractice_session}
-                          SET totalnoofquestions = ?
-                        WHERE id=?";
-            $return = $DB->execute($updatesql2, array($slot, $sessionid));
-
 $actionurl = new moodle_url('/mod/qpractice/attempt.php', array('id' => $sessionid));
 $stopurl = new moodle_url('/mod/qpractice/summary.php', array('id' => $sessionid));
 
 if (data_submitted()) {
     if (optional_param('next', null, PARAM_BOOL)) {
+            // There is submitted data. Process it.
             // $transaction = $DB->start_delegated_transaction();
-            question_engine::save_questions_usage_by_activity($quba);
-            // $transaction->allow_commit();
-            redirect($actionurl);
-
-    } else if (optional_param('finish', null, PARAM_BOOL)) {
+            $slots = $quba->get_slots();
+            $slot = end($slots);
+            $quba->finish_question($slot);
+            if ($quba->get_question_state($slot)!='todo') {
             $fraction = $quba->get_question_fraction($slot);
             $maxmarks = $quba->get_question_max_mark($slot);
             $obtainedmarks = $fraction*$maxmarks;
             $updatesql = "UPDATE {qpractice_session}
                           SET marksobtained = marksobtained + ?, totalmarks = totalmarks + ?
                         WHERE id=?";
-            $return = $DB->execute($updatesql, array($obtainedmarks, $maxmarks, $sessionid));
-            $DB->set_field('qpractice_session', 'status', 'finished', array('id' => $sessionid));
-            question_engine::save_questions_usage_by_activity($quba);
-            redirect($stopurl);
-    } else {
-            $quba->process_all_actions();
-            $fraction = $quba->get_question_fraction($slot);
-            $maxmarks = $quba->get_question_max_mark($slot);
-            $obtainedmarks = $fraction*$maxmarks;
-            $updatesql = "UPDATE {qpractice_session}
-                          SET marksobtained = marksobtained + ?, totalmarks = totalmarks + ?
-                        WHERE id=?";
-            $return = $DB->execute($updatesql, array($obtainedmarks, $maxmarks, $sessionid));
+            $DB->execute($updatesql, array($obtainedmarks, $maxmarks, $sessionid));
 
             if ($fraction>0) {
                 $updatesql1 = "UPDATE {qpractice_session}
                           SET totalnoofquestionsright = totalnoofquestionsright + '1'
                         WHERE id=?";
-                $return = $DB->execute($updatesql1, array($sessionid));
+                $DB->execute($updatesql1, array($sessionid));
             }
-            $scrollpos = '';
+        }
+            question_engine::save_questions_usage_by_activity($quba);
+            // $transaction->allow_commit();
+            redirect($actionurl);
+
+    } else if (optional_param('finish', null, PARAM_BOOL)) {
+            question_engine::save_questions_usage_by_activity($quba);
+            redirect($stopurl);
+    } else {
+            $quba->process_all_actions();
+            $slots = $quba->get_slots();
+            $slot = end($slots);
+            question_engine::save_questions_usage_by_activity($quba);
+            redirect($actionurl);       
     }
-}
+    
+    }  else {
+    // We are just viewing the page again. Is there a currently active question?
+    $slots = $quba->get_slots();
+    $slot = end($slots);
+    if (!$slot || $quba->get_question_state($slot)->is_finished()) {
 
+        // This question is finished (or no previous question). Select the next one.
+        $results = $DB->get_records_menu('question_attempts', array('questionusageid'=>$session->questionusageid), 'id', 'id, questionid');
+        $questionid = choose_other_question($categoryid, $results);
 
+        if ($questionid == null) {
+            $viewurl = new moodle_url('/mod/qpractice/summary.php', array('id'=>$sessionid));
+            redirect($viewurl, 'Sorry.No more questions to display.Try different category');
+        }
+
+        $question = question_bank::load_question($questionid->id, false);
+        $slot = $quba->add_question($question);
+        $quba->start_question($slot);
+        question_engine::save_questions_usage_by_activity($quba);
+        $DB->set_field('qpractice_session', 'totalnoofquestions', $slot, array('id' => $sessionid));
+
+    } else {
+        // The current question is still in progress. Continue with it.
+        $question = $quba->get_question($slot);
+     }
+ }
+
+ 
+$options = new question_display_options();
+ 
 // Start output.
 $PAGE->set_url('/mod/qpractice/attempt.php', array('id' => $sessionid));
 $title = get_string('practicesession', 'qpractice', format_string($question->name));
@@ -125,8 +128,6 @@ echo html_writer::start_tag('form', array('method' => 'post', 'action' => $actio
 echo html_writer::start_tag('div');
 echo html_writer::empty_tag('input', array('type' => 'hidden', 'name' => 'sesskey', 'value' => sesskey()));
 echo html_writer::empty_tag('input', array('type' => 'hidden', 'name' => 'slots', 'value' => $slot));
-echo html_writer::empty_tag('input', array('type' => 'hidden', 'name' => 'resultid', 'value' => $resultid));
-echo html_writer::empty_tag('input', array('type' => 'hidden', 'name' => 'scrollpos', 'value' => '0', 'id' => 'scrollpos'));
 echo html_writer::end_tag('div');
 
 // Output the question.

@@ -29,6 +29,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 $string['backpractice'] = 'Resume Practice';
+$string['backurl'] = 'Go back to main page';
 $string['continueurl'] = 'Continue last session';
 $string['createsessions'] = 'Create a new session';
 $string['createurl'] = 'Create a new session';
@@ -36,6 +37,8 @@ $string['modulename'] = 'qpractice';
 $string['modulenameplural'] = 'qpractices';
 $string['modulename_help'] = 'Use the qpractice module for... | The qpractice module allows...';
 $string['nextquestion'] = 'View next question';
+$string['noofquestionsviewed'] = 'No. of Questions viewed';
+$string['noofquestionsright'] = 'No. of questions right';
 $string['pluginadministration'] = 'qpractice administration';
 $string['pluginname'] = 'qpractice';
 $string['practicesession'] = 'Practice Session';
@@ -56,9 +59,7 @@ $string['typeofpractice'] = 'Type of Practice';
 $string['category'] = 'Topic Selected';
 $string['score'] = 'Marks Obtained';
 $string['timegoalset'] = 'Time/Goal Set';
-$string['noofquestionsattempted'] = 'No of Questions attempted';
-$string['noofquestionsright'] = 'No of questions right';
-$string['noofquestionsnotattempted'] = 'No of questions not attempted';
+
 
 
 

@@ -26,6 +26,7 @@
  */
 
 require_once(dirname(dirname(dirname(__FILE__))).'/config.php');
+require_once($CFG->libdir . '/questionlib.php');
 require_once(dirname(__FILE__).'/renderer.php');
 require_once("$CFG->libdir/formslib.php");
 
@@ -46,6 +47,23 @@ if (data_submitted()) {
             redirect($actionurl);
 
     } if (optional_param('finish', null, PARAM_BOOL)) {
+    	       $quba = question_engine::load_questions_usage_by_activity($session->questionusageid);
+            $DB->set_field('qpractice_session', 'status', 'finished', array('id' => $sessionid));
+            $slots = $quba->get_slots();
+            $slot = end($slots);
+            $fraction = $quba->get_question_fraction($slot);
+            $maxmarks = $quba->get_question_max_mark($slot);
+            $obtainedmarks = $fraction*$maxmarks;
+            $updatesql = "UPDATE {qpractice_session}
+                          SET marksobtained = marksobtained + ?, totalmarks = totalmarks + ?
+                        WHERE id=?";
+            $DB->execute($updatesql, array($obtainedmarks, $maxmarks, $sessionid));
+            if ($fraction>0) {
+                $updatesql1 = "UPDATE {qpractice_session}
+                          SET totalnoofquestionsright = totalnoofquestionsright + '1'
+                        WHERE id=?";
+                $DB->execute($updatesql1, array($sessionid));
+            }
             $DB->set_field('qpractice_session', 'status', 'finished', array('id' => $sessionid));
             redirect($stopurl);
     }
