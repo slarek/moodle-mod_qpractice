@@ -39,6 +39,8 @@ $course = $DB->get_record('course', array('id' => $cm->course));
 require_login($course, true, $cm);
 $context = context_module::instance($cm->id);
 
+$PAGE->set_url('/mod/qpractice/attempt.php', array('id' => $sessionid));
+
 $quba = question_engine::load_questions_usage_by_activity($session->questionusageid);
 
 $results = $DB->get_records_menu('question_attempts', array('questionusageid'=>$session->questionusageid), 'id', 'id, questionid');
@@ -53,7 +55,6 @@ if (data_submitted()) {
             $slots = $quba->get_slots();
             $slot = end($slots);
             $quba->finish_question($slot);
-            if ($quba->get_question_state($slot)!='todo') {
             $fraction = $quba->get_question_fraction($slot);
             $maxmarks = $quba->get_question_max_mark($slot);
             $obtainedmarks = $fraction*$maxmarks;
@@ -68,7 +69,6 @@ if (data_submitted()) {
                         WHERE id=?";
                 $DB->execute($updatesql1, array($sessionid));
             }
-        }
             question_engine::save_questions_usage_by_activity($quba);
             // $transaction->allow_commit();
             redirect($actionurl);
@@ -115,7 +115,6 @@ if (data_submitted()) {
 $options = new question_display_options();
  
 // Start output.
-$PAGE->set_url('/mod/qpractice/attempt.php', array('id' => $sessionid));
 $title = get_string('practicesession', 'qpractice', format_string($question->name));
 $PAGE->set_title($title);
 $PAGE->set_heading($title);
