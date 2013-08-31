@@ -344,6 +344,20 @@ function qpractice_pluginfile($course, $cm, $context, $filearea, array $args, $f
     send_file_not_found();
 }
 
+function qpractice_question_pluginfile($course, $context, $component,
+        $filearea, $qubaid, $slot, $args, $forcedownload, array $options=array()) {
+    
+    $fs = get_file_storage();
+    $relativepath = implode('/', $args);
+    $fullpath = "/$context->id/$component/$filearea/$relativepath";
+    if (!$file = $fs->get_file_by_hash(sha1($fullpath)) or $file->is_directory()) {
+        send_file_not_found();
+    }
+
+    send_stored_file($file, 0, 0, $forcedownload, $options);
+}
+
+
 /**
  * Extends the global navigation tree by adding qpractice nodes if there is a relevant content
  *
