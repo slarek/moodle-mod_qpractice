@@ -51,6 +51,9 @@ if (data_submitted()) {
             $DB->set_field('qpractice_session', 'status', 'finished', array('id' => $sessionid));
             $slots = $quba->get_slots();
             $slot = end($slots);
+        if (!$slot) {
+            redirect($stopurl);
+        } else {
             $fraction = $quba->get_question_fraction($slot);
             $maxmarks = $quba->get_question_max_mark($slot);
             $obtainedmarks = $fraction*$maxmarks;
@@ -66,6 +69,7 @@ if (data_submitted()) {
             }
             $DB->set_field('qpractice_session', 'status', 'finished', array('id' => $sessionid));
             redirect($stopurl);
+        }
     }
 }
 $PAGE->set_title($qpractice->name);
