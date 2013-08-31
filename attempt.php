@@ -29,7 +29,6 @@ require_once($CFG->libdir . '/filelib.php');
 
 $sessionid = required_param('id', PARAM_INT);
 $session = $DB->get_record('qpractice_session', array('id' => $sessionid));
-$categoryid = $session->categoryid;
 
 require_login();
 
@@ -39,11 +38,7 @@ $course = $DB->get_record('course', array('id' => $cm->course));
 require_login($course, true, $cm);
 $context = context_module::instance($cm->id);
 
-$PAGE->set_url('/mod/qpractice/attempt.php', array('id' => $sessionid));
-
 $quba = question_engine::load_questions_usage_by_activity($session->questionusageid);
-
-$results = $DB->get_records_menu('question_attempts', array('questionusageid'=>$session->questionusageid), 'id', 'id, questionid');
 
 $actionurl = new moodle_url('/mod/qpractice/attempt.php', array('id' => $sessionid));
 $stopurl = new moodle_url('/mod/qpractice/summary.php', array('id' => $sessionid));
@@ -69,7 +64,8 @@ if (data_submitted()) {
                         WHERE id=?";
                 $DB->execute($updatesql1, array($sessionid));
             }
-            question_engine::save_questions_usage_by_activity($quba);
+            $slot = get_next_question($sessionid, $quba);
+            $question = $quba->get_question($slot);
             // $transaction->allow_commit();
             redirect($actionurl);
 
@@ -81,39 +77,29 @@ if (data_submitted()) {
             $slots = $quba->get_slots();
             $slot = end($slots);
             question_engine::save_questions_usage_by_activity($quba);
-            redirect($actionurl);
+            redirect($actionurl);       
     }
-
-} else {
+    
+    }  else {
     // We are just viewing the page again. Is there a currently active question?
     $slots = $quba->get_slots();
     $slot = end($slots);
-    if (!$slot || $quba->get_question_state($slot)->is_finished()) {
+    if (!$slot) {
 
-        // This question is finished (or no previous question). Select the next one.
-        $results = $DB->get_records_menu('question_attempts', array('questionusageid'=>$session->questionusageid), 'id', 'id, questionid');
-        $questionid = choose_other_question($categoryid, $results);
-
-        if ($questionid == null) {
-            $viewurl = new moodle_url('/mod/qpractice/summary.php', array('id'=>$sessionid));
-            redirect($viewurl, 'Sorry.No more questions to display.Try different category');
-        }
-
-        $question = question_bank::load_question($questionid->id, false);
-        $slot = $quba->add_question($question);
-        $quba->start_question($slot);
-        question_engine::save_questions_usage_by_activity($quba);
-        $DB->set_field('qpractice_session', 'totalnoofquestions', $slot, array('id' => $sessionid));
+        $slot = get_next_question($sessionid, $quba);
+        $question = $quba->get_question($slot);
 
     } else {
         // The current question is still in progress. Continue with it.
         $question = $quba->get_question($slot);
-    }
-}
+     }
+ }
 
+ 
 $options = new question_display_options();
-
+ 
 // Start output.
+$PAGE->set_url('/mod/qpractice/attempt.php', array('id' => $sessionid));
 $title = get_string('practicesession', 'qpractice', format_string($question->name));
 $PAGE->set_title($title);
 $PAGE->set_heading($title);

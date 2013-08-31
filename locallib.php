@@ -144,3 +144,25 @@ function get_options_behaviour($cm) {
     }
     return $showbehaviour;
 }
+
+function get_next_question($sessionid,$quba) {
+
+      global $DB;
+
+        $session = $DB->get_record('qpractice_session', array('id' => $sessionid));
+        $categoryid = $session->categoryid;
+        $results = $DB->get_records_menu('question_attempts', array('questionusageid'=>$session->questionusageid), 'id', 'id, questionid');
+        $questionid = choose_other_question($categoryid, $results);
+
+        if ($questionid == null) {
+            $viewurl = new moodle_url('/mod/qpractice/summary.php', array('id'=>$sessionid));
+            redirect($viewurl, 'Sorry.No more questions to display.Try different category');
+        }
+
+        $question = question_bank::load_question($questionid->id, false);
+        $slot = $quba->add_question($question);
+        $quba->start_question($slot);
+        question_engine::save_questions_usage_by_activity($quba);
+        $DB->set_field('qpractice_session', 'totalnoofquestions', $slot, array('id' => $sessionid));
+        return $slot;
+}
