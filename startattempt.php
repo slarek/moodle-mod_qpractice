@@ -15,10 +15,9 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Prints a particular instance of qpractice
+ * This script deals with starting a new attempt for a qpractice.
  *
- * You can have a rather longer description of the file as well,
- * if you like, and it can span multiple lines.
+ * It will end up redirecting to attempt.php.
  *
  * @package    mod_qpractice
  * @copyright  2013 Jayesh Anandani
@@ -47,9 +46,10 @@ if ($id) {
     $qpractice = $DB->get_record('qpractice', array('id' => $cm->instance));
 }
 
-
 require_login($course, true, $cm);
 $context = context_module::instance($cm->id);
+
+$canedit=has_capability('mod/qpractice:preview', $context);
 
 $behaviours=get_options_behaviour($cm);
 
@@ -77,7 +77,12 @@ $mform->set_data(array(
     'id' => $cm->id,
 ));
 
-// add_to_log($course->id, 'qpractice', 'view', "view.php?id={$cm->id}", $qpractice->name, $cm->id);
+if ($canedit) {
+    add_to_log($course->id, 'qpractice', 'preview', "view.php?id={$cm->id}", $qpractice->id, $cm->id);
+
+} else {
+    add_to_log($course->id, 'qpractice', 'attempt', "view.php?id={$cm->id}", $qpractice->id, $cm->id);
+}
 
 // Print the page header.
 $PAGE->set_title(format_string($qpractice->name));

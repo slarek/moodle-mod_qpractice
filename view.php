@@ -15,10 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Prints a particular instance of qpractice
- *
- * You can have a rather longer description of the file as well,
- * if you like, and it can span multiple lines.
+ * Views options for starting a new session or see past reports.
  *
  * @package    mod_qpractice
  * @copyright  2013 Jayesh Anandani
@@ -44,34 +41,45 @@ if ($id) {
 
 require_login($course, true, $cm);
 $context = context_module::instance($cm->id);
-// require_capability('mod/qpractice:view', $context);
-// add_to_log($course->id, 'qpractice', 'view', "view.php?id={$cm->id}", $qpractice->name, $cm->id);
+
+require_capability('mod/qpractice:view', $context);
+add_to_log($course->id, 'qpractice', 'view', "view.php?id={$cm->id}", $qpractice->id, $cm->id);
+
 $PAGE->set_url('/mod/qpractice/view.php', array('id' => $cm->id));
 $PAGE->set_title(format_string($qpractice->name));
 $PAGE->set_heading(format_string($course->fullname));
 $PAGE->set_context($context);
 
+$canedit=has_capability('mod/qpractice:preview', $context);
+
 $createurl = new moodle_url('/mod/qpractice/startattempt.php', array('id' => $cm->id));
 $createtext = get_string('createurl', 'qpractice');
 $reporturl = new moodle_url('/mod/qpractice/report.php', array('id' => $cm->id));
 $reporttext = get_string('reporturl', 'qpractice');
+$viewurl = new moodle_url('/mod/qpractice/startattempt.php', array('id' => $cm->id));
+$viewtext = get_string('viewurl', 'qpractice');
 
 echo $OUTPUT->header();
 
-echo html_writer::link($createurl, $createtext);
-echo html_writer::empty_tag('br');
-echo html_writer::link($reporturl, $reporttext);
-echo html_writer::empty_tag('br');
+if ($canedit) {
+    echo html_writer::link($viewurl, $viewtext);
+    echo html_writer::empty_tag('br');
+} else {
+    echo html_writer::link($createurl, $createtext);
+    echo html_writer::empty_tag('br');
+}
+    echo html_writer::link($reporturl, $reporttext);
+    echo html_writer::empty_tag('br');
 
-if ($qpractice = $DB->get_records('qpractice_session', array('userid' => $USER->id, 'qpracticeid' => $cm->instance), 'id desc', '*', '0', '1')) {
+if ($qpractice = $DB->get_records('qpractice_session', array('userid' => $USER->id, 'qpracticeid' => $cm->instance),
+                                      'id desc', '*', '0', '1')) {
     $qpractice = array_values($qpractice);
     if ($qpractice[0]->status == 'inprogress') {
-        $continueurl = new moodle_url('/mod/qpractice/attempt.php', array('id' => $qpractice[0]->id));
-        $continuetext = get_string('continueurl', 'qpractice');
-        echo html_writer::link($continueurl, $continuetext);
+            $continueurl = new moodle_url('/mod/qpractice/attempt.php', array('id' => $qpractice[0]->id));
+            $continuetext = get_string('continueurl', 'qpractice');
+            echo html_writer::link($continueurl, $continuetext);
     }
 }
-
 
 // Finish the page.
 echo $OUTPUT->footer();

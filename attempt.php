@@ -15,7 +15,8 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * This page displays an attempt of practice module
+ * This page displays an attempt of practice module.
+ *
  * @package    mod_qpractice
  * @copyright  2013 Jayesh Anandani
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -123,7 +124,6 @@ echo html_writer::empty_tag('input', array('type' => 'submit',
         'name' => 'finish',  'value' => get_string('stoppractice', 'qpractice')));
 echo html_writer::end_tag('div');
 echo html_writer::end_tag('form');
-
 
 // Display the settings form.
 

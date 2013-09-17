@@ -54,6 +54,7 @@ $string['submitandfinish'] = 'Submit and Finish Practice';
 $string['totalmarks'] = 'Total marks obtained';
 $string['totalquestions'] = 'Total questions attempted';
 $string['viewpastsessions'] = 'View all past session';
+$string['viewurl'] = 'Preview a Session';
 $string['practicedate'] = 'Practice Date';
 $string['typeofpractice'] = 'Type of Practice';
 $string['category'] = 'Topic Selected';

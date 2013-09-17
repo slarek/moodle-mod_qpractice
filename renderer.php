@@ -105,4 +105,5 @@ class mod_qpractice_renderer extends plugin_renderer_base {
             redirect($viewurl, 'No Records exist');
         }
     }
+
 }

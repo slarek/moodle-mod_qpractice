@@ -45,6 +45,8 @@ $PAGE->set_context($coursecontext);
 
 echo $OUTPUT->header();
 
+$table = new html_table();
+
 if (! $qpractices = get_all_instances_in_course('qpractice', $course)) {
     notice(get_string('noqpractices', 'qpractice'), new moodle_url('/course/view.php', array('id' => $course->id)));
 }

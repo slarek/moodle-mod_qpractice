@@ -41,6 +41,8 @@ function qpractice_supports($feature) {
     switch($feature) {
         case FEATURE_MOD_INTRO:
              return true;
+        case FEATURE_BACKUP_MOODLE2:
+             return true;
         default:
              return null;
     }
@@ -346,7 +348,6 @@ function qpractice_pluginfile($course, $cm, $context, $filearea, array $args, $f
 
 function qpractice_question_pluginfile($course, $context, $component,
         $filearea, $qubaid, $slot, $args, $forcedownload, array $options=array()) {
-    
     $fs = get_file_storage();
     $relativepath = implode('/', $args);
     $fullpath = "/$context->id/$component/$filearea/$relativepath";
@@ -356,7 +357,6 @@ function qpractice_question_pluginfile($course, $context, $component,
 
     send_stored_file($file, 0, 0, $forcedownload, $options);
 }
-
 
 /**
  * Extends the global navigation tree by adding qpractice nodes if there is a relevant content

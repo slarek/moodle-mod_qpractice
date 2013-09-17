@@ -38,13 +38,14 @@ if ($id) {
     if (!$course = $DB->get_record('course', array('id' => $cm->course))) {
         print_error('coursemisconf');
     }
-    $qpractice = $DB->get_records('qpractice_session', array('qpracticeid' => $cm->instance, 'userid' => $USER->id));
+    // $qpractice = $DB->get_records('qpractice_session', array('qpracticeid' => $cm->instance, 'userid' => $USER->id));
+    $qpractice = $DB->get_record('qpractice', array('id' => $cm->instance));
 }
 
 require_login($course, true, $cm);
 $context = context_module::instance($cm->id);
-$PAGE->set_title('Testing');
-$PAGE->set_heading('Testing');
+$PAGE->set_title($qpractice->name);
+$PAGE->set_heading($course->fullname);
 $PAGE->set_context($context);
 $PAGE->set_url('/mod/qpractice/report.php', array('id' => $cm->id));
 $output = $PAGE->get_renderer('mod_qpractice');
