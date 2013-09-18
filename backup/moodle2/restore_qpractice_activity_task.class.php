@@ -91,6 +91,14 @@ class restore_qpractice_activity_task extends restore_activity_task {
      */
     public static function define_restore_log_rules() {
         $rules = array();
+
+        /*$rules[] = new restore_log_rule('qpractice', 'add', 'view.php?id={course_module}', '{qpractice}');
+        $rules[] = new restore_log_rule('qpractice', 'update', 'view.php?id={course_module}', '{qpractice}');
+        $rules[] = new restore_log_rule('qpractice', 'view', 'view.php?id={course_module}', '{qpractice}');
+        $rules[] = new restore_log_rule('qpractice', 'choose', 'view.php?id={course_module}', '{qpractice}');
+        $rules[] = new restore_log_rule('qpractice', 'choose again', 'view.php?id={course_module}', '{qpractice}');
+        $rules[] = new restore_log_rule('qpractice', 'report', 'report.php?id={course_module}', '{qpractice}');*/
+
         return $rules;
     }
 

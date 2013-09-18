@@ -44,6 +44,7 @@ if ($id) {
 
 require_login($course, true, $cm);
 $context = context_module::instance($cm->id);
+
 $PAGE->set_title($qpractice->name);
 $PAGE->set_heading($course->fullname);
 $PAGE->set_context($context);

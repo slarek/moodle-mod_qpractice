@@ -15,10 +15,8 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Prints a particular instance of qpractice
+ * Views overall summary of your current attempt.
  *
- * You can have a rather longer description of the file as well,
- * if you like, and it can span multiple lines.
  *
  * @package    mod_qpractice
  * @copyright  2013 Jayesh Anandani
@@ -38,6 +36,8 @@ $qpractice = $DB->get_record('qpractice', array('id' => $cm->instance));
 
 require_login($course, true, $cm);
 $context = context_module::instance($cm->id);
+
+add_to_log($course->id, 'qpractice', 'summary', "report.php?id={$cm->id}", $qpractice->id, $cm->id);
 
 $actionurl = new moodle_url('/mod/qpractice/attempt.php', array('id' => $sessionid));
 $stopurl = new moodle_url('/mod/qpractice/view.php', array('id' => $cm->id));

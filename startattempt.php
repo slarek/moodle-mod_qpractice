@@ -49,8 +49,6 @@ if ($id) {
 require_login($course, true, $cm);
 $context = context_module::instance($cm->id);
 
-$canedit=has_capability('mod/qpractice:preview', $context);
-
 $behaviours=get_options_behaviour($cm);
 
 $categories = $DB->get_records_menu('question_categories', array('contextid'=>$context->id, 'parent'=>0), 'name', 'id, name');
@@ -76,13 +74,6 @@ if ($mform->is_cancelled()) {
 $mform->set_data(array(
     'id' => $cm->id,
 ));
-
-if ($canedit) {
-    add_to_log($course->id, 'qpractice', 'preview', "view.php?id={$cm->id}", $qpractice->id, $cm->id);
-
-} else {
-    add_to_log($course->id, 'qpractice', 'attempt', "view.php?id={$cm->id}", $qpractice->id, $cm->id);
-}
 
 // Print the page header.
 $PAGE->set_title(format_string($qpractice->name));

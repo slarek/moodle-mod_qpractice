@@ -64,9 +64,19 @@ class mod_qpractice_renderer extends plugin_renderer_base {
     }
 
     public function report_table($id) {
-        global $DB;
+        global $DB,$USER;
         $cm = get_coursemodule_from_id('qpractice', $id);
-        $session = $DB->get_records('qpractice_session', array('qpracticeid' => $cm->instance));
+        $context = context_module::instance($cm->id);
+
+        $canviewallreports=has_capability('mod/qpractice:viewallreports', $context);
+        $canviewmyreports=has_capability('mod/qpractice:viewmyreport', $context);
+
+        if($canviewmyreports) {
+            $session = $DB->get_records('qpractice_session', array('qpracticeid' => $cm->instance, 'userid' => $USER->id));
+        } if($canviewallreports) {
+            $session = $DB->get_records('qpractice_session', array('qpracticeid' => $cm->instance));
+        }
+        
         if ($session!=null) {
             $table = new html_table();
             $table->attributes['class'] = 'generaltable qpracticesummaryofpractices boxaligncenter';
@@ -101,8 +111,9 @@ class mod_qpractice_renderer extends plugin_renderer_base {
             }
             echo html_writer::table($table);
         } else {
-            $viewurl = new moodle_url('/mod/qpractice/view.php', array('id'=>'5'));
-            redirect($viewurl, 'No Records exist');
+            $viewurl = new moodle_url('/mod/qpractice/view.php', array('id'=>$cm->id));
+            $viewtext = get_string('viewurl', 'qpractice');
+            redirect($viewurl, $viewtext);
         }
     }
 

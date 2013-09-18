@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * The main qpractice configuration form
+ * The form for starting a new session.
  *
  * It uses the standard core Moodle formslib. For more info about them, please
  * visit: http://docs.moodle.org/en/Development:lib/formslib.php
@@ -44,7 +44,7 @@ class mod_qpractice_startattempt_form extends moodleform {
 
         $mform->addElement('radio', 'optiontype', '', 'Normal Practice', 1);
 
-        $mform->addElement('radio', 'optiontype', '', 'Time Achiever', 2);
+        /*$mform->addElement('radio', 'optiontype', '', 'Time Achiever', 2);
         $mform->addElement('duration', 'timelimit', 'Time Duration');
         $mform->disabledIf('timelimit', 'optiontype', 'neq', 2);
 
@@ -54,7 +54,7 @@ class mod_qpractice_startattempt_form extends moodleform {
         $mform->addElement('text', 'noofquestions', 'Enter number of questions');
         $mform->setType('noofquestions', PARAM_TEXT);
         $mform->disabledIf('goal', 'optiontype', 'neq', 3);
-        $mform->disabledIf('noofquestions', 'optiontype', 'neq', 3);
+        $mform->disabledIf('noofquestions', 'optiontype', 'neq', 3);*/
 
         $mform->setDefault('optiontype', 1);
 

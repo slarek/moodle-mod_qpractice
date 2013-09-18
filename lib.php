@@ -61,12 +61,15 @@ function qpractice_supports($feature) {
  * @return int The id of the newly inserted qpractice record
  */
 function qpractice_add_instance(stdClass $qpractice, mod_qpractice_mod_form $mform = null) {
+    require_once($CFG->libdir . '/questionlib.php');
+    
     global $DB;
 
     $qpractice->timecreated = time();
     $behaviour=$qpractice->behaviour;
     $comma = implode(",", array_keys($behaviour));
     $qpractice->behaviour = $comma;
+    question_get_default_category();
 
     return $DB->insert_record('qpractice', $qpractice);
 }
@@ -202,7 +205,11 @@ function qpractice_cron () {
  * @return array
  */
 function qpractice_get_extra_capabilities() {
-    return array();
+    global $CFG;
+    require_once($CFG->libdir . '/questionlib.php');
+    $caps = question_get_all_capabilities();
+    $caps[] = 'moodle/site:accessallgroups';
+    return $caps;
 }
 
 

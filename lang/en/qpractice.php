@@ -18,9 +18,6 @@
 /**
  * English strings for qpractice
  *
- * You can have a rather longer description of the file as well,
- * if you like, and it can span multiple lines.
- *
  * @package    mod_qpractice
  * @copyright  2013 Jayesh Anandani
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -54,7 +51,7 @@ $string['submitandfinish'] = 'Submit and Finish Practice';
 $string['totalmarks'] = 'Total marks obtained';
 $string['totalquestions'] = 'Total questions attempted';
 $string['viewpastsessions'] = 'View all past session';
-$string['viewurl'] = 'Preview a Session';
+$string['viewurl'] = 'No Records exist';
 $string['practicedate'] = 'Practice Date';
 $string['typeofpractice'] = 'Type of Practice';
 $string['category'] = 'Topic Selected';

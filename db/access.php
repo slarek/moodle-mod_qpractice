@@ -60,15 +60,6 @@ $capabilities = array(
         )
     ),
 
-    'mod/qpractice:submit' => array(
-        'riskbitmask' => RISK_SPAM,
-        'captype' => 'write',
-        'contextlevel' => CONTEXT_MODULE,
-        'legacy' => array(
-            'student' => CAP_ALLOW
-        )
-    ),
-
     'mod/qpractice:addinstance' => array(
         'riskbitmask' => RISK_XSS,
 
@@ -90,40 +81,9 @@ $capabilities = array(
         )
     ),
 
-    // Edit the qpractice settings, add and remove questions.
-    'mod/qpractice:manage' => array(
-        'riskbitmask' => RISK_SPAM,
-        'captype' => 'write',
-        'contextlevel' => CONTEXT_MODULE,
-        'archetypes' => array(
-            'editingteacher' => CAP_ALLOW,
-            'manager' => CAP_ALLOW
-        )
-    ),
-
-    // Edit the qpractice overrides.
-    'mod/qpractice:manageoverrides' => array(
-        'captype' => 'write',
-        'contextlevel' => CONTEXT_MODULE,
-        'archetypes' => array(
-            'editingteacher' => CAP_ALLOW,
-            'manager' => CAP_ALLOW
-        )
-    ),
-
-    // Preview the qpractice.
-    'mod/qpractice:preview' => array(
-        'captype' => 'write', // Only just a write.
-        'contextlevel' => CONTEXT_MODULE,
-        'archetypes' => array(
-            'teacher' => CAP_ALLOW,
-            'editingteacher' => CAP_ALLOW,
-            'manager' => CAP_ALLOW
-        )
-    ),
 
     // View the practice reports.
-    'mod/qpractice:viewreports' => array(
+    'mod/qpractice:viewallreports' => array(
         'riskbitmask' => RISK_PERSONAL,
         'captype' => 'read',
         'contextlevel' => CONTEXT_MODULE,
@@ -134,14 +94,17 @@ $capabilities = array(
         )
     ),
 
-    'mod/qpractice:deleteattempts' => array(
-        'riskbitmask' => RISK_DATALOSS,
-        'captype' => 'write',
+     // View the practice reports.
+    'mod/qpractice:viewmyreport' => array(
+        'riskbitmask' => RISK_PERSONAL,
+        'captype' => 'read',
         'contextlevel' => CONTEXT_MODULE,
         'archetypes' => array(
+            'student' => CAP_ALLOW,
+            'teacher' => CAP_ALLOW,
             'editingteacher' => CAP_ALLOW,
             'manager' => CAP_ALLOW
+
         )
     ),
 );
-

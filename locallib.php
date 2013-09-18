@@ -27,8 +27,6 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$excludedquestions=null;
-$excludedqtypes=null;
 
 /**
  * Create a qpractice attempt.
@@ -49,7 +47,7 @@ function qpractice_session_create($fromform, $context) {
 
     }
 
-    if ($value == 2) {
+    /*if ($value == 2) {
         $qpractice->goalpercentage = null;
         $qpractice->noofquestions = null;
         $qpractice->time = $fromform->timelimit;
@@ -61,7 +59,7 @@ function qpractice_session_create($fromform, $context) {
         $qpractice->goalpercentage = $fromform->goal;
         $qpractice->noofquestions = $fromform->noofquestions;
 
-    }
+    }*/
 
     $quba = question_engine::make_questions_usage_by_activity('mod_qpractice', $context);
 

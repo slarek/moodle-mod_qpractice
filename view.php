@@ -50,35 +50,32 @@ $PAGE->set_title(format_string($qpractice->name));
 $PAGE->set_heading(format_string($course->fullname));
 $PAGE->set_context($context);
 
-$canedit=has_capability('mod/qpractice:preview', $context);
+$canview=has_capability('mod/qpractice:view', $context);
 
 $createurl = new moodle_url('/mod/qpractice/startattempt.php', array('id' => $cm->id));
 $createtext = get_string('createurl', 'qpractice');
 $reporturl = new moodle_url('/mod/qpractice/report.php', array('id' => $cm->id));
 $reporttext = get_string('reporturl', 'qpractice');
-$viewurl = new moodle_url('/mod/qpractice/startattempt.php', array('id' => $cm->id));
-$viewtext = get_string('viewurl', 'qpractice');
 
 echo $OUTPUT->header();
 
-if ($canedit) {
-    echo html_writer::link($viewurl, $viewtext);
-    echo html_writer::empty_tag('br');
-} else {
+if ($canview) {
     echo html_writer::link($createurl, $createtext);
     echo html_writer::empty_tag('br');
-}
     echo html_writer::link($reporturl, $reporttext);
     echo html_writer::empty_tag('br');
 
-if ($qpractice = $DB->get_records('qpractice_session', array('userid' => $USER->id, 'qpracticeid' => $cm->instance),
+    if ($qpractice = $DB->get_records('qpractice_session', array('userid' => $USER->id, 'qpracticeid' => $cm->instance),
                                       'id desc', '*', '0', '1')) {
     $qpractice = array_values($qpractice);
-    if ($qpractice[0]->status == 'inprogress') {
+        if ($qpractice[0]->status == 'inprogress') {
             $continueurl = new moodle_url('/mod/qpractice/attempt.php', array('id' => $qpractice[0]->id));
             $continuetext = get_string('continueurl', 'qpractice');
             echo html_writer::link($continueurl, $continuetext);
+        }
     }
+} else {
+    print_error('You do not have permission to view this');
 }
 
 // Finish the page.
