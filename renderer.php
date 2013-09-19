@@ -15,10 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Prints a particular instance of qpractice
- *
- * You can have a rather longer description of the file as well,
- * if you like, and it can span multiple lines.
+ * The renderer for qpractice module.
  *
  * @package    mod_qpractice
  * @copyright  2013 Jayesh Anandani
@@ -63,20 +60,18 @@ class mod_qpractice_renderer extends plugin_renderer_base {
         echo $output;
     }
 
-    public function report_table($id) {
-        global $DB,$USER;
-        $cm = get_coursemodule_from_id('qpractice', $id);
-        $context = context_module::instance($cm->id);
+    public function report_table($cm, $context) {
+        global $DB, $USER;
 
         $canviewallreports=has_capability('mod/qpractice:viewallreports', $context);
         $canviewmyreports=has_capability('mod/qpractice:viewmyreport', $context);
 
-        if($canviewmyreports) {
+        if ($canviewmyreports) {
             $session = $DB->get_records('qpractice_session', array('qpracticeid' => $cm->instance, 'userid' => $USER->id));
-        } if($canviewallreports) {
+        } if ($canviewallreports) {
             $session = $DB->get_records('qpractice_session', array('qpracticeid' => $cm->instance));
         }
-        
+
         if ($session!=null) {
             $table = new html_table();
             $table->attributes['class'] = 'generaltable qpracticesummaryofpractices boxaligncenter';

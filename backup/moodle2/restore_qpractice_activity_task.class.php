@@ -49,7 +49,7 @@ class restore_qpractice_activity_task extends restore_activity_task {
      * Define (add) particular steps this activity can have
      */
     protected function define_my_steps() {
-        // qpractice only has one structure step.
+        // Qpractice only has one structure step.
         $this->add_step(new restore_qpractice_activity_structure_step('qpractice_structure', 'qpractice.xml'));
     }
 
@@ -92,12 +92,12 @@ class restore_qpractice_activity_task extends restore_activity_task {
     public static function define_restore_log_rules() {
         $rules = array();
 
-        /*$rules[] = new restore_log_rule('qpractice', 'add', 'view.php?id={course_module}', '{qpractice}');
-        $rules[] = new restore_log_rule('qpractice', 'update', 'view.php?id={course_module}', '{qpractice}');
         $rules[] = new restore_log_rule('qpractice', 'view', 'view.php?id={course_module}', '{qpractice}');
-        $rules[] = new restore_log_rule('qpractice', 'choose', 'view.php?id={course_module}', '{qpractice}');
-        $rules[] = new restore_log_rule('qpractice', 'choose again', 'view.php?id={course_module}', '{qpractice}');
-        $rules[] = new restore_log_rule('qpractice', 'report', 'report.php?id={course_module}', '{qpractice}');*/
+        $rules[] = new restore_log_rule('qpractice', 'attempt', 'report.php?id={course_module}', '{qpractice}');
+        $rules[] = new restore_log_rule('qpractice', 'next', 'report.php?id={course_module}', '{qpractice}');
+        $rules[] = new restore_log_rule('qpractice', 'finish', 'report.php?id={course_module}', '{qpractice}');
+        $rules[] = new restore_log_rule('qpractice', 'view summary', 'report.php?id={course_module}', '{qpractice}');
+        $rules[] = new restore_log_rule('qpractice', 'report', 'report.php?id={course_module}', '{qpractice}');
 
         return $rules;
     }

@@ -37,8 +37,8 @@ $course = $DB->get_record('course', array('id' => $cm->course));
 require_login($course, true, $cm);
 $context = context_module::instance($cm->id);
 
-$canatttempt=has_capability('mod/qpractice:attempt', $context);
-//add_to_log($course->id, '', 'attempt', "report.php?id={$cm->id}", $qpractice->id, $cm->id);
+require_capability('mod/qpractice:attempt', $context);
+add_to_log($course->id, 'qpractice', 'attempt', "report.php?id={$cm->id}", $session->qpracticeid, $cm->id);
 
 $quba = question_engine::load_questions_usage_by_activity($session->questionusageid);
 
@@ -48,7 +48,7 @@ $stopurl = new moodle_url('/mod/qpractice/summary.php', array('id' => $sessionid
 if (data_submitted()) {
     if (optional_param('next', null, PARAM_BOOL)) {
             // There is submitted data. Process it.
-            //add_to_log($course->id, 'qpractice', 'next', "report.php?id={$cm->id}", $qpractice->id, $cm->id);
+            add_to_log($course->id, 'qpractice', 'next', "report.php?id={$cm->id}", $session->qpracticeid, $cm->id);
             $transaction = $DB->start_delegated_transaction();
             $slots = $quba->get_slots();
             $slot = end($slots);
@@ -74,7 +74,7 @@ if (data_submitted()) {
 
     } else if (optional_param('finish', null, PARAM_BOOL)) {
             question_engine::save_questions_usage_by_activity($quba);
-            //add_to_log($course->id, 'qpractice', 'finish', "report.php?id={$cm->id}", $qpractice->id, $cm->id);
+            add_to_log($course->id, 'qpractice', 'finish', "report.php?id={$cm->id}", $session->qpracticeid, $cm->id);
             redirect($stopurl);
     } else {
             $quba->process_all_actions();

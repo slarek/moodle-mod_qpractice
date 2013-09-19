@@ -84,17 +84,7 @@ class restore_qpractice_activity_structure_step extends restore_questions_activi
     }
 
     protected function inform_new_usage_id($newusageid) {
-        /*global $DB;
 
-        $data = $this->currentquizattempt;
-
-        $oldid = $data->id;
-        $data->uniqueid = $newusageid;
-
-        $newitemid = $DB->insert_record('quiz_attempts', $data);
-
-        // Save quiz_attempt->id mapping, because logs use it.
-        $this->set_mapping('quiz_attempt', $oldid, $newitemid, false);*/
     }
 
     protected function after_execute() {

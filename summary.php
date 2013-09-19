@@ -37,7 +37,7 @@ $qpractice = $DB->get_record('qpractice', array('id' => $cm->instance));
 require_login($course, true, $cm);
 $context = context_module::instance($cm->id);
 
-add_to_log($course->id, 'qpractice', 'summary', "report.php?id={$cm->id}", $qpractice->id, $cm->id);
+add_to_log($course->id, 'qpractice', 'view summary', "report.php?id={$cm->id}", $qpractice->id, $cm->id);
 
 $actionurl = new moodle_url('/mod/qpractice/attempt.php', array('id' => $sessionid));
 $stopurl = new moodle_url('/mod/qpractice/view.php', array('id' => $cm->id));

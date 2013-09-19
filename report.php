@@ -15,10 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Prints a particular instance of qpractice
- *
- * You can have a rather longer description of the file as well,
- * if you like, and it can span multiple lines.
+ * This script controls the display of the qpractice reports.
  *
  * @package    mod_qpractice
  * @copyright  2013 Jayesh Anandani
@@ -51,12 +48,14 @@ $PAGE->set_context($context);
 $PAGE->set_url('/mod/qpractice/report.php', array('id' => $cm->id));
 $output = $PAGE->get_renderer('mod_qpractice');
 
+add_to_log($course->id, 'qpractice', 'report', "report.php?id={$cm->id}", $qpractice->id, $cm->id);
+
 $backurl = new moodle_url('/mod/qpractice/view.php', array('id' => $cm->id));
 $backtext = get_string('backurl', 'qpractice');
 
 echo $OUTPUT->header();
 
-echo $output->report_table($cm->id);
+echo $output->report_table($cm, $context);
 echo html_writer::empty_tag('br');
 echo html_writer::link($backurl, $backtext);
 

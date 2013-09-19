@@ -32,3 +32,5 @@ $module->version   = 2013082611;      // The current module version (Date: YYYYM
 $module->requires  = 2013040500;      // Requires this Moodle version.
 $module->cron      = 0;               // Period for cron to check this module (secs)
 $module->component = 'mod_qpractice'; // To check on upgrade, that module sits in correct place.
+$module->maturity  = MATURITY_STABLE;
+$module->release   = 'TODO';

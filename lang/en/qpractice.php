@@ -30,16 +30,18 @@ $string['backurl'] = 'Go back to main page';
 $string['continueurl'] = 'Continue last session';
 $string['createsessions'] = 'Create a new session';
 $string['createurl'] = 'Create a new session';
-$string['modulename'] = 'qpractice';
-$string['modulenameplural'] = 'qpractices';
-$string['modulename_help'] = 'Use the qpractice module for... | The qpractice module allows...';
+$string['modulename'] = 'Qpractice';
+$string['modulenameplural'] = 'Qpractices';
+$string['modulename_help'] = 'The qpractice activity enables a teacher to create qpractices comprising questions of various types. The practice created by teacher
+
+is later used by students in their own way to analyze themselves over a period of time.';
 $string['nextquestion'] = 'View next question';
 $string['noofquestionsviewed'] = 'No. of Questions viewed';
 $string['noofquestionsright'] = 'No. of questions right';
-$string['pluginadministration'] = 'qpractice administration';
+$string['pluginadministration'] = 'Qpractice administration';
 $string['pluginname'] = 'qpractice';
 $string['practicesession'] = 'Practice Session';
-$string['qpractice'] = 'qpractice';
+$string['qpractice'] = 'Qpractice';
 $string['qpracticebehaviour'] = 'Question Behaviour';
 $string['qpracticefieldset'] = 'Custom example fieldset';
 $string['qpracticename'] = 'QPractice name';

@@ -61,17 +61,20 @@ function qpractice_supports($feature) {
  * @return int The id of the newly inserted qpractice record
  */
 function qpractice_add_instance(stdClass $qpractice, mod_qpractice_mod_form $mform = null) {
+    global $DB, $CFG;
     require_once($CFG->libdir . '/questionlib.php');
-    
-    global $DB;
 
     $qpractice->timecreated = time();
     $behaviour=$qpractice->behaviour;
     $comma = implode(",", array_keys($behaviour));
     $qpractice->behaviour = $comma;
-    question_get_default_category();
 
-    return $DB->insert_record('qpractice', $qpractice);
+    $qpractice->id = $DB->insert_record('qpractice', $qpractice);
+
+    qpractice_after_add_or_update($qpractice);
+
+    return $qpractice->id;
+
 }
 
 /**
@@ -117,6 +120,24 @@ function qpractice_delete_instance($id) {
     $DB->delete_records('qpractice', array('id' => $qpractice->id));
 
     return true;
+}
+
+/**
+ * This function is called at the end of qpractice_add_instance
+ * to do the common processing.
+ *
+ * @param object $qpractice the qpractice object.
+ */
+function qpractice_after_add_or_update($qpractice) {
+    global $DB;
+    $cmid = $qpractice->coursemodule;
+
+    // We need to use context now, so we need to make sure all needed info is already in db.
+    $DB->set_field('course_modules', 'instance', $qpractice->id, array('id'=>$cmid));
+    $context = context_module::instance($cmid);
+    $contexts=array($context);
+    question_make_default_categories($contexts);
+
 }
 
 /**
