@@ -55,7 +55,8 @@ class restore_qpractice_activity_structure_step extends restore_questions_activi
 
     protected function process_qpractice($data) {
         global $CFG, $DB;
-
+        
+        $data = (object)$data;
         $oldid = $data->id;
         $data->course = $this->get_courseid();
 
