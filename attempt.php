@@ -99,7 +99,9 @@ if (data_submitted()) {
 }
 
 $options = new question_display_options();
-
+$headtags = '';
+$headtags .= $quba->render_question_head_html($slot);
+$headtags .= question_engine::initialise_js();
 // Start output.
 $PAGE->set_url('/mod/qpractice/attempt.php', array('id' => $sessionid));
 $title = get_string('practicesession', 'qpractice', format_string($question->name));
