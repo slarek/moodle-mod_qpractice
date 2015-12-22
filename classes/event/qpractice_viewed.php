@@ -36,11 +36,13 @@ defined('MOODLE_INTERNAL') || die();
  * @copyright 2015 Marcus Green
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  **/
+namespace mod_qpractice\event;
+
 class qpractice_viewed extends \core\event\base {
     protected function init() {
-        $this->data['crud'] = 'c'; // c(reate), r(ead), u(pdate), d(elete)
-        $this->data['edulevel'] = self::LEVEL_PARTICIPATING;
-        $this->data['objecttable'] = $this->userid;
+        //$this->data['crud'] = 'c'; // c(reate), r(ead), u(pdate), d(elete)
+        //$this->data['edulevel'] = self::LEVEL_PARTICIPATING;
+        $this->data['objecttable'] = 'mod_qpractice';
     }
  
     public static function get_name() {
@@ -48,15 +50,18 @@ class qpractice_viewed extends \core\event\base {
     }
  
     public function get_description() {
-        return "The user with id {$this->userid} viewed qpractice id :  {$this->objectid}.";
+        //return "The user with id {$this->userid} viewed qpractice id :  {$this->objectid}.";
+        return "mavg";
     }
  
     public function get_url() {
-        return new \moodle_url('/mod/qpractice/view.php', array('view' => $this->objectid));
+        return "mavg";
+        //return new \moodle_url('/mod/qpractice/view.php', array('view' => $this->objectid));
     }
  
     public function get_legacy_logdata() {
-        return array($course->id, 'qpractice', 'view', "view.php?id={$cm->id}", $qpractice->id, $cm->id);        
+        return "mavg";
+        //return array($course->id, 'qpractice', 'view', "view.php?id={$cm->id}", $qpractice->id, $cm->id);        
     }
  
 }
