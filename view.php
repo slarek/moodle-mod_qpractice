@@ -21,6 +21,8 @@
  * @copyright  2013 Jayesh Anandani
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+//require_once(dirname(__FILE__) . '/classes/event/qpractice_viewed.php');
+//namespace mod_qpractice;
 
 require_once(dirname(dirname(dirname(__FILE__))).'/config.php');
 require_once(dirname(__FILE__).'/lib.php');
@@ -40,10 +42,18 @@ if ($id) {
 }
 
 require_login($course, true, $cm);
-$context = context_module::instance($cm->id);
+
+$context = \context_module::instance($cm->id);
+//$context = context_module::instance($cm->id);
 
 require_capability('mod/qpractice:view', $context);
-add_to_log($course->id, 'qpractice', 'view', "view.php?id={$cm->id}", $qpractice->id, $cm->id);
+//add_to_log($course->id, 'qpractice', 'view', "view.php?id={$cm->id}", $qpractice->id, $cm->id);
+  /*   $event = \mod_qpractice\event\qpractice_viewed::create(
+                            array(
+                                 'context' => $context,
+                                 'objectid' => $qpractice->id
+            ));*/
+          //  $event->trigger(); 
 
 $PAGE->set_url('/mod/qpractice/view.php', array('id' => $cm->id));
 $PAGE->set_title(format_string($qpractice->name));
