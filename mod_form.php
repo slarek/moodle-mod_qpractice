@@ -57,7 +57,12 @@ class mod_qpractice_mod_form extends moodleform_mod {
         $mform->addHelpButton('name', 'qpracticename', 'qpractice');
 
         // Adding the standard "intro" and "introformat" fields.
-        $this->standard_intro_elements();
+        global $CFG;
+        if ($CFG->version < 2015041700.00) { //Moodle version < 2.9Beta
+            $this->add_intro_editor(); //deprecated from 2.9beta
+        } else {
+            $this->standard_intro_elements();
+        }
 
         $mform->addElement('header', 'qpracticefieldset', get_string('qpracticebehaviour', 'qpractice'));
 
