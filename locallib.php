@@ -1,4 +1,5 @@
 <?php
+
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -24,9 +25,7 @@
  * @copyright  2013 Jayesh Anandani
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
 defined('MOODLE_INTERNAL') || die();
-
 
 /**
  * Create a qpractice attempt.
@@ -44,22 +43,21 @@ function qpractice_session_create($fromform, $context) {
         $qpractice->time = null;
         $qpractice->goalpercentage = null;
         $qpractice->noofquestions = null;
-
     }
 
-    /*if ($value == 2) {
-        $qpractice->goalpercentage = null;
-        $qpractice->noofquestions = null;
-        $qpractice->time = $fromform->timelimit;
+    /* if ($value == 2) {
+      $qpractice->goalpercentage = null;
+      $qpractice->noofquestions = null;
+      $qpractice->time = $fromform->timelimit;
 
-    }
+      }
 
-    if ($value == 3) {
-        $qpractice->time = null;
-        $qpractice->goalpercentage = $fromform->goal;
-        $qpractice->noofquestions = $fromform->noofquestions;
+      if ($value == 3) {
+      $qpractice->time = null;
+      $qpractice->goalpercentage = $fromform->goal;
+      $qpractice->noofquestions = $fromform->noofquestions;
 
-    }*/
+      } */
 
     $quba = question_engine::make_questions_usage_by_activity('mod_qpractice', $context);
 
@@ -71,9 +69,23 @@ function qpractice_session_create($fromform, $context) {
     $qpractice->userid = $USER->id;
     $quba->set_preferred_behaviour($behaviour);
     $qpractice->qpracticeid = $fromform->instanceid;
-    question_engine::save_questions_usage_by_activity($quba);
+
+    /* The next block of code replaces    
+     * question_engine::save_questions_usage_by_activity($quba);
+     * which was throwing an exception due to the array_merge
+     * call that was added since qpractice was first created.
+     */
+    $record = new stdClass();
+    $record->contextid = $quba->get_owning_context()->id;
+    $record->component = $quba->get_owning_component();
+    $record->preferredbehaviour = $quba->get_preferred_behaviour();
+    global $DB;
+    $newid = $DB->insert_record('question_usages', $record);
+    $quba->set_id_from_database($newid);
+
+
     $qpractice->questionusageid = $quba->get_id();
-    $sessionid=$DB->insert_record('qpractice_session', $qpractice);
+    $sessionid = $DB->insert_record('qpractice_session', $qpractice);
 
     return $sessionid;
 }
@@ -95,20 +107,19 @@ function qpractice_delete_attempt($sessionid) {
 
     question_engine::delete_questions_usage_by_activity($session->questionusageid);
     $DB->delete_records('qpractice_session', array('id' => $session->id));
-
 }
 
 function get_available_questions_from_category($categoryid) {
 
     if (question_categorylist($categoryid)) {
-         $categoryids = question_categorylist($categoryid);
+        $categoryids = question_categorylist($categoryid);
     } else {
-         $categoryids = array($categoryid);
+        $categoryids = array($categoryid);
     }
-        $excludedqtypes=null;
-        $questionids = question_bank::get_finder()->get_questions_from_categories($categoryids, $excludedqtypes);
+    $excludedqtypes = null;
+    $questionids = question_bank::get_finder()->get_questions_from_categories($categoryids, $excludedqtypes);
 
-        return $questionids;
+    return $questionids;
 }
 
 function choose_other_question($categoryid, $excludedquestions, $allowshuffle = true) {
@@ -117,7 +128,7 @@ function choose_other_question($categoryid, $excludedquestions, $allowshuffle = 
 
     foreach ($available as $questionid) {
         if (in_array($questionid, $excludedquestions)) {
-             continue;
+            continue;
         }
         $question = question_bank::load_question($questionid, $allowshuffle);
         return $question;
@@ -128,11 +139,11 @@ function choose_other_question($categoryid, $excludedquestions, $allowshuffle = 
 
 function get_options_behaviour($cm) {
     global $DB, $CFG;
-    $behaviour=$DB->get_record('qpractice', array('id'=>$cm->instance), 'behaviour');
-    $comma=explode(",", $behaviour->behaviour);
-    $currentbehaviour='';
+    $behaviour = $DB->get_record('qpractice', array('id' => $cm->instance), 'behaviour');
+    $comma = explode(",", $behaviour->behaviour);
+    $currentbehaviour = '';
     $behaviours = question_engine::get_behaviour_options($currentbehaviour);
-    $showbehaviour=array();
+    $showbehaviour = array();
     foreach ($comma as $id => $values) {
         foreach ($behaviours as $key => $langstring) {
             if ($values == $key) {
@@ -149,12 +160,12 @@ function get_next_question($sessionid, $quba) {
 
     $session = $DB->get_record('qpractice_session', array('id' => $sessionid));
     $categoryid = $session->categoryid;
-    $results = $DB->get_records_menu('question_attempts', array('questionusageid'=>$session->questionusageid), 'id', 'id, questionid');
+    $results = $DB->get_records_menu('question_attempts', array('questionusageid' => $session->questionusageid), 'id', 'id, questionid');
     $questionid = choose_other_question($categoryid, $results);
 
     if ($questionid == null) {
-            $viewurl = new moodle_url('/mod/qpractice/summary.php', array('id'=>$sessionid));
-            redirect($viewurl, 'Sorry.No more questions to display.Try different category');
+        $viewurl = new moodle_url('/mod/qpractice/summary.php', array('id' => $sessionid));
+        redirect($viewurl, 'Sorry.No more questions to display.Try different category');
     }
 
     $question = question_bank::load_question($questionid->id, false);
