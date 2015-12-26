@@ -21,9 +21,7 @@
  * @copyright  2013 Jayesh Anandani
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
-
-require_once(dirname(dirname(dirname(__FILE__))).'/config.php');
+require_once(dirname(dirname(dirname(__FILE__))) . '/config.php');
 require_once($CFG->libdir . '/questionlib.php');
 require_once(dirname(__FILE__) . '/locallib.php');
 require_once($CFG->libdir . '/filelib.php');
@@ -38,7 +36,12 @@ require_login($course, true, $cm);
 $context = context_module::instance($cm->id);
 
 require_capability('mod/qpractice:attempt', $context);
-add_to_log($course->id, 'qpractice', 'attempt', "report.php?id={$cm->id}", $session->qpracticeid, $cm->id);
+$params = array(
+    'objectid' => $cm->id,
+    'context' => $context
+);
+$event = \mod_qpractice\event\qpractice_attempted::create($params);
+$event->trigger();
 
 $quba = question_engine::load_questions_usage_by_activity($session->questionusageid);
 
@@ -47,41 +50,44 @@ $stopurl = new moodle_url('/mod/qpractice/summary.php', array('id' => $sessionid
 
 if (data_submitted()) {
     if (optional_param('next', null, PARAM_BOOL)) {
-            // There is submitted data. Process it.
-            add_to_log($course->id, 'qpractice', 'next', "report.php?id={$cm->id}", $session->qpracticeid, $cm->id);
-            $transaction = $DB->start_delegated_transaction();
-            $slots = $quba->get_slots();
-            $slot = end($slots);
-            $quba->finish_question($slot);
-            $fraction = $quba->get_question_fraction($slot);
-            $maxmarks = $quba->get_question_max_mark($slot);
-            $obtainedmarks = $fraction*$maxmarks;
-            $updatesql = "UPDATE {qpractice_session}
+        // There is submitted data. Process it.
+        $transaction = $DB->start_delegated_transaction();
+        $slots = $quba->get_slots();
+        $slot = end($slots);
+        $quba->finish_question($slot);
+        $fraction = $quba->get_question_fraction($slot);
+        $maxmarks = $quba->get_question_max_mark($slot);
+        $obtainedmarks = $fraction * $maxmarks;
+        $updatesql = "UPDATE {qpractice_session}
                           SET marksobtained = marksobtained + ?, totalmarks = totalmarks + ?
                         WHERE id=?";
-            $DB->execute($updatesql, array($obtainedmarks, $maxmarks, $sessionid));
+        $DB->execute($updatesql, array($obtainedmarks, $maxmarks, $sessionid));
 
-        if ($fraction>0) {
+        if ($fraction > 0) {
             $updatesql1 = "UPDATE {qpractice_session}
                           SET totalnoofquestionsright = totalnoofquestionsright + '1'
                         WHERE id=?";
             $DB->execute($updatesql1, array($sessionid));
         }
-            $slot = get_next_question($sessionid, $quba);
-            $question = $quba->get_question($slot);
-            $transaction->allow_commit();
-            redirect($actionurl);
-
+        $slot = get_next_question($sessionid, $quba);
+        $question = $quba->get_question($slot);
+        $transaction->allow_commit();
+        redirect($actionurl);
     } else if (optional_param('finish', null, PARAM_BOOL)) {
-            question_engine::save_questions_usage_by_activity($quba);
-            add_to_log($course->id, 'qpractice', 'finish', "report.php?id={$cm->id}", $session->qpracticeid, $cm->id);
-            redirect($stopurl);
+        question_engine::save_questions_usage_by_activity($quba);
+        $params = array(
+            'objectid' => $cm->id,
+            'context' => $context
+        );
+        $event = \mod_qpractice\event\qpractice_finished::create($params);
+        $event->trigger();
+        redirect($stopurl);
     } else {
-            $quba->process_all_actions();
-            $slots = $quba->get_slots();
-            $slot = end($slots);
-            question_engine::save_questions_usage_by_activity($quba);
-            redirect($actionurl);
+        $quba->process_all_actions();
+        $slots = $quba->get_slots();
+        $slot = end($slots);
+        question_engine::save_questions_usage_by_activity($quba);
+        redirect($actionurl);
     }
 } else {
     // We are just viewing the page again. Is there a currently active question?
@@ -91,7 +97,6 @@ if (data_submitted()) {
 
         $slot = get_next_question($sessionid, $quba);
         $question = $quba->get_question($slot);
-
     } else {
         // The current question is still in progress. Continue with it.
         $question = $quba->get_question($slot);
@@ -112,7 +117,7 @@ echo $OUTPUT->header();
 
 // Start the question form.
 echo html_writer::start_tag('form', array('method' => 'post', 'action' => $actionurl,
-        'enctype' => 'multipart/form-data', 'id' => 'responseform'));
+    'enctype' => 'multipart/form-data', 'id' => 'responseform'));
 echo html_writer::start_tag('div');
 echo html_writer::empty_tag('input', array('type' => 'hidden', 'name' => 'sesskey', 'value' => sesskey()));
 echo html_writer::empty_tag('input', array('type' => 'hidden', 'name' => 'slots', 'value' => $slot));
@@ -124,9 +129,9 @@ echo $quba->render_question($slot, $options, $slot);
 // Finish the question form.
 echo html_writer::start_tag('div');
 echo html_writer::empty_tag('input', array('type' => 'submit',
-        'name' => 'next', 'value' => get_string('nextquestion', 'qpractice')));
+    'name' => 'next', 'value' => get_string('nextquestion', 'qpractice')));
 echo html_writer::empty_tag('input', array('type' => 'submit',
-        'name' => 'finish',  'value' => get_string('stoppractice', 'qpractice')));
+    'name' => 'finish', 'value' => get_string('stoppractice', 'qpractice')));
 echo html_writer::end_tag('div');
 echo html_writer::end_tag('form');
 
