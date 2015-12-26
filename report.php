@@ -21,9 +21,8 @@
  * @copyright  2013 Jayesh Anandani
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
-require_once(dirname(dirname(dirname(__FILE__))).'/config.php');
-require_once(dirname(__FILE__).'/renderer.php');
+require_once(dirname(dirname(dirname(__FILE__))) . '/config.php');
+require_once(dirname(__FILE__) . '/renderer.php');
 require_once("$CFG->libdir/formslib.php");
 
 $id = required_param('id', PARAM_INT); // Course-Module id.
@@ -35,7 +34,6 @@ if ($id) {
     if (!$course = $DB->get_record('course', array('id' => $cm->course))) {
         print_error('coursemisconf');
     }
-    // $qpractice = $DB->get_records('qpractice_session', array('qpracticeid' => $cm->instance, 'userid' => $USER->id));
     $qpractice = $DB->get_record('qpractice', array('id' => $cm->instance));
 }
 
@@ -48,7 +46,13 @@ $PAGE->set_context($context);
 $PAGE->set_url('/mod/qpractice/report.php', array('id' => $cm->id));
 $output = $PAGE->get_renderer('mod_qpractice');
 
-add_to_log($course->id, 'qpractice', 'report', "report.php?id={$cm->id}", $qpractice->id, $cm->id);
+$params = array(
+    'objectid' => $cm->id,
+    'context' => $context
+);
+$event = \mod_qpractice\event\qpractice_report_viewed::create($params);
+$event->trigger();
+
 
 $backurl = new moodle_url('/mod/qpractice/view.php', array('id' => $cm->id));
 $backtext = get_string('backurl', 'qpractice');
