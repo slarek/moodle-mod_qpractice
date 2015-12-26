@@ -24,9 +24,7 @@
  * @copyright  2013 Jayesh Anandani
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
 require_once("$CFG->libdir/formslib.php");
-
 
 class mod_qpractice_startattempt_form extends moodleform {
 
@@ -44,18 +42,6 @@ class mod_qpractice_startattempt_form extends moodleform {
 
         $mform->addElement('radio', 'optiontype', '', 'Normal Practice', 1);
 
-        /*$mform->addElement('radio', 'optiontype', '', 'Time Achiever', 2);
-        $mform->addElement('duration', 'timelimit', 'Time Duration');
-        $mform->disabledIf('timelimit', 'optiontype', 'neq', 2);
-
-        $mform->addElement('radio', 'optiontype', '', 'Goal Achiever', 3);
-        $mform->addElement('text', 'goal', 'Enter Goal percentage');
-        $mform->setType('goal', PARAM_TEXT);
-        $mform->addElement('text', 'noofquestions', 'Enter number of questions');
-        $mform->setType('noofquestions', PARAM_TEXT);
-        $mform->disabledIf('goal', 'optiontype', 'neq', 3);
-        $mform->disabledIf('noofquestions', 'optiontype', 'neq', 3);*/
-
         $mform->setDefault('optiontype', 1);
 
         $this->add_action_buttons(true, 'Start Practice');
@@ -64,6 +50,6 @@ class mod_qpractice_startattempt_form extends moodleform {
         $mform->setType('id', PARAM_INT);
         $mform->addElement('hidden', 'instanceid', $this->_customdata['instanceid']);
         $mform->setType('instanceid', PARAM_INT);
-
     }
+
 }
