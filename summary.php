@@ -22,10 +22,9 @@
  * @copyright  2013 Jayesh Anandani
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
-require_once(dirname(dirname(dirname(__FILE__))).'/config.php');
+require_once(dirname(dirname(dirname(__FILE__))) . '/config.php');
 require_once($CFG->libdir . '/questionlib.php');
-require_once(dirname(__FILE__).'/renderer.php');
+require_once(dirname(__FILE__) . '/renderer.php');
 require_once("$CFG->libdir/formslib.php");
 
 $sessionid = required_param('id', PARAM_INT); // Sessionid.
@@ -37,31 +36,36 @@ $qpractice = $DB->get_record('qpractice', array('id' => $cm->instance));
 require_login($course, true, $cm);
 $context = context_module::instance($cm->id);
 
-add_to_log($course->id, 'qpractice', 'view summary', "report.php?id={$cm->id}", $qpractice->id, $cm->id);
+$params = array(
+    'objectid' => $cm->id,
+    'context' => $context
+);
+
+$event = \mod_qpractice\event\qpractice_summary_viewed::create($params);
+$event->trigger();
 
 $actionurl = new moodle_url('/mod/qpractice/attempt.php', array('id' => $sessionid));
 $stopurl = new moodle_url('/mod/qpractice/view.php', array('id' => $cm->id));
 
 if (data_submitted()) {
     if (optional_param('back', null, PARAM_BOOL)) {
-            redirect($actionurl);
-
+        redirect($actionurl);
     } if (optional_param('finish', null, PARAM_BOOL)) {
-            $quba = question_engine::load_questions_usage_by_activity($session->questionusageid);
-            $DB->set_field('qpractice_session', 'status', 'finished', array('id' => $sessionid));
-            $slots = $quba->get_slots();
-            $slot = end($slots);
+        $quba = question_engine::load_questions_usage_by_activity($session->questionusageid);
+        $DB->set_field('qpractice_session', 'status', 'finished', array('id' => $sessionid));
+        $slots = $quba->get_slots();
+        $slot = end($slots);
         if (!$slot) {
             redirect($stopurl);
         } else {
             $fraction = $quba->get_question_fraction($slot);
             $maxmarks = $quba->get_question_max_mark($slot);
-            $obtainedmarks = $fraction*$maxmarks;
+            $obtainedmarks = $fraction * $maxmarks;
             $updatesql = "UPDATE {qpractice_session}
                           SET marksobtained = marksobtained + ?, totalmarks = totalmarks + ?
                         WHERE id=?";
             $DB->execute($updatesql, array($obtainedmarks, $maxmarks, $sessionid));
-            if ($fraction>0) {
+            if ($fraction > 0) {
                 $updatesql1 = "UPDATE {qpractice_session}
                           SET totalnoofquestionsright = totalnoofquestionsright + '1'
                         WHERE id=?";
