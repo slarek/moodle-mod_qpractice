@@ -25,11 +25,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-
-
 defined('MOODLE_INTERNAL') || die();
-
-
 /**
  * Structure step to restore one qpractice activity
  */
@@ -55,11 +51,9 @@ class restore_qpractice_activity_structure_step extends restore_questions_activi
 
     protected function process_qpractice($data) {
         global $CFG, $DB;
-        
         $data = (object)$data;
         $oldid = $data->id;
         $data->course = $this->get_courseid();
-
         $data->timecreated = $this->apply_date_offset($data->timecreated);
         $data->timemodified = $this->apply_date_offset($data->timemodified);
 
