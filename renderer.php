@@ -21,7 +21,6 @@
  * @copyright  2013 Jayesh Anandani
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
 defined('MOODLE_INTERNAL') || die();
 
 class mod_qpractice_renderer extends plugin_renderer_base {
@@ -37,23 +36,23 @@ class mod_qpractice_renderer extends plugin_renderer_base {
         $table->align = array('left', 'left');
         $table->size = array('', '');
         $table->data = array();
-        $table->data[] = array($session->totalnoofquestions, $session->marksobtained.'/'.$session->totalmarks);
+        $table->data[] = array($session->totalnoofquestions, $session->marksobtained . '/' . $session->totalmarks);
         echo html_writer::table($table);
     }
 
     public function summary_form($sessionid) {
 
-        $actionurl = new moodle_url('/mod/qpractice/summary.php', array('id'=>$sessionid));
-        $output='';
+        $actionurl = new moodle_url('/mod/qpractice/summary.php', array('id' => $sessionid));
+        $output = '';
         $output .= html_writer::start_tag('form', array('method' => 'post', 'action' => $actionurl,
-                'enctype' => 'multipart/form-data', 'id' => 'responseform'));
-        $output .= html_writer::start_tag('div', array('align'=> 'center'));
+                    'enctype' => 'multipart/form-data', 'id' => 'responseform'));
+        $output .= html_writer::start_tag('div', array('align' => 'center'));
         $output .= html_writer::empty_tag('input', array('type' => 'submit',
-                'name' => 'back', 'value' => get_string('backpractice', 'qpractice')));
+                    'name' => 'back', 'value' => get_string('backpractice', 'qpractice')));
         $output .= html_writer::empty_tag('br');
         $output .= html_writer::empty_tag('br');
         $output .= html_writer::empty_tag('input', array('type' => 'submit',
-                 'name' => 'finish',    'value' => get_string('submitandfinish', 'qpractice')));
+                    'name' => 'finish', 'value' => get_string('submitandfinish', 'qpractice')));
         $output .= html_writer::end_tag('div');
         $output .= html_writer::end_tag('form');
 
@@ -63,8 +62,8 @@ class mod_qpractice_renderer extends plugin_renderer_base {
     public function report_table($cm, $context) {
         global $DB, $USER;
 
-        $canviewallreports=has_capability('mod/qpractice:viewallreports', $context);
-        $canviewmyreports=has_capability('mod/qpractice:viewmyreport', $context);
+        $canviewallreports = has_capability('mod/qpractice:viewallreports', $context);
+        $canviewmyreports = has_capability('mod/qpractice:viewmyreport', $context);
 
         if ($canviewmyreports) {
             $session = $DB->get_records('qpractice_session', array('qpracticeid' => $cm->instance, 'userid' => $USER->id));
@@ -72,14 +71,14 @@ class mod_qpractice_renderer extends plugin_renderer_base {
             $session = $DB->get_records('qpractice_session', array('qpracticeid' => $cm->instance));
         }
 
-        if ($session!=null) {
+        if ($session != null) {
             $table = new html_table();
             $table->attributes['class'] = 'generaltable qpracticesummaryofpractices boxaligncenter';
             $table->caption = 'Hello';
             $table->head = array(get_string('practicedate', 'qpractice'), get_string('category', 'qpractice'),
-                                get_string('typeofpractice', 'qpractice'), get_string('score', 'qpractice'),
-                                get_string('timegoalset', 'qpractice'), get_string('noofquestionsviewed', 'qpractice'),
-                                get_string('noofquestionsright', 'qpractice'));
+                get_string('typeofpractice', 'qpractice'), get_string('score', 'qpractice'),
+                get_string('timegoalset', 'qpractice'), get_string('noofquestionsviewed', 'qpractice'),
+                get_string('noofquestionsright', 'qpractice'));
             $table->align = array('left', 'left', 'left', 'left', 'left', 'left', 'left');
             $table->size = array('', '', '', '', '', '', '', '');
             $table->data = array();
@@ -88,12 +87,11 @@ class mod_qpractice_renderer extends plugin_renderer_base {
                 $value = $qpractice->typeofpractice;
                 $categoryid = $qpractice->categoryid;
 
-                $category = $DB->get_records_menu('question_categories', array('id'=>$categoryid), 'name');
+                $category = $DB->get_records_menu('question_categories', array('id' => $categoryid), 'name');
 
-                if ($value =='1') {
+                if ($value == '1') {
                     $value = 'Normal';
                     $timegoal = '-';
-
                 } else if ($value == '2') {
                     $value = 'Time Achiever';
                     $timegoal = $qpractice->time;
@@ -101,12 +99,13 @@ class mod_qpractice_renderer extends plugin_renderer_base {
                     $value = 'Goal Achiever';
                     $timegoal = $qpractice->goalpercentage;
                 }
-                $table->data[] = array(userdate($date), $category[$categoryid], $value, $qpractice->marksobtained.'/'.$qpractice->totalmarks, $timegoal,
-                                        $qpractice->totalnoofquestions, $qpractice->totalnoofquestionsright);
+                $table->data[] = array(userdate($date), $category[$categoryid], $value,
+                    $qpractice->marksobtained . '/' . $qpractice->totalmarks, $timegoal,
+                    $qpractice->totalnoofquestions, $qpractice->totalnoofquestionsright);
             }
             echo html_writer::table($table);
         } else {
-            $viewurl = new moodle_url('/mod/qpractice/view.php', array('id'=>$cm->id));
+            $viewurl = new moodle_url('/mod/qpractice/view.php', array('id' => $cm->id));
             $viewtext = get_string('viewurl', 'qpractice');
             redirect($viewurl, $viewtext);
         }
