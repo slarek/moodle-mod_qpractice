@@ -23,11 +23,10 @@
  * @copyright  2013 Jayesh Anandani
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
-require_once(dirname(dirname(dirname(__FILE__))).'/config.php');
-require_once(dirname(__FILE__).'/lib.php');
-require_once(dirname(__FILE__).'/locallib.php');
-require_once(dirname(__FILE__).'/startattempt_form.php');
+require_once(dirname(dirname(dirname(__FILE__))) . '/config.php');
+require_once(dirname(__FILE__) . '/lib.php');
+require_once(dirname(__FILE__) . '/locallib.php');
+require_once(dirname(__FILE__) . '/startattempt_form.php');
 require_once($CFG->libdir . '/questionlib.php');
 
 $id = required_param('id', PARAM_INT); // Course_module ID.
@@ -49,11 +48,11 @@ if ($id) {
 require_login($course, true, $cm);
 $context = context_module::instance($cm->id);
 
-$behaviours=get_options_behaviour($cm);
+$behaviours = get_options_behaviour($cm);
 
-$categories = $DB->get_records_menu('question_categories', array('contextid'=>$context->id, 'parent'=>0), 'name', 'id, name');
+$categories = $DB->get_records_menu('question_categories', array('contextid' => $context->id, 'parent' => 0), 'name', 'id, name');
 
-$data=array();
+$data = array();
 $data['categories'] = $categories;
 $data['behaviours'] = $behaviours;
 $data['instanceid'] = $cm->instance;
@@ -63,8 +62,7 @@ $mform = new mod_qpractice_startattempt_form(null, $data);
 if ($mform->is_cancelled()) {
     $returnurl = new moodle_url('/mod/qpractice/view.php', array('id' => $cm->id));
     redirect($returnurl);
-
-} else if ($fromform=$mform->get_data()) {
+} else if ($fromform = $mform->get_data()) {
 
     $sessionid = qpractice_session_create($fromform, $context);
     $nexturl = new moodle_url('/mod/qpractice/attempt.php', array('id' => $sessionid));
@@ -85,5 +83,5 @@ echo $OUTPUT->header();
 
 $mform->display();
 
- // Finish the page.
+// Finish the page.
 echo $OUTPUT->footer();
