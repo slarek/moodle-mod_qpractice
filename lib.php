@@ -27,7 +27,6 @@
  * @copyright  2013 Jayesh Anandani
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
 defined('MOODLE_INTERNAL') || die();
 
 /**
@@ -38,13 +37,13 @@ defined('MOODLE_INTERNAL') || die();
  * @return mixed true if the feature is supported, null if unknown
  */
 function qpractice_supports($feature) {
-    switch($feature) {
+    switch ($feature) {
         case FEATURE_MOD_INTRO:
-             return true;
+            return true;
         case FEATURE_BACKUP_MOODLE2:
-             return true;
+            return true;
         default:
-             return null;
+            return null;
     }
 }
 
@@ -65,7 +64,7 @@ function qpractice_add_instance(stdClass $qpractice, mod_qpractice_mod_form $mfo
     require_once($CFG->libdir . '/questionlib.php');
 
     $qpractice->timecreated = time();
-    $behaviour=$qpractice->behaviour;
+    $behaviour = $qpractice->behaviour;
     $comma = implode(",", array_keys($behaviour));
     $qpractice->behaviour = $comma;
 
@@ -74,7 +73,6 @@ function qpractice_add_instance(stdClass $qpractice, mod_qpractice_mod_form $mfo
     qpractice_after_add_or_update($qpractice);
 
     return $qpractice->id;
-
 }
 
 /**
@@ -113,7 +111,7 @@ function qpractice_update_instance(stdClass $qpractice, mod_qpractice_mod_form $
 function qpractice_delete_instance($id) {
     global $DB;
 
-    if (! $qpractice = $DB->get_record('qpractice', array('id' => $id))) {
+    if (!$qpractice = $DB->get_record('qpractice', array('id' => $id))) {
         return false;
     }
 
@@ -133,11 +131,10 @@ function qpractice_after_add_or_update($qpractice) {
     $cmid = $qpractice->coursemodule;
 
     // We need to use context now, so we need to make sure all needed info is already in db.
-    $DB->set_field('course_modules', 'instance', $qpractice->id, array('id'=>$cmid));
+    $DB->set_field('course_modules', 'instance', $qpractice->id, array('id' => $cmid));
     $context = context_module::instance($cmid);
-    $contexts=array($context);
+    $contexts = array($context);
     question_make_default_categories($contexts);
-
 }
 
 /**
@@ -150,7 +147,6 @@ function qpractice_after_add_or_update($qpractice) {
  * @return stdClass|null
  */
 function qpractice_user_outline($course, $user, $mod, $qpractice) {
-
     $return = new stdClass();
     $return->time = 0;
     $return->info = '';
@@ -197,7 +193,8 @@ function qpractice_print_recent_activity($course, $viewfullnames, $timestart) {
  * @param int $groupid check for a particular group's activity only, defaults to 0 (all groups)
  * @return void adds items into $activities and increases $index
  */
-function qpractice_get_recent_mod_activity(&$activities, &$index, $timestart, $courseid, $cmid, $userid=0, $groupid=0) {
+function qpractice_get_recent_mod_activity(&$activities, &$index, $timestart, $courseid, $cmid, $userid = 0, $groupid = 0) {
+
 }
 
 /**
@@ -214,8 +211,8 @@ function qpractice_print_recent_mod_activity($activity, $courseid, $detail, $mod
  *
  * @return boolean
  * @todo Finish documenting this function
- **/
-function qpractice_cron () {
+ * */
+function qpractice_cron() {
     return true;
 }
 
@@ -232,7 +229,6 @@ function qpractice_get_extra_capabilities() {
     $caps[] = 'moodle/site:accessallgroups';
     return $caps;
 }
-
 
 /**
  * Is a given scale used by the instance of qpractice?
@@ -283,13 +279,13 @@ function qpractice_scale_used_anywhere($scaleid) {
  */
 function qpractice_grade_item_update(stdClass $qpractice) {
     global $CFG;
-    require_once($CFG->libdir.'/gradelib.php');
+    require_once($CFG->libdir . '/gradelib.php');
 
     $item = array();
     $item['itemname'] = clean_param($qpractice->name, PARAM_NOTAGS);
     $item['gradetype'] = GRADE_TYPE_VALUE;
-    $item['grademax']  = $qpractice->grade;
-    $item['grademin']  = 0;
+    $item['grademax'] = $qpractice->grade;
+    $item['grademin'] = 0;
 
     grade_update('mod/qpractice', $qpractice->course, 'mod', 'qpractice', $qpractice->id, 0, null, $item);
 }
@@ -305,7 +301,7 @@ function qpractice_grade_item_update(stdClass $qpractice) {
  */
 function qpractice_update_grades(stdClass $qpractice, $userid = 0) {
     global $CFG, $DB;
-    require_once($CFG->libdir.'/gradelib.php');
+    require_once($CFG->libdir . '/gradelib.php');
 
     $grades = array(); // Populate array of grade objects indexed by userid.
 
@@ -362,7 +358,7 @@ function qpractice_get_file_info($browser, $areas, $course, $cm, $context, $file
  * @param bool $forcedownload whether or not force download
  * @param array $options additional options affecting the file serving
  */
-function qpractice_pluginfile($course, $cm, $context, $filearea, array $args, $forcedownload, array $options=array()) {
+function qpractice_pluginfile($course, $cm, $context, $filearea, array $args, $forcedownload, array $options = array()) {
     global $DB, $CFG;
 
     if ($context->contextlevel != CONTEXT_MODULE) {
@@ -374,8 +370,8 @@ function qpractice_pluginfile($course, $cm, $context, $filearea, array $args, $f
     send_file_not_found();
 }
 
-function qpractice_question_pluginfile($course, $context, $component,
-        $filearea, $qubaid, $slot, $args, $forcedownload, array $options=array()) {
+function qpractice_question_pluginfile($course, $context, $component, $filearea, $qubaid, $slot, $args,
+        $forcedownload, array $options = array()) {
     $fs = get_file_storage();
     $relativepath = implode('/', $args);
     $fullpath = "/$context->id/$component/$filearea/$relativepath";
@@ -408,7 +404,7 @@ function qpractice_extend_navigation(navigation_node $navref, stdclass $course, 
  * @param settings_navigation $settingsnav {@link settings_navigation}
  * @param navigation_node $qpracticenode {@link navigation_node}
  */
-function qpractice_extend_settings_navigation(settings_navigation $settingsnav, navigation_node $qpracticenode=null) {
+function qpractice_extend_settings_navigation(settings_navigation $settingsnav, navigation_node $qpracticenode = null) {
     global $PAGE, $CFG;
     require_once($CFG->libdir . '/questionlib.php');
     question_extend_settings_navigation($settingsnav, $PAGE->cm->context)->trim_if_empty();
