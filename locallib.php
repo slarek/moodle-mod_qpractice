@@ -1,5 +1,4 @@
 <?php
-
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -70,7 +69,7 @@ function qpractice_session_create($fromform, $context) {
     $quba->set_preferred_behaviour($behaviour);
     $qpractice->qpracticeid = $fromform->instanceid;
 
-    /* The next block of code replaces    
+    /* The next block of code replaces
      * question_engine::save_questions_usage_by_activity($quba);
      * which was throwing an exception due to the array_merge
      * call that was added since qpractice was first created.
@@ -82,7 +81,6 @@ function qpractice_session_create($fromform, $context) {
     global $DB;
     $newid = $DB->insert_record('question_usages', $record);
     $quba->set_id_from_database($newid);
-
 
     $qpractice->questionusageid = $quba->get_id();
     $sessionid = $DB->insert_record('qpractice_session', $qpractice);
@@ -160,7 +158,8 @@ function get_next_question($sessionid, $quba) {
 
     $session = $DB->get_record('qpractice_session', array('id' => $sessionid));
     $categoryid = $session->categoryid;
-    $results = $DB->get_records_menu('question_attempts', array('questionusageid' => $session->questionusageid), 'id', 'id, questionid');
+    $results = $DB->get_records_menu('question_attempts', array('questionusageid' => $session->questionusageid),
+            'id', 'id, questionid');
     $questionid = choose_other_question($categoryid, $results);
 
     if ($questionid == null) {
