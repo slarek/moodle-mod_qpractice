@@ -47,10 +47,6 @@ function xmldb_qpractice_upgrade($oldversion) {
     // this comment lines once this file start handling proper
     // upgrade code.
 
-    // if ($oldversion < YYYYMMDD00) { //New version in version.php
-    //
-    // }
-
     // Lines below (this included)  MUST BE DELETED once you get the first version
     // of your module ready to be installed. They are here only
     // for demonstrative purposes and to show how the qpractice
@@ -196,7 +192,8 @@ function xmldb_qpractice_upgrade($oldversion) {
 
         // Define field totalnoofquestionsright to be added to qpractice_session.
         $table = new xmldb_table('qpractice_session');
-        $field = new xmldb_field('totalnoofquestionsright', XMLDB_TYPE_INTEGER, '20', null, XMLDB_NOTNULL, null, '0', 'totalnoofquestions');
+        $field = new xmldb_field('totalnoofquestionsright', XMLDB_TYPE_INTEGER, '20',
+                null, XMLDB_NOTNULL, null, '0', 'totalnoofquestions');
 
         // Conditionally launch add field totalnoofquestionsright.
         if (!$dbman->field_exists($table, $field)) {
@@ -211,7 +208,8 @@ function xmldb_qpractice_upgrade($oldversion) {
 
         // Define field marksobtained to be added to qpractice_session.
         $table = new xmldb_table('qpractice_session');
-        $field = new xmldb_field('marksobtained', XMLDB_TYPE_NUMBER, '10, 2', null, XMLDB_NOTNULL, null, '0', 'totalnoofquestionsright');
+        $field = new xmldb_field('marksobtained', XMLDB_TYPE_NUMBER, '10, 2', null,
+                XMLDB_NOTNULL, null, '0', 'totalnoofquestionsright');
 
         // Conditionally launch add field marksobtained.
         if (!$dbman->field_exists($table, $field)) {
