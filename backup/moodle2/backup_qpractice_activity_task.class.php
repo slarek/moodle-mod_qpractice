@@ -24,7 +24,6 @@
  * @copyright  2013 Jayesh Anandani
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
 defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->dirroot . '/mod/qpractice/backup/moodle2/backup_qpractice_stepslib.php');
@@ -33,7 +32,6 @@ require_once($CFG->dirroot . '/mod/qpractice/backup/moodle2/backup_qpractice_ste
  * choice backup task that provides all the settings and steps to perform one
  * complete backup of the activity
  */
-
 class backup_qpractice_activity_task extends backup_activity_task {
 
     /**
@@ -60,7 +58,6 @@ class backup_qpractice_activity_task extends backup_activity_task {
         // have used them to detect question_categories and aren't
         // needed anymore.
         $this->add_step(new backup_delete_temp_questions('clean_temp_questions'));
-
     }
 
     /**
@@ -75,17 +72,18 @@ class backup_qpractice_activity_task extends backup_activity_task {
         $base = preg_quote($CFG->wwwroot, '/');
 
         // Link to the list of qpracticezes.
-        $search="/(".$base."\/mod\/qpractice\/index.php\?id\=)([0-9]+)/";
-        $content= preg_replace($search, '$@qpracticeINDEX*$2@$', $content);
+        $search = "/(" . $base . "\/mod\/qpractice\/index.php\?id\=)([0-9]+)/";
+        $content = preg_replace($search, '$@qpracticeINDEX*$2@$', $content);
 
         // Link to qpractice view by moduleid.
-        $search="/(".$base."\/mod\/qpractice\/view.php\?id\=)([0-9]+)/";
-        $content= preg_replace($search, '$@qpracticeVIEWBYID*$2@$', $content);
+        $search = "/(" . $base . "\/mod\/qpractice\/view.php\?id\=)([0-9]+)/";
+        $content = preg_replace($search, '$@qpracticeVIEWBYID*$2@$', $content);
 
         // Link to qpractice view by qpracticeid.
-        $search="/(".$base."\/mod\/qpractice\/view.php\?q\=)([0-9]+)/";
-        $content= preg_replace($search, '$@qpracticeVIEWBYQ*$2@$', $content);
+        $search = "/(" . $base . "\/mod\/qpractice\/view.php\?q\=)([0-9]+)/";
+        $content = preg_replace($search, '$@qpracticeVIEWBYQ*$2@$', $content);
 
         return $content;
     }
+
 }
