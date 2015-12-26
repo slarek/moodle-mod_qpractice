@@ -24,10 +24,9 @@
  * @copyright  2013 Jayesh Anandani
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
 defined('MOODLE_INTERNAL') || die();
 
-require_once($CFG->dirroot.'/course/moodleform_mod.php');
+require_once($CFG->dirroot . '/course/moodleform_mod.php');
 require_once($CFG->libdir . '/questionlib.php');
 
 /**
@@ -46,7 +45,7 @@ class mod_qpractice_mod_form extends moodleform_mod {
         $mform->addElement('header', 'general', get_string('general', 'form'));
 
         // Adding the standard "name" field.
-        $mform->addElement('text', 'name', get_string('qpracticename', 'qpractice'), array('size'=>'64'));
+        $mform->addElement('text', 'name', get_string('qpracticename', 'qpractice'), array('size' => '64'));
         if (!empty($CFG->formatstringstriptags)) {
             $mform->setType('name', PARAM_TEXT);
         } else {
@@ -58,8 +57,8 @@ class mod_qpractice_mod_form extends moodleform_mod {
 
         // Adding the standard "intro" and "introformat" fields.
         global $CFG;
-        if ($CFG->version < 2015041700.00) { //Moodle version < 2.9Beta
-            $this->add_intro_editor(); //deprecated from 2.9beta
+        if ($CFG->version < 2015041700.00) { // Moodle version < 2.9Beta
+            $this->add_intro_editor(); /*deprecated from 2.9beta.*/
         } else {
             $this->standard_intro_elements();
         }
@@ -76,7 +75,7 @@ class mod_qpractice_mod_form extends moodleform_mod {
 
         foreach ($behaviours as $key => $langstring) {
             if (!in_array('correctness', question_engine::get_behaviour_unused_display_options($key))) {
-                  $mform->addElement('checkbox', 'behaviour['.$key.']' , null, $langstring);
+                $mform->addElement('checkbox', 'behaviour[' . $key . ']', null, $langstring);
             }
         }
 
@@ -110,8 +109,9 @@ class mod_qpractice_mod_form extends moodleform_mod {
         $errors = parent::validation($data, $files);
 
         if (!isset($data['behaviour'])) {
-            $errors['behaviour[adaptive]'] =  'You must select at least on behaviour';
+            $errors['behaviour[adaptive]'] = 'You must select at least on behaviour';
         }
         return $errors;
     }
+
 }
