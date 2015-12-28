@@ -78,7 +78,6 @@ class mod_qpractice_mod_form extends moodleform_mod {
                 $mform->addElement('checkbox', 'behaviour[' . $key . ']', null, $langstring);
             }
         }
-
         // Add standard elements, common to all modules.
         $this->standard_coursemodule_elements();
         // Add standard buttons, common to all modules.
@@ -90,7 +89,6 @@ class mod_qpractice_mod_form extends moodleform_mod {
             $reviewfields = array();
             $reviewfields = explode(',', $toform['behaviour']);
             $behaviours = question_engine::get_behaviour_options(null);
-
             foreach ($behaviours as $key => $langstring) {
                 foreach ($reviewfields as $field => $used) {
                     if ($key == $used) {
