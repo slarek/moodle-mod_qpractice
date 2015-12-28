@@ -13,6 +13,10 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
+Updated to work with Moodle 2.6 to 2.3 by Marcus Green 2015
+Inspired by this post by Quiz maintainer Tim Hunt
+https://moodle.org/mod/forum/discuss.php?d=323583#p1299642
+
 copyright 2013 Jayesh Anandani
 license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
 
