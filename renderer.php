@@ -31,7 +31,7 @@ class mod_qpractice_renderer extends plugin_renderer_base {
         $session = $DB->get_record('qpractice_session', array('id' => $sessionid));
         $table = new html_table();
         $table->attributes['class'] = 'generaltable qpracticesummaryofattempt boxaligncenter';
-        $table->caption = 'Hello';
+            $table->caption = 'Hello';
         $table->head = array(get_string('totalquestions', 'qpractice'), get_string('totalmarks', 'qpractice'));
         $table->align = array('left', 'left');
         $table->size = array('', '');
@@ -88,7 +88,10 @@ class mod_qpractice_renderer extends plugin_renderer_base {
                 $categoryid = $qpractice->categoryid;
 
                 $category = $DB->get_records_menu('question_categories', array('id' => $categoryid), 'name');
-
+                /* If the category has been deleted, jump to the next session */
+                if(empty($category)){
+                        continue;
+                }
                 if ($value == '1') {
                     $value = 'Normal';
                     $timegoal = '-';
