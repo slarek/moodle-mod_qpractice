@@ -42,6 +42,8 @@ function qpractice_supports($feature) {
             return true;
         case FEATURE_BACKUP_MOODLE2:
             return true;
+        case FEATURE_USES_QUESTIONS:            
+            return true;
         default:
             return null;
     }
