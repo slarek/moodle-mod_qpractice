@@ -9,9 +9,9 @@ Copy files to a folder under moodle\mod called qpractice
 
 Maintained by Jayesh Anandani, Tim Hunt and Jean-Michel Védrine
 
-Updated to work with Moodle 2.7 and greater by Marcus Green 2016
-Code at
-https://github.com/marcusgreen/moodle-mod_qpractice
+Updated to work with Moodle 2.7 and greater by Marcus Green 2016.
+
+Code at https://github.com/marcusgreen/moodle-mod_qpractice
 Wiki comments at
 https://github.com/marcusgreen/moodle-mod_qpractice/wiki
 
