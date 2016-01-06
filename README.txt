@@ -5,6 +5,8 @@ Allows Quiz questions to be practiced. User can select from multiple
 
 https://docs.moodle.org/25/en/Question_practice_module
 
+Copy files to a folder under moodle\mod called qpractice
+
 Maintained by Jayesh Anandani, Tim Hunt and Jean-Michel Védrine
 
 Updated to work with Moodle 2.7 and greater by Marcus Green 2016
