@@ -5,7 +5,7 @@ Allows Quiz questions to be practiced. User can select from multiple
 
 https://docs.moodle.org/25/en/Question_practice_module
 
-Maintained by Jayesh Anandani, Tim Hunt, Jean-Michel Védrine
+Maintained by Jayesh Anandani, Tim Hunt and Jean-Michel Védrine
 
 Updated to work with Moodle 2.7 and greater by Marcus Green 2016
 Code at
