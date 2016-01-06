@@ -1,8 +1,8 @@
-#Moodle QPractice (Question Practice) 1.1 Changes
+###Moodle QPractice (Question Practice) 1.1 Changes
 
-`Creation of new icon more inline with other Moodle activity icons
-`Creation of event classes for logging instead of add_to_log
-*added FEATURE_USES_QUESTIONS as warning was thrown during backup
+>Creation of new icon more inline with other Moodle activity icons
+>Creation of event classes for logging instead of add_to_log
+*added FEATURE_USES_QUESTIONS as warning was thrown during backup\n
 *reformatted code based on results of code_checker plugin
 *if a category is deleted from db jump out of loop when displaying previous sessions
 *only show passt sessions link if past sessions exist
