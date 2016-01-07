@@ -64,6 +64,11 @@ $string['typeofpractice'] = 'Type of Practice';
 $string['category'] = 'Topic Selected';
 $string['score'] = 'Marks Obtained';
 $string['timegoalset'] = 'Time/Goal Set';
+$string['normalpractice'] = 'Normal Practice';
+$string['startpractice'] = 'Start Practice';
+$string['selectonebehaviourerror'] = 'You must select at least on behaviour';
+
+
 
 
 
