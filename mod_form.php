@@ -107,7 +107,7 @@ class mod_qpractice_mod_form extends moodleform_mod {
         $errors = parent::validation($data, $files);
 
         if (!isset($data['behaviour'])) {
-            $errors['behaviour[adaptive]'] = 'You must select at least on behaviour';
+            $errors['behaviour[adaptive]'] = get_string('selectonebehaviourerror','qpractice');
         }
         return $errors;
     }
