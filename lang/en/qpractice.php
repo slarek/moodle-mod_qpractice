@@ -67,6 +67,9 @@ $string['timegoalset'] = 'Time/Goal Set';
 $string['normalpractice'] = 'Normal Practice';
 $string['startpractice'] = 'Start Practice';
 $string['selectonebehaviourerror'] = 'You must select at least one behaviour';
+$string['nomorequestions'] = 'Sorry.No more questions to display.Try different category';
+$string['nopermission'] = 'You do not have permission to view this';
+
 
 
 
