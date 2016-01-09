@@ -81,7 +81,7 @@ if ($canview) {
         }
     }
 } else {
-    print_error('You do not have permission to view this');
+    print_error(get_string('nopermission','qpractice'));
 }
 
 // Finish the page.
