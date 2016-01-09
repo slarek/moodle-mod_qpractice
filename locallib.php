@@ -164,7 +164,7 @@ function get_next_question($sessionid, $quba) {
 
     if ($questionid == null) {
         $viewurl = new moodle_url('/mod/qpractice/summary.php', array('id' => $sessionid));
-        redirect($viewurl, 'Sorry.No more questions to display.Try different category');
+        redirect($viewurl, get_string('nomorequestions','qpractice'));
     }
 
     $question = question_bank::load_question($questionid->id, false);
