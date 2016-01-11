@@ -38,12 +38,6 @@ class mod_qpractice_startattempt_form extends moodleform {
         $mform->addElement('header', 'qpracticebehaviour', get_string('qpracticebehaviour', 'qpractice'));
         $select = $mform->addElement('select', 'behaviour', get_string('category'), $this->_customdata['behaviours']);
 
-        $mform->addElement('header', 'qpracticeset', get_string('qpracticeset', 'qpractice'));
-
-        $mform->addElement('radio', 'optiontype', '', get_string('normalpractice','qpractice'), 1);
-
-        $mform->setDefault('optiontype', 1);
-
         $this->add_action_buttons(true, get_string('startpractice','qpractice'));
 
         $mform->addElement('hidden', 'id', 0);
