@@ -30,8 +30,8 @@ $string['backurl'] = 'Go back to main page';
 $string['continueurl'] = 'Continue last session';
 $string['createsessions'] = 'Create a new session';
 $string['createurl'] = 'Create a new session';
-$string['modulename'] = 'Qpractice';
-$string['modulenameplural'] = 'Qpractices';
+$string['modulename'] = 'Question Practice';
+$string['modulenameplural'] = 'Question Practices';
 $string['modulename_help'] = 'The qpractice activity enables a teacher to create qpractices comprising questions of various types. The practice created by teacher
 
 is later used by students in their own way to analyze themselves over a period of time.';
@@ -49,7 +49,7 @@ $string['qpractice:viewallreports'] = 'View all qpractice reports';
 $string['qpractice:viewmyreport'] = 'View my qpractice report';
 $string['qpracticebehaviour'] = 'Question Behaviour';
 $string['qpracticefieldset'] = 'Custom example fieldset';
-$string['qpracticename'] = 'QPractice name';
+$string['qpracticename'] = 'Question Practice name';
 $string['qpracticename_help'] = 'This is the content of the help tooltip associated with the qpracticename field. Markdown syntax is supported.';
 $string['qpracticeset'] = 'Select any one type of Practice';
 $string['reporturl'] = 'Show Past Sessions';
