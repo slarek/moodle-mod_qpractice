@@ -16,7 +16,7 @@
 
 
 /**
- * English strings for qpractice
+ * English strings for Question Practice
  *
  * @package    mod_qpractice
  * @copyright  2013 Jayesh Anandani
@@ -32,13 +32,12 @@ $string['createsessions'] = 'Create a new session';
 $string['createurl'] = 'Create a new session';
 $string['modulename'] = 'Question Practice';
 $string['modulenameplural'] = 'Question Practices';
-$string['modulename_help'] = 'The qpractice activity enables a teacher to create qpractices comprising questions of various types. The practice created by teacher
-
-is later used by students in their own way to analyze themselves over a period of time.';
+$string['modulename_help'] = 'The Question Practice activity enables a teacher to create instances comprising questions of various types. The practice created by teacher can 
+is later used by students in their own way to analyze their learning.';
 $string['nextquestion'] = 'View next question';
 $string['noofquestionsviewed'] = 'No. of Questions viewed';
 $string['noofquestionsright'] = 'No. of questions right';
-$string['pluginadministration'] = 'Qpractice administration';
+$string['pluginadministration'] = 'Question Practice administration';
 $string['pluginname'] = 'qpractice';
 $string['practicesession'] = 'Practice Session';
 $string['qpractice'] = 'Qpractice';
