@@ -1,4 +1,4 @@
-####Moodle Qpractice v1.1 (Question Practice) for Moodle
+####Moodle Question Practice v1.1 for Moodle
 
 Allows Quiz questions to be practiced. User can select from multiple
 (top level) categories, documented at
