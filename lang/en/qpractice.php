@@ -39,6 +39,7 @@ is later used by students in their own way to analyze their learning.';
 $string['nextquestion'] = 'View next question';
 $string['noofquestionsviewed'] = 'No. of Questions viewed';
 $string['noofquestionsright'] = 'No. of questions right';
+$string['pastsessions'] = 'Past Sessions';
 $string['pluginadministration'] = 'Question Practice administration';
 $string['pluginname'] = 'qpractice';
 $string['practicesession'] = 'Practice Session';
