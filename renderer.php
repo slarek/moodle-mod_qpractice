@@ -76,34 +76,23 @@ class mod_qpractice_renderer extends plugin_renderer_base {
             $table->attributes['class'] = 'generaltable qpracticesummaryofpractices boxaligncenter';
             $table->caption = get_string('pastsessions','qpractice');
             $table->head = array(get_string('practicedate', 'qpractice'), get_string('category', 'qpractice'),
-                get_string('typeofpractice', 'qpractice'), get_string('score', 'qpractice'),
-                get_string('timegoalset', 'qpractice'), get_string('noofquestionsviewed', 'qpractice'),
+                get_string('score', 'qpractice'),
+                get_string('noofquestionsviewed', 'qpractice'),
                 get_string('noofquestionsright', 'qpractice'));
             $table->align = array('left', 'left', 'left', 'left', 'left', 'left', 'left');
             $table->size = array('', '', '', '', '', '', '', '');
             $table->data = array();
             foreach ($session as $qpractice) {
                 $date = $qpractice->practicedate;
-                $value = $qpractice->typeofpractice;
                 $categoryid = $qpractice->categoryid;
 
                 $category = $DB->get_records_menu('question_categories', array('id' => $categoryid), 'name');
                 /* If the category has been deleted, jump to the next session */
                 if(empty($category)){
                         continue;
-                }
-                if ($value == '1') {
-                    $value = 'Normal';
-                    $timegoal = '-';
-                } else if ($value == '2') {
-                    $value = 'Time Achiever';
-                    $timegoal = $qpractice->time;
-                } else {
-                    $value = 'Goal Achiever';
-                    $timegoal = $qpractice->goalpercentage;
-                }
-                $table->data[] = array(userdate($date), $category[$categoryid], $value,
-                    $qpractice->marksobtained . '/' . $qpractice->totalmarks, $timegoal,
+                }                
+                $table->data[] = array(userdate($date), $category[$categoryid], 
+                    $qpractice->marksobtained . '/' . $qpractice->totalmarks,
                     $qpractice->totalnoofquestions, $qpractice->totalnoofquestionsright);
             }
             echo html_writer::table($table);
