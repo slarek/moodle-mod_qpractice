@@ -50,6 +50,7 @@ $string['qpractice:view'] = 'View a Question Practice session';
 $string['qpractice:viewallreports'] = 'View all Question Practice reports';
 $string['qpractice:viewmyreport'] = 'View my Question Practice report';
 $string['qpracticebehaviour'] = 'Question Behaviour';
+$string['behaviour'] = 'Behaviour';
 $string['qpracticefieldset'] = 'Custom example fieldset';
 $string['qpracticename'] = 'Question Practice name';
 $string['qpracticename_help'] = 'This is the name that will show on the course';
