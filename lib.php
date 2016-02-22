@@ -263,7 +263,8 @@ function qpractice_scale_used($qpracticeid, $scaleid) {
  */
 function qpractice_scale_used_anywhere($scaleid) {
     global $DB;
-
+    /* this appears to be legacy code for a feature that was never implemented */
+    return false;
     if ($scaleid and $DB->record_exists('qpractice', array('grade' => -$scaleid))) {
         return true;
     } else {
