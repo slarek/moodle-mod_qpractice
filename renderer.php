@@ -31,7 +31,7 @@ class mod_qpractice_renderer extends plugin_renderer_base {
         $session = $DB->get_record('qpractice_session', array('id' => $sessionid));
         $table = new html_table();
         $table->attributes['class'] = 'generaltable qpracticesummaryofattempt boxaligncenter';
-        $table->caption = get_string('pastsessions','qpractice');
+        $table->caption = get_string('pastsessions', 'qpractice');
         $table->head = array(get_string('totalquestions', 'qpractice'), get_string('totalmarks', 'qpractice'));
         $table->align = array('left', 'left');
         $table->size = array('', '');
@@ -74,7 +74,7 @@ class mod_qpractice_renderer extends plugin_renderer_base {
         if ($session != null) {
             $table = new html_table();
             $table->attributes['class'] = 'generaltable qpracticesummaryofpractices boxaligncenter';
-            $table->caption = get_string('pastsessions','qpractice');
+            $table->caption = get_string('pastsessions', 'qpractice');
             $table->head = array(get_string('practicedate', 'qpractice'), get_string('category', 'qpractice'),
                 get_string('score', 'qpractice'),
                 get_string('noofquestionsviewed', 'qpractice'),
@@ -88,10 +88,10 @@ class mod_qpractice_renderer extends plugin_renderer_base {
 
                 $category = $DB->get_records_menu('question_categories', array('id' => $categoryid), 'name');
                 /* If the category has been deleted, jump to the next session */
-                if(empty($category)){
-                        continue;
-                }                
-                $table->data[] = array(userdate($date), $category[$categoryid], 
+                if (empty($category)) {
+                    continue;
+                }
+                $table->data[] = array(userdate($date), $category[$categoryid],
                     $qpractice->marksobtained . '/' . $qpractice->totalmarks,
                     $qpractice->totalnoofquestions, $qpractice->totalnoofquestionsright);
             }

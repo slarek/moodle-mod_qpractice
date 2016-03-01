@@ -68,7 +68,6 @@ echo $OUTPUT->header();
 if ($canview) {
     echo html_writer::link($createurl, $createtext);
     echo html_writer::empty_tag('br');
- 
     if ($qpractice = $DB->get_records('qpractice_session', array('userid' => $USER->id,
         'qpracticeid' => $cm->instance), 'id desc', '*', '0', '1')) {
         $qpractice = array_values($qpractice);
@@ -81,7 +80,7 @@ if ($canview) {
         }
     }
 } else {
-    print_error(get_string('nopermission','qpractice'));
+    print_error(get_string('nopermission', 'qpractice'));
 }
 
 // Finish the page.

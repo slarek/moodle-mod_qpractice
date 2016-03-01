@@ -117,24 +117,24 @@ echo $OUTPUT->header();
 
 // Start the question form.
 
-$html= html_writer::start_tag('form', array('method' => 'post', 'action' => $actionurl,
-    'enctype' => 'multipart/form-data', 'id' => 'responseform'));
-$html.= html_writer::start_tag('div');
-$html.= html_writer::empty_tag('input', array('type' => 'hidden', 'name' => 'sesskey', 'value' => sesskey()));
-$html.= html_writer::empty_tag('input', array('type' => 'hidden', 'name' => 'slots', 'value' => $slot));
-$html.= html_writer::end_tag('div');
+$html = html_writer::start_tag('form', array('method' => 'post', 'action' => $actionurl,
+            'enctype' => 'multipart/form-data', 'id' => 'responseform'));
+$html .= html_writer::start_tag('div');
+$html .= html_writer::empty_tag('input', array('type' => 'hidden', 'name' => 'sesskey', 'value' => sesskey()));
+$html .= html_writer::empty_tag('input', array('type' => 'hidden', 'name' => 'slots', 'value' => $slot));
+$html .= html_writer::end_tag('div');
 
 // Output the question.
-$html.= $quba->render_question($slot, $options, $slot);
+$html .= $quba->render_question($slot, $options, $slot);
 
 // Finish the question form.
-$html.=html_writer::start_tag('div');
-$html.= html_writer::empty_tag('input', array('type' => 'submit',
-    'name' => 'next', 'value' => get_string('nextquestion', 'qpractice')));
-$html.= html_writer::empty_tag('input', array('type' => 'submit',
-    'name' => 'finish', 'value' => get_string('stoppractice', 'qpractice')));
-$html.= html_writer::end_tag('div');
-$html.= html_writer::end_tag('form');
+$html .= html_writer::start_tag('div');
+$html .= html_writer::empty_tag('input', array('type' => 'submit',
+            'name' => 'next', 'value' => get_string('nextquestion', 'qpractice')));
+$html .= html_writer::empty_tag('input', array('type' => 'submit',
+            'name' => 'finish', 'value' => get_string('stoppractice', 'qpractice')));
+$html .= html_writer::end_tag('div');
+$html .= html_writer::end_tag('form');
 
 echo $html;
 // Display the settings form.

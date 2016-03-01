@@ -58,7 +58,7 @@ class mod_qpractice_mod_form extends moodleform_mod {
         // Adding the standard "intro" and "introformat" fields.
         global $CFG;
         if ($CFG->version < 2015041700.00) { // Moodle version < 2.9Beta
-            $this->add_intro_editor(); /*deprecated from 2.9beta.*/
+            $this->add_intro_editor(); /* deprecated from 2.9beta. */
         } else {
             $this->standard_intro_elements();
         }
@@ -75,9 +75,9 @@ class mod_qpractice_mod_form extends moodleform_mod {
 
         foreach ($behaviours as $key => $langstring) {
             if (!in_array('correctness', question_engine::get_behaviour_unused_display_options($key))) {
-                $behaviour='behaviour['.$key.']';
-                $mform->addElement('checkbox',$behaviour, null ,$langstring);
-                $mform->setDefault($behaviour,true);    
+                $behaviour = 'behaviour[' . $key . ']';
+                $mform->addElement('checkbox', $behaviour, null, $langstring);
+                $mform->setDefault($behaviour, true);
             }
         }
         // Add standard elements, common to all modules.
@@ -109,7 +109,7 @@ class mod_qpractice_mod_form extends moodleform_mod {
         $errors = parent::validation($data, $files);
 
         if (!isset($data['behaviour'])) {
-            $errors['behaviour[adaptive]'] = get_string('selectonebehaviourerror','qpractice');
+            $errors['behaviour[adaptive]'] = get_string('selectonebehaviourerror', 'qpractice');
         }
         return $errors;
     }

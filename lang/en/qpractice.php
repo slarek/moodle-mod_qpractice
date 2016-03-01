@@ -34,8 +34,8 @@ $string['modulename'] = 'Question Practice';
 $string['modulename_help'] = 'Create settings for students to practice standard Moodle question types';
 $string['modulename_link'] = 'Question_practice_module';
 $string['modulenameplural'] = 'Question Practices';
-$string['pluginname_help'] = 'The Question Practice activity enables a teacher to create instances comprising questions of various types. The practice created by teacher can 
-is later used by students in their own way to analyze their learning.';
+$string['pluginname_help'] = 'The Question Practice activity enables a teacher to create instances comprising questions of various types. The practice created by teacher can
+ is later used by students in their own way to analyze their learning.';
 $string['nextquestion'] = 'View next question';
 $string['noofquestionsviewed'] = 'No. of Questions viewed';
 $string['noofquestionsright'] = 'No. of questions right';

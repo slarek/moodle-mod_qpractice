@@ -25,14 +25,13 @@
  * @copyright  2013 Jayesh Anandani
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
 defined('MOODLE_INTERNAL') || die();
 
 global $DB;
 
 $logs = array(
-    array('module'=>'qpractice', 'action'=>'add', 'mtable'=>'qpractice', 'field'=>'name'),
-    array('module'=>'qpractice', 'action'=>'update', 'mtable'=>'qpractice', 'field'=>'name'),
-    array('module'=>'qpractice', 'action'=>'view', 'mtable'=>'qpractice', 'field'=>'name'),
-    array('module'=>'qpractice', 'action'=>'view all', 'mtable'=>'qpractice', 'field'=>'name')
+    array('module' => 'qpractice', 'action' => 'add', 'mtable' => 'qpractice', 'field' => 'name'),
+    array('module' => 'qpractice', 'action' => 'update', 'mtable' => 'qpractice', 'field' => 'name'),
+    array('module' => 'qpractice', 'action' => 'view', 'mtable' => 'qpractice', 'field' => 'name'),
+    array('module' => 'qpractice', 'action' => 'view all', 'mtable' => 'qpractice', 'field' => 'name')
 );

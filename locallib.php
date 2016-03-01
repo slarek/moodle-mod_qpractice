@@ -1,5 +1,4 @@
 <?php
-
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -37,9 +36,9 @@ function qpractice_session_create($fromform, $context) {
     global $DB, $USER;
 
     $qpractice = new stdClass();
-    /** $value = $fromform->optiontype;
+     /* $value = $fromform->optiontype;
      * type of practice (optiontype), is being set to 1 normal
-     * as the other types (goalpercentage and time) have not been 
+     * as the other types (goalpercentage and time) have not been
      * implemented. it might be good to implement them in a later
      * release
      */
@@ -166,7 +165,8 @@ function get_next_question($sessionid, $quba) {
 
     $session = $DB->get_record('qpractice_session', array('id' => $sessionid));
     $categoryid = $session->categoryid;
-    $results = $DB->get_records_menu('question_attempts', array('questionusageid' => $session->questionusageid), 'id', 'id, questionid');
+    $results = $DB->get_records_menu('question_attempts', array('questionusageid' => $session->questionusageid),
+            'id', 'id, questionid');
     $questionid = choose_other_question($categoryid, $results);
 
     if ($questionid == null) {
