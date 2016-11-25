@@ -51,6 +51,7 @@ $context = context_module::instance($cm->id);
 $behaviours = get_options_behaviour($cm);
 
 $categories = $DB->get_records_menu('question_categories', array('contextid' => $context->id, 'parent' => 0), 'name', 'id, name');
+$categories = remove_empty($context, $categories);
 
 $data = array();
 $data['categories'] = $categories;
@@ -85,3 +86,44 @@ $mform->display();
 
 // Finish the page.
 echo $OUTPUT->footer();
+
+function remove_empty($context, $categories) {
+    foreach ($categories as $key => $category) {
+        $subcategories = getSubCategories($context, $key);
+        /*in case there are questions in the root category */
+        $subcategories[]=$key;
+        if (!(contains_questions($subcategories))) {
+            unset($categories[$key]);
+        }
+    }
+    return $categories;
+}
+
+function getOneLevel($context, $categoryid) {
+    global $DB;
+    $categories = $DB->get_records_sql("select id  from {question_categories} where contextid=? and parent=?", array($context->id, $categoryid));
+    return(array_keys($categories));
+}
+
+function getSubCategories($context, $categoryid, $categories = array()) {
+    $tree = array();
+    $tree = getOneLevel($context, $categoryid);
+    if (count($tree) > 0 && is_array($tree)) {
+        $categories = array_merge($categories, $tree);
+    }
+    foreach ($tree as $key => $val) {
+        getSubCategories($context, $val);
+    }
+    return $categories;
+}
+
+function contains_questions($categories) {
+    global $DB;
+    foreach ($categories as $category) {
+        $questions = $DB->get_records_sql("select id from {question} where category=?", array($category));
+        if (count($questions) > 0) {
+            return true;
+        }
+    }
+    return false;
+}
