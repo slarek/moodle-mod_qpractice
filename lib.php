@@ -233,46 +233,6 @@ function qpractice_get_extra_capabilities() {
 }
 
 /**
- * Is a given scale used by the instance of qpractice?
- *
- * This function returns if a scale is being used by one qpractice
- * if it has support for grading and scales. Commented code should be
- * modified if necessary. See forum, glossary or journal modules
- * as reference.
- *
- * @param int $qpracticeid ID of an instance of this module
- * @return bool true if the scale is used by the given qpractice instance
- */
-function qpractice_scale_used($qpracticeid, $scaleid) {
-    global $DB;
-
-    if ($scaleid and $DB->record_exists('qpractice', array('id' => $qpracticeid, 'grade' => -$scaleid))) {
-        return true;
-    } else {
-        return false;
-    }
-}
-
-/**
- * Checks if scale is being used by any instance of qpractice.
- *
- * This is used to find out if scale used anywhere.
- *
- * @param $scaleid int
- * @return boolean true if the scale is used by any qpractice instance
- */
-function qpractice_scale_used_anywhere($scaleid) {
-    global $DB;
-    /* this appears to be legacy code for a feature that was never implemented */
-    return false;
-    if ($scaleid and $DB->record_exists('qpractice', array('grade' => -$scaleid))) {
-        return true;
-    } else {
-        return false;
-    }
-}
-
-/**
  * Creates or updates grade item for the give qpractice instance
  *
  * Needed by grade_update_mod_grades() in lib/gradelib.php
