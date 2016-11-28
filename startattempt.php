@@ -20,16 +20,18 @@
  * It will end up redirecting to attempt.php.
  *
  * @package    mod_qpractice
- * @copyright  2013 Jayesh Anandani
+ * @copyright  2016 Marcus Green
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-//defined('MOODLE_INTERNAL') || die();
 
 require_once(dirname(dirname(dirname(__FILE__))) . '/config.php');
+defined('MOODLE_INTERNAL') || die();
+
 require_once(dirname(__FILE__) . '/lib.php');
 require_once(dirname(__FILE__) . '/locallib.php');
 require_once(dirname(__FILE__) . '/startattempt_form.php');
 require_once($CFG->libdir . '/questionlib.php');
+
 
 $id = required_param('id', PARAM_INT); // Course_module ID.
 
@@ -90,15 +92,15 @@ $mform->display();
 echo $OUTPUT->footer();
 
 /**
- * 
+ *
  * @param type $context
  * @param type $categories all level 0 categories
  * @return type
- * 
+ *
  * Get only the question categories that have questions in them or
  * their sub categories. Categories have a parent child relationship
  * so you cannot do a simple query
- * 
+ *
  */
 function remove_empty($context, $categories) {
     foreach ($categories as $key => $category) {
@@ -112,25 +114,47 @@ function remove_empty($context, $categories) {
     return $categories;
 }
 
+/**
+ *
+ * @global type $DB
+ * @param type $context
+ * @param type $categoryid
+ * @return type array
+ * get a single question category by context and id
+ */
 function get_one_level($context, $categoryid) {
     global $DB;
     $categories = $DB->get_records_sql("select id  from {question_categories} where contextid=? and parent=?",
             array($context->id, $categoryid));
     return(array_keys($categories));
 }
-
-function get_subcategories($context, $categoryid, $categories = array()) {
+/**
+ *
+ * @param type $context
+ * @param type $categoryid
+ * @param type $categories
+ * @return type array
+ * Get all the children for a given category. This function calls itself
+ * recursively, not the pass by reference of &categories
+ */
+function get_subcategories($context, $categoryid, &$categories = array()) {
     $tree = array();
     $tree = get_one_level($context, $categoryid);
     if (count($tree) > 0 && is_array($tree)) {
         $categories = array_merge($categories, $tree);
     }
     foreach ($tree as $key => $val) {
-        get_subcategories($context, $val);
+        get_subcategories($context, $val, $categories);
     }
     return $categories;
 }
-
+/**
+ *
+ * @global type $DB
+ * @param type $categories
+ * @return boolean
+ * Does this question category contain any questions?
+ */
 function contains_questions($categories) {
     global $DB;
     foreach ($categories as $category) {
