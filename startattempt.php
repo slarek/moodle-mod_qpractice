@@ -23,6 +23,8 @@
  * @copyright  2013 Jayesh Anandani
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+//defined('MOODLE_INTERNAL') || die();
+
 require_once(dirname(dirname(dirname(__FILE__))) . '/config.php');
 require_once(dirname(__FILE__) . '/lib.php');
 require_once(dirname(__FILE__) . '/locallib.php');
@@ -87,11 +89,22 @@ $mform->display();
 // Finish the page.
 echo $OUTPUT->footer();
 
+/**
+ * 
+ * @param type $context
+ * @param type $categories all level 0 categories
+ * @return type
+ * 
+ * Get only the question categories that have questions in them or
+ * their sub categories. Categories have a parent child relationship
+ * so you cannot do a simple query
+ * 
+ */
 function remove_empty($context, $categories) {
     foreach ($categories as $key => $category) {
-        $subcategories = getSubCategories($context, $key);
+        $subcategories = get_subcategories($context, $key);
         /*in case there are questions in the root category */
-        $subcategories[]=$key;
+        $subcategories[] = $key;
         if (!(contains_questions($subcategories))) {
             unset($categories[$key]);
         }
@@ -99,20 +112,21 @@ function remove_empty($context, $categories) {
     return $categories;
 }
 
-function getOneLevel($context, $categoryid) {
+function get_one_level($context, $categoryid) {
     global $DB;
-    $categories = $DB->get_records_sql("select id  from {question_categories} where contextid=? and parent=?", array($context->id, $categoryid));
+    $categories = $DB->get_records_sql("select id  from {question_categories} where contextid=? and parent=?",
+            array($context->id, $categoryid));
     return(array_keys($categories));
 }
 
-function getSubCategories($context, $categoryid, $categories = array()) {
+function get_subcategories($context, $categoryid, $categories = array()) {
     $tree = array();
-    $tree = getOneLevel($context, $categoryid);
+    $tree = get_one_level($context, $categoryid);
     if (count($tree) > 0 && is_array($tree)) {
         $categories = array_merge($categories, $tree);
     }
     foreach ($tree as $key => $val) {
-        getSubCategories($context, $val);
+        get_subcategories($context, $val);
     }
     return $categories;
 }

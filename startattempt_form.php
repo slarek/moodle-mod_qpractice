@@ -24,6 +24,8 @@
  * @copyright  2013 Jayesh Anandani
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+defined('MOODLE_INTERNAL') || die();
+
 require_once("$CFG->libdir/formslib.php");
 
 class mod_qpractice_startattempt_form extends moodleform {

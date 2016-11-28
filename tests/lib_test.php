@@ -46,10 +46,6 @@ class mod_qpractice_lib_testcase extends advanced_testcase {
         $count = $DB->count_records('qpractice', array('id' => $qpractice->id));
         $this->assertEquals(0, $count);
 
-
-        /*         *
-          $this->qpractice_add_instance($qpractice);
-         * */
     }
 
 }

@@ -25,6 +25,8 @@
 /**
  * Custom uninstallation procedure
  */
+defined('MOODLE_INTERNAL') || die();
+
 function xmldb_qpractice_uninstall() {
     return true;
 }

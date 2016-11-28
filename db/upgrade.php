@@ -58,7 +58,7 @@ function xmldb_qpractice_upgrade($oldversion) {
 
     // To know more about how to write correct DB upgrade scripts it's
     // highly recommended to read information available at:
-    //   http://docs.moodle.org/en/Development:XMLDB_Documentation
+    // http://docs.moodle.org/en/Development:XMLDB_Documentation
     // and to play with the XMLDB Editor (in the admin menu) and its
     // PHP generation posibilities.
 

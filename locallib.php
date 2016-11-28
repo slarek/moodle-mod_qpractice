@@ -50,20 +50,6 @@ function qpractice_session_create($fromform, $context) {
         $qpractice->noofquestions = null;
     }
 
-    /* if ($value == 2) {
-      $qpractice->goalpercentage = null;
-      $qpractice->noofquestions = null;
-      $qpractice->time = $fromform->timelimit;
-
-      }
-
-      if ($value == 3) {
-      $qpractice->time = null;
-      $qpractice->goalpercentage = $fromform->goal;
-      $qpractice->noofquestions = $fromform->noofquestions;
-
-      } */
-
     $quba = question_engine::make_questions_usage_by_activity('mod_qpractice', $context);
 
     $qpractice->timecreated = time();

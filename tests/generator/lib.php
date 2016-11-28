@@ -36,7 +36,6 @@ class mod_qpractice_generator extends testing_module_generator {
             'introformat'             => 1,
             'behaviour'               => array('interactive'),
              );
- 
         foreach ($defaultquizsettings as $name => $value) {
             if (!isset($record->{$name})) {
                 $record->{$name} = $value;

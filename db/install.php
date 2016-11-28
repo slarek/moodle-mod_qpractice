@@ -19,7 +19,7 @@
  * lib.php/modulename_install() post installation hook and partially defaults.php
  *
  * @package    mod_qpractice
- * @copyright  2013 Jayesh Anandani
+ * @copyright  2016 Marcus Green
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -28,6 +28,8 @@
  *
  * @see upgrade_plugins_modules()
  */
+defined('MOODLE_INTERNAL') || die();
+
 function xmldb_qpractice_install() {
 }
 
