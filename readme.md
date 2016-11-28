@@ -1,4 +1,4 @@
-####Moodle Question Practice v1.2 for Moodle
+####Moodle Question Practice v1.2 for Moodle maintained by Marcus Green
 
 Allows Quiz questions to be practiced. User can select from multiple
 (top level) categories, documented at
@@ -6,8 +6,6 @@ Allows Quiz questions to be practiced. User can select from multiple
 https://docs.moodle.org/en/Question_practice_module
 
 Copy files to a folder under moodle\mod called qpractice
-
-Maintained by Jayesh Anandani, Tim Hunt and Jean-Michel Védrine
 
 Code at https://github.com/marcusgreen/moodle-mod_qpractice
 Wiki comments at
