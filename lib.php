@@ -176,7 +176,7 @@ function qpractice_user_complete($course, $user, $mod, $qpractice) {
  * @return boolean
  */
 function qpractice_print_recent_activity($course, $viewfullnames, $timestart) {
-    return false;  //  True if anything was printed, otherwise false.
+    return false;  // True if anything was printed, otherwise false.
 }
 
 /**
@@ -370,5 +370,6 @@ function qpractice_extend_navigation(navigation_node $navref, stdclass $course, 
 function qpractice_extend_settings_navigation(settings_navigation $settingsnav, navigation_node $qpracticenode = null) {
     global $PAGE, $CFG;
     require_once($CFG->libdir . '/questionlib.php');
-    question_extend_settings_navigation($settingsnav, $PAGE->cm->context)->trim_if_empty();
+    question_extend_settings_navigation($qpracticenode, $PAGE->cm->context)->trim_if_empty();
+
 }
