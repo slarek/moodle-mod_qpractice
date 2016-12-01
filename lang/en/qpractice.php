@@ -41,7 +41,7 @@ $string['noofquestionsviewed'] = 'No. of Questions viewed';
 $string['noofquestionsright'] = 'No. of questions right';
 $string['pastsessions'] = 'Past Sessions';
 $string['pluginadministration'] = 'Question Practice administration';
-$string['pluginname'] = 'qpractice';
+$string['pluginname'] = 'Question Practice';
 $string['practicesession'] = 'Practice Session';
 $string['qpractice'] = 'Qpractice';
 $string['qpractice:addinstance'] = 'Add a Question Practice instance';
@@ -60,7 +60,7 @@ $string['stoppractice'] = 'Stop practice';
 $string['submitandfinish'] = 'Submit and Finish Practice';
 $string['totalmarks'] = 'Total marks obtained';
 $string['totalquestions'] = 'Total questions attempted';
-$string['viewpastsessions'] = 'View all past session';
+$string['viewpastsessions'] = 'View all past sessions';
 $string['viewurl'] = 'No Records exist';
 $string['practicedate'] = 'Practice Date';
 $string['typeofpractice'] = 'Type of Practice';
@@ -71,7 +71,7 @@ $string['timeelapsed'] = 'Time';
 $string['normalpractice'] = 'Normal Practice';
 $string['startpractice'] = 'Start Practice';
 $string['selectonebehaviourerror'] = 'You must select at least one behaviour';
-$string['nomorequestions'] = 'Sorry.No more questions to display. Try a different category';
+$string['nomorequestions'] = 'Sorry, no more questions to display. Try a different category';
 $string['nopermission'] = 'You do not have permission to view this';
 
 
