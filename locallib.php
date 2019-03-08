@@ -26,6 +26,44 @@
  */
 defined('MOODLE_INTERNAL') || die();
 
+function qpractice_make_default_categories($context) {
+    if (empty($context)) {
+        return false;
+    }
+
+    // Create default question categories.
+    $defaultcategoryobj = question_make_default_categories(array($context));
+
+    return $defaultcategoryobj;
+}
+/*
+* This function returns an array of question bank categories accessible to the
+* current user in the given context
+* @param object $context A context object
+* @return array An array whose keys are the question category ids and values
+* are the name of the question category
+*/
+function qpractice_get_question_categories($context) {
+   if (empty($context)) {
+       return array();
+   }
+   $options      = array();
+   $qesteditctx  = new question_edit_contexts($context);
+   $contexts     = $qesteditctx->having_one_edit_tab_cap('editq');
+   $questioncats = question_category_options($contexts);
+   if (!empty($questioncats)) {
+       foreach ($questioncats as $questioncatcourse) {
+           foreach ($questioncatcourse as $key => $questioncat) {
+               // Key format is [question cat id, question cat context id], we need to explode it.
+               $questidcontext = explode(',', $key);
+               $questid = array_shift($questidcontext);
+               $options[$questid] = $questioncat;
+           }
+       }
+   }
+   return $options;
+}
+
 /**
  * Create a qpractice attempt.
  * @param mixed $attempt an integer attempt id or an attempt object
@@ -49,6 +87,20 @@ function qpractice_session_create($fromform, $context) {
         $qpractice->goalpercentage = null;
         $qpractice->noofquestions = null;
     }
+
+    /* if ($value == 2) {
+      $qpractice->goalpercentage = null;
+      $qpractice->noofquestions = null;
+      $qpractice->time = $fromform->timelimit;
+
+      }
+
+      if ($value == 3) {
+      $qpractice->time = null;
+      $qpractice->goalpercentage = $fromform->goal;
+      $qpractice->noofquestions = $fromform->noofquestions;
+
+      } */
 
     $quba = question_engine::make_questions_usage_by_activity('mod_qpractice', $context);
 

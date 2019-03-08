@@ -38,7 +38,7 @@ class mod_qpractice_mod_form extends moodleform_mod {
      * Defines forms elements
      */
     public function definition() {
-
+        global $CFG;
         $mform = $this->_form;
 
         // Adding the "general" fieldset, where all the common settings are showed.
