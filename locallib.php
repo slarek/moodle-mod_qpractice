@@ -49,8 +49,8 @@ function qpractice_get_question_categories($context) {
    }
    $options      = array();
    $qesteditctx  = new question_edit_contexts($context);
-   $contexts     = $qesteditctx->having_one_edit_tab_cap('editq');
-   $questioncats = question_category_options($contexts);
+  // $contexts     = $qesteditctx->having_one_edit_tab_cap('editq');
+   $questioncats = question_category_options([$context]);
    if (!empty($questioncats)) {
        foreach ($questioncats as $questioncatcourse) {
            foreach ($questioncatcourse as $key => $questioncat) {

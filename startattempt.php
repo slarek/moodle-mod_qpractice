@@ -52,14 +52,10 @@ $qcontext = $PAGE->context;
 $coursecontext = $context->get_course_context();
 $behaviours = get_options_behaviour($cm);
 
-$categories = $DB->get_records_menu('question_categories', array('contextid' => $coursecontext->id, 'parent' => 0), 'name', 'id, name');
-
-$mycats=qpractice_make_default_categories($coursecontext);
-$options = qpractice_get_question_categories($coursecontext);
-
+$categories = qpractice_get_question_categories($coursecontext);
 
 $data = array();
-$data['categories'] = $options;
+$data['categories'] = $categories;
 $data['behaviours'] = $behaviours;
 $data['instanceid'] = $cm->instance;
 
