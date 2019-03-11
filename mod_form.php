@@ -28,6 +28,7 @@ defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->dirroot . '/course/moodleform_mod.php');
 require_once($CFG->libdir . '/questionlib.php');
+require_once(dirname(__FILE__) . '/locallib.php');
 
 /**
  * Module instance settings form
@@ -70,6 +71,12 @@ class mod_qpractice_mod_form extends moodleform_mod {
         } else {
             $currentbehaviour = '';
         }
+
+        $course = $this->get_course();
+        $coursecontext = context_course::instance($course->id);
+        $categories = qpractice_get_question_categories($coursecontext);
+
+        $mform->addElement('select', 'topcategory', get_string('category'), $categories);
 
         $behaviours = question_engine::get_behaviour_options($currentbehaviour);
 

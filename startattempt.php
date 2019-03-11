@@ -46,13 +46,13 @@ if ($id) {
 }
 
 require_login($course, true, $cm);
-$context = context_module::instance($cm->id);
 global $PAGE;
-$qcontext = $PAGE->context;
-$coursecontext = $context->get_course_context();
-$behaviours = get_options_behaviour($cm);
 
-$categories = qpractice_get_question_categories($coursecontext);
+$context = context_module::instance($cm->id);
+$coursecontext = $context->get_course_context();
+$categories = qpractice_get_question_categories($coursecontext,$qpractice->topcategory);
+
+$behaviours = get_options_behaviour($cm);
 
 $data = array();
 $data['categories'] = $categories;

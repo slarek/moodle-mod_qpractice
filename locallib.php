@@ -43,13 +43,12 @@ function qpractice_make_default_categories($context) {
 * @return array An array whose keys are the question category ids and values
 * are the name of the question category
 */
-function qpractice_get_question_categories($context) {
+function qpractice_get_question_categories($context,$top=null) {
    if (empty($context)) {
        return array();
    }
-   $options      = array();
-   $qesteditctx  = new question_edit_contexts($context);
-  // $contexts     = $qesteditctx->having_one_edit_tab_cap('editq');
+   $options = array();
+   /* Get all categories in course context (for settings form) */
    $questioncats = question_category_options([$context]);
    if (!empty($questioncats)) {
        foreach ($questioncats as $questioncatcourse) {
@@ -61,6 +60,13 @@ function qpractice_get_question_categories($context) {
            }
        }
    }
+   if($top){
+    /* Get sub categories (for runtime)*/   
+    $catlist=question_categorylist($top);   
+    /* Filter out stuff up the hierarchy */
+    $options = array_intersect_key($options,$catlist);
+   }
+
    return $options;
 }
 
