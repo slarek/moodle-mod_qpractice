@@ -1,4 +1,4 @@
-### Moodle Question Practice 1.3 Changes Marc 2019
+### Moodle Question Practice 1.3 Changes Mar 2019
 --Added a top category of questions for instance setting. Thanks to Steve Gallagher and Scott Hallman for feedback on this.
 
 ### Moodle Question Practice 1.2 Changes Nov 2016
