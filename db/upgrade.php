@@ -25,7 +25,7 @@
  * here will all be database-neutral, using the functions defined in DLL libraries.
  *
  * @package    mod_qpractice
- * @copyright  2013 Jayesh Anandani
+ * @copyright  2019 Marcus Green
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -41,26 +41,6 @@ function xmldb_qpractice_upgrade($oldversion) {
     global $DB;
 
     $dbman = $DB->get_manager(); // Loads ddl manager and xmldb classes.
-
-    // And upgrade begins here. For each one, you'll need one
-    // block of code similar to the next one. Please, delete
-    // this comment lines once this file start handling proper
-    // upgrade code.
-
-    // Lines below (this included)  MUST BE DELETED once you get the first version
-    // of your module ready to be installed. They are here only
-    // for demonstrative purposes and to show how the qpractice
-    // iself has been upgraded.
-
-    // For each upgrade block, the file qpractice/version.php
-    // needs to be updated . Such change allows Moodle to know
-    // that this file has to be processed.
-
-    // To know more about how to write correct DB upgrade scripts it's
-    // highly recommended to read information available at:
-    // http://docs.moodle.org/en/Development:XMLDB_Documentation
-    // and to play with the XMLDB Editor (in the admin menu) and its
-    // PHP generation posibilities.
 
     if ($oldversion < 2019031900) {
 
