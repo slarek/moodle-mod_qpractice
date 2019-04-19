@@ -19,7 +19,7 @@
  *
  * @package    mod_qpractice
  * @category   test
- * @copyright  2016 Marcus Green
+ * @copyright  2019 Marcus Green
  * @license    http://www.gnu.org/copyleft/gpl.html GNU Public License
  */
 defined('MOODLE_INTERNAL') || die();
@@ -27,11 +27,31 @@ defined('MOODLE_INTERNAL') || die();
 global $CFG;
 require_once($CFG->dirroot . '/mod/qpractice/lib.php');
 
+
 /**
- * @copyright  2016 Marcus Green
+ * @copyright  2019 Marcus Green
  * @license    http://www.gnu.org/copyleft/gpl.html GNU Public License
  */
-class mod_qpractice_lib_testcase extends advanced_testcase {
+class mod_qpractice_lib_test extends advanced_testcase {
+    public $qp;
+
+    public function test_qpractice_add_instance() {
+        $this->resetAfterTest(true);
+        $this->setAdminUser();
+        $id = qpractice_add_instance($this->qp);
+        $this->assertInternalType("int", $id);
+    }
+
+    public function test_qpractice_session_create() {
+        $this->resetAfterTest(true);
+        $this->setAdminUser();
+
+        $context = context_module::instance($this->qp->coursemodule);
+        $this->qp->instanceid = qpractice_add_instance($this->qp);
+        $sessionid = qpractice_session_create($this->qp, $context);
+        $this->assertInternalType("int", $sessionid);
+
+    }
 
     public function test_qpractice_delete_instance() {
         global $SITE, $DB;
@@ -46,6 +66,23 @@ class mod_qpractice_lib_testcase extends advanced_testcase {
         $count = $DB->count_records('qpractice', array('id' => $qpractice->id));
         $this->assertEquals(0, $count);
 
+    }
+    public function setup() {
+        global $SITE;
+        $qpracticegenerator = $this->getDataGenerator()->get_plugin_generator('mod_qpractice');
+        $qpractice = $qpracticegenerator->create_instance(array('course' => $SITE->id));
+        $this->qp = new stdClass;
+        $this->qp->name = 'QP1';
+        $this->qp->topcategory = 62;
+        $this->qp->visible = 1;
+        $this->qp->visibleoncoursepage = 1;
+        $this->qp->cmidnumber = "";
+        $this->qp->availabilityconditionsjson = "";
+        $this->qp->behaviour = ['interactive'];
+        $this->qp->course = 2;
+        $this->qp->categories = 26;
+
+        $this->qp->coursemodule = $qpractice->cmid;
     }
 
 }

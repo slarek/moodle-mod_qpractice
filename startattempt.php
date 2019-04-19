@@ -50,7 +50,7 @@ global $PAGE;
 
 $context = context_module::instance($cm->id);
 $coursecontext = $context->get_course_context();
-$categories = qpractice_get_question_categories($coursecontext,$qpractice->topcategory);
+$categories = qpractice_get_question_categories($coursecontext, $qpractice->topcategory);
 
 $behaviours = get_options_behaviour($cm);
 

@@ -14,6 +14,20 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
+
+/**
+ * Form for creating new instances and editing existing
+ * @package    mod_qpractice
+ * @copyright  2019 Marcus Green
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+defined('MOODLE_INTERNAL') || die();
+
+require_once($CFG->dirroot . '/course/moodleform_mod.php');
+require_once($CFG->libdir . '/questionlib.php');
+require_once(dirname(__FILE__) . '/locallib.php');
+
+
 /**
  * The main qpractice configuration form
  *
@@ -24,19 +38,12 @@
  * @copyright  2013 Jayesh Anandani
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-defined('MOODLE_INTERNAL') || die();
-
-require_once($CFG->dirroot . '/course/moodleform_mod.php');
-require_once($CFG->libdir . '/questionlib.php');
-require_once(dirname(__FILE__) . '/locallib.php');
-
-/**
- * Module instance settings form
- */
 class mod_qpractice_mod_form extends moodleform_mod {
 
     /**
-     * Defines forms elements
+     * Create the interface elements
+     *
+     * @return void
      */
     public function definition() {
         global $CFG;
@@ -93,9 +100,15 @@ class mod_qpractice_mod_form extends moodleform_mod {
         $this->add_action_buttons();
     }
 
-    public function data_preprocessing(&$toform) {
+    /**
+     * Set the values of the behaviour checkboxes.
+     * when editing an existing instance
+     * @param array $toform
+     * @return void
+     */
+    public function data_preprocessing(array &$toform) {
         if (isset($toform['behaviour'])) {
-            $reviewfields = array();
+            $reviewfields = [];
             $reviewfields = explode(',', $toform['behaviour']);
             $behaviours = question_engine::get_behaviour_options(null);
             foreach ($behaviours as $key => $langstring) {
@@ -111,10 +124,15 @@ class mod_qpractice_mod_form extends moodleform_mod {
         }
     }
 
-    public function validation($data, $files) {
-
+    /**
+     * return errors if no behaviour was selected
+     *
+     * @param array $data
+     * @param array $files
+     * @return array
+     */
+    public function validation(array $data, array $files): array {
         $errors = parent::validation($data, $files);
-
         if (!isset($data['behaviour'])) {
             $errors['behaviour[adaptive]'] = get_string('selectonebehaviourerror', 'qpractice');
         }

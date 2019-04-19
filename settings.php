@@ -15,6 +15,8 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
+ * Global configuration for new instances of qpractice
+ *
  * @package    mod_qpractice
  * @copyright  2016 Marcus Green
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -29,10 +31,11 @@ if ($ADMIN->fulltree) {
 
     $behaviours = question_engine::get_behaviour_options('');
     foreach ($behaviours as $key => $langstring) {
-     if (!in_array('correctness', question_engine::get_behaviour_unused_display_options($key))) {
-        $settings->add(new admin_setting_configcheckbox('mod_qpractice/'.$key, $key, $langstring, 1)
-        );
-     }
+        if (!in_array('correctness', question_engine::get_behaviour_unused_display_options($key))) {
+            $settings->add(
+                new admin_setting_configcheckbox('mod_qpractice/' . $key, $key, $langstring, 1)
+            );
+        }
     }
 }
 

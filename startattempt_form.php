@@ -28,8 +28,19 @@ defined('MOODLE_INTERNAL') || die();
 
 require_once("$CFG->libdir/formslib.php");
 
+/**
+ * Runs when the student makes an attempt
+ *
+ * @package    mod_qpractice
+ * @copyright  2019 Marcus Green
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 class mod_qpractice_startattempt_form extends moodleform {
-
+    /**
+     * set up the form elements
+     *
+     * @return void
+     */
     public function definition() {
 
         $mform = $this->_form;

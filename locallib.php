@@ -43,31 +43,31 @@ function qpractice_make_default_categories($context) {
 * @return array An array whose keys are the question category ids and values
 * are the name of the question category
 */
-function qpractice_get_question_categories($context,$top=null) {
-   if (empty($context)) {
-       return array();
-   }
-   $options = array();
-   /* Get all categories in course context (for settings form) */
-   $questioncats = question_category_options([$context]);
-   if (!empty($questioncats)) {
-       foreach ($questioncats as $questioncatcourse) {
-           foreach ($questioncatcourse as $key => $questioncat) {
-               // Key format is [question cat id, question cat context id], we need to explode it.
-               $questidcontext = explode(',', $key);
-               $questid = array_shift($questidcontext);
-               $options[$questid] = $questioncat;
-           }
-       }
-   }
-   if($top){
-    /* Get sub categories (for runtime)*/   
-    $catlist=question_categorylist($top);   
-    /* Filter out stuff up the hierarchy */
-    $options = array_intersect_key($options,$catlist);
-   }
+function qpractice_get_question_categories($context, $top=null) {
+    if (empty($context)) {
+        return array();
+    }
+    $options = array();
+    /* Get all categories in course context (for settings form) */
+    $questioncats = question_category_options([$context]);
+    if (!empty($questioncats)) {
+        foreach ($questioncats as $questioncatcourse) {
+            foreach ($questioncatcourse as $key => $questioncat) {
+                // Key format is [question cat id, question cat context id], we need to explode it.
+                $questidcontext = explode(',', $key);
+                $questid = array_shift($questidcontext);
+                $options[$questid] = $questioncat;
+            }
+        }
+    }
+    if ($top) {
+        /* Get sub categories (for runtime)*/
+        $catlist = question_categorylist($top);
+        /* Filter out stuff up the hierarchy */
+        $options = array_intersect_key($options, $catlist);
+    }
 
-   return $options;
+    return $options;
 }
 
 /**
@@ -76,7 +76,7 @@ function qpractice_get_question_categories($context,$top=null) {
  *      (row of the quiz_attempts table).
  * @param object $quiz the quiz object.
  */
-function qpractice_session_create($fromform, $context) {
+function qpractice_session_create(stdClass $fromform, \context $context) {
     global $DB, $USER;
 
     $qpractice = new stdClass();
