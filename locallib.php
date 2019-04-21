@@ -26,6 +26,13 @@
  */
 defined('MOODLE_INTERNAL') || die();
 
+/**
+ * Consider for deletion.
+ * @todo this doesn't seem to be used
+ *
+ * @param \context $context
+ * @return void
+ */
 function qpractice_make_default_categories($context) {
     if (empty($context)) {
         return false;
@@ -37,13 +44,20 @@ function qpractice_make_default_categories($context) {
     return $defaultcategoryobj;
 }
 /*
-* This function returns an array of question bank categories accessible to the
-* current user in the given context
-* @param object $context A context object
-* @return array An array whose keys are the question category ids and values
-* are the name of the question category
+
 */
-function qpractice_get_question_categories($context, $top=null) {
+
+/**
+ * This function returns an array of question bank categories accessible to the
+ * current user in the given context
+ *
+ * @return array
+ * @param \context $context
+ * @param int $top
+ * @return array  keys are the question category ids and values the name of the question category
+ *
+ */
+function qpractice_get_question_categories(\context $context, int $top=null) : array {
     if (empty($context)) {
         return array();
     }
@@ -72,11 +86,12 @@ function qpractice_get_question_categories($context, $top=null) {
 
 /**
  * Create a qpractice attempt.
- * @param mixed $attempt an integer attempt id or an attempt object
- *      (row of the quiz_attempts table).
- * @param object $quiz the quiz object.
+ *
+ * @param stdClass $fromform data from form
+ * @param \context $context the quiz object.
+ * @return integer
  */
-function qpractice_session_create(stdClass $fromform, \context $context) {
+function qpractice_session_create(stdClass $fromform, \context $context) : int {
     global $DB, $USER;
 
     $qpractice = new stdClass();
@@ -93,20 +108,6 @@ function qpractice_session_create(stdClass $fromform, \context $context) {
         $qpractice->goalpercentage = null;
         $qpractice->noofquestions = null;
     }
-
-    /* if ($value == 2) {
-      $qpractice->goalpercentage = null;
-      $qpractice->noofquestions = null;
-      $qpractice->time = $fromform->timelimit;
-
-      }
-
-      if ($value == 3) {
-      $qpractice->time = null;
-      $qpractice->goalpercentage = $fromform->goal;
-      $qpractice->noofquestions = $fromform->noofquestions;
-
-      } */
 
     $quba = question_engine::make_questions_usage_by_activity('mod_qpractice', $context);
 
@@ -139,13 +140,13 @@ function qpractice_session_create(stdClass $fromform, \context $context) {
     return $sessionid;
 }
 
-/**
- * Delete a qpractice attempt.
- * @param mixed $attempt an integer attempt id or an attempt object
- *      (row of the quiz_attempts table).
- * @param object $quiz the quiz object.
- */
-function qpractice_delete_attempt($sessionid) {
+ /**
+  * Delete a qpractice attempt.
+  *
+  * @param int $sessionid
+  * @return void
+  */
+function qpractice_delete_attempt(int $sessionid) {
     global $DB;
 
     if (is_numeric($sessionid)) {
@@ -158,20 +159,35 @@ function qpractice_delete_attempt($sessionid) {
     $DB->delete_records('qpractice_session', array('id' => $session->id));
 }
 
-function get_available_questions_from_category($categoryid) {
+/**
+ * Get questionid's from category and any subcategories
+ *
+ * @param int $categoryid
+ * @return array
+ */
+function get_available_questions_from_category(int $categoryid) : array {
 
     if (question_categorylist($categoryid)) {
         $categoryids = question_categorylist($categoryid);
     } else {
-        $categoryids = array($categoryid);
+        $categoryids = [$categoryid];
     }
+    /**@todo not implemented ? */
     $excludedqtypes = null;
     $questionids = question_bank::get_finder()->get_questions_from_categories($categoryids, $excludedqtypes);
 
     return $questionids;
 }
 
-function choose_other_question($categoryid, $excludedquestions, $allowshuffle = true) {
+/**
+ * Get another question (at runtime)
+ *
+ * @param int $categoryid
+ * @param array $excludedquestions
+ * @param bool $allowshuffle
+ * @return \stdClass
+ */
+function choose_other_question(int $categoryid, array $excludedquestions, bool $allowshuffle = true) {
     $available = get_available_questions_from_category($categoryid);
     shuffle($available);
 
@@ -186,13 +202,19 @@ function choose_other_question($categoryid, $excludedquestions, $allowshuffle = 
     return null;
 }
 
-function get_options_behaviour($cm) {
+/**
+ * Get behaviour for this instance
+ *
+ * @param stdClass $cm
+ * @return array
+ */
+function get_options_behaviour(stdClass $cm) : array {
     global $DB, $CFG;
     $behaviour = $DB->get_record('qpractice', array('id' => $cm->instance), 'behaviour');
     $comma = explode(",", $behaviour->behaviour);
     $currentbehaviour = '';
     $behaviours = question_engine::get_behaviour_options($currentbehaviour);
-    $showbehaviour = array();
+    $showbehaviour = [];
     foreach ($comma as $id => $values) {
         foreach ($behaviours as $key => $langstring) {
             if ($values == $key) {
@@ -202,8 +224,14 @@ function get_options_behaviour($cm) {
     }
     return $showbehaviour;
 }
-
-function get_next_question($sessionid, $quba) {
+/**
+ * Get slot for next question
+ *
+ * @param int $sessionid
+ * @param question_usage_by_activity $quba
+ * @return integer
+ */
+function get_next_question(int $sessionid, question_usage_by_activity $quba) : int {
 
     global $DB;
 

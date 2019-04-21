@@ -31,9 +31,18 @@ defined('MOODLE_INTERNAL') || die();
 
 /**
  * Define all the backup steps that will be used by the backup_qpractice_activity_task
+ *
+ * @package    mod_qpractice
+ * @copyright  2019 Marcus Green
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class backup_qpractice_activity_structure_step extends backup_questions_activity_structure_step {
 
+    /**
+     * Set the table structure up for converting to xml
+     *
+     * @return void  its not void, run it to find out real type
+     */
     protected function define_structure() {
 
         // To know if we are including userinfo.
