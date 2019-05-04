@@ -98,6 +98,14 @@ class restore_qpractice_activity_structure_step extends restore_questions_activi
     }
 
     /**
+     * Abstract in parent so this is an empty implementation
+     * @param int $newusageid
+     * @return void
+     */
+    protected function inform_new_usage_id($newusageid) {
+    }
+    
+    /**
      * Deal with files check this works
      * @todo check this works
      *
