@@ -106,7 +106,7 @@ class mod_qpractice_mod_form extends moodleform_mod {
      * @param array $toform
      * @return void
      */
-    public function data_preprocessing(array &$toform) {
+    public function data_preprocessing(&$toform) {
         if (isset($toform['behaviour'])) {
             $reviewfields = [];
             $reviewfields = explode(',', $toform['behaviour']);
@@ -131,7 +131,7 @@ class mod_qpractice_mod_form extends moodleform_mod {
      * @param array $files
      * @return array
      */
-    public function validation(array $data, array $files): array {
+    public function validation($data, $files): array {
         $errors = parent::validation($data, $files);
         if (!isset($data['behaviour'])) {
             $errors['behaviour[adaptive]'] = get_string('selectonebehaviourerror', 'qpractice');
