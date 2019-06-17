@@ -1,5 +1,5 @@
 ### Moodle Question Practice 1.3 Changes Mar 2019
--- Added a top category of questions for instance setting. Thanks to Steve Gallagher and Scott Hallman for feedback on this.
+- Added a top category of questions for instance setting. Thanks to Steve Gallagher and Scott Hallman for feedback on this.
 
 ### Moodle Question Practice 1.2 Changes Nov 2016
  - Fixed parameters in question_extend_settings_navigation, essential to make menu work in MDL3.2
