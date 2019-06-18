@@ -71,7 +71,7 @@ class mod_qpractice_mod_form extends moodleform_mod {
             $this->standard_intro_elements();
         }
 
-        $mform->addElement('header', 'qpracticefieldset', get_string('qpracticebehaviour', 'qpractice'));
+        $mform->addElement('header', 'qpracticefieldset', get_string('behaviourandcategories', 'qpractice'));
 
         if (!empty($this->current->preferredbehaviour)) {
             $currentbehaviour = $this->current->preferredbehaviour;

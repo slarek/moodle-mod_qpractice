@@ -45,10 +45,13 @@ class mod_qpractice_startattempt_form extends moodleform {
 
         $mform = $this->_form;
         // Adding the "general" fieldset, where all the common settings are showed.
-        $mform->addElement('header', 'general', get_string('general', 'form'));
+        /* Stops headers being collapsible */
+        $mform->setDisableShortForms(true);
+        $mform->addElement('header', 'general', get_string('setuppractice', 'qpractice'));
         $mform->addElement('select', 'categories', get_string('category'), $this->_customdata['categories']);
+        $mform->addHelpButton('categories','categoryselect','qpractice');
 
-        $mform->addElement('header', 'qpracticebehaviour', get_string('qpracticebehaviour', 'qpractice'));
+
         $mform->addElement('select', 'behaviour', get_string('behaviour', 'qpractice'), $this->_customdata['behaviours']);
 
         $this->add_action_buttons(true, get_string('startpractice', 'qpractice'));

@@ -49,8 +49,9 @@ $string['qpractice:attempt'] = 'Attempt a Question Practice session';
 $string['qpractice:view'] = 'View a Question Practice session';
 $string['qpractice:viewallreports'] = 'View all Question Practice reports';
 $string['qpractice:viewmyreport'] = 'View my Question Practice report';
-$string['qpracticebehaviour'] = 'Question Behaviour and Categories';
+$string['qpracticebehaviour'] = 'Question Behaviour ';
 $string['behaviour'] = 'Behaviour';
+$string['behaviourandcategories'] = 'Behaviour and categories';
 $string['qpracticefieldset'] = 'Custom example fieldset';
 $string['qpracticename'] = 'Question Practice name';
 $string['qpracticename_help'] = 'This is the name that will show on the course';
@@ -73,6 +74,12 @@ $string['startpractice'] = 'Start Practice';
 $string['selectonebehaviourerror'] = 'You must select at least one behaviour';
 $string['nomorequestions'] = 'Sorry, no more questions to display. Try a different category';
 $string['nopermission'] = 'You do not have permission to view this';
+$string['setuppractice'] = 'Setup Practice';
+$string['categoryselect'] = 'Categories';
+$string['categoryselect_help'] = 'Select from question categories. The number shows the count of questions available';
+
+
+
 
 
 
