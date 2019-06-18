@@ -104,7 +104,7 @@ class restore_qpractice_activity_structure_step extends restore_questions_activi
      */
     protected function inform_new_usage_id($newusageid) {
     }
-    
+
     /**
      * Deal with files check this works
      * @todo check this works

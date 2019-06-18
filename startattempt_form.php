@@ -49,8 +49,7 @@ class mod_qpractice_startattempt_form extends moodleform {
         $mform->setDisableShortForms(true);
         $mform->addElement('header', 'general', get_string('setuppractice', 'qpractice'));
         $mform->addElement('select', 'categories', get_string('category'), $this->_customdata['categories']);
-        $mform->addHelpButton('categories','categoryselect','qpractice');
-
+        $mform->addHelpButton('categories', 'categoryselect', 'qpractice');
 
         $mform->addElement('select', 'behaviour', get_string('behaviour', 'qpractice'), $this->_customdata['behaviours']);
 

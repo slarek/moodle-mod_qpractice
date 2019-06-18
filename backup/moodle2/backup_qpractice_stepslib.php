@@ -50,7 +50,7 @@ class backup_qpractice_activity_structure_step extends backup_questions_activity
 
         // Define each element separated.
         $qpractice = new backup_nested_element('qpractice', array('id'), array(
-            'name', 'intro', 'introformat','topcategory', 'behaviour', 'timecreated',
+            'name', 'intro', 'introformat', 'topcategory', 'behaviour', 'timecreated',
             'timemodified'));
 
         $sessions = new backup_nested_element('sessions');
