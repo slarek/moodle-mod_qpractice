@@ -39,7 +39,7 @@ class mod_qpractice_generator extends testing_module_generator {
      * @param array $options
      * @return stdClass
      */
-    public function create_instance(array $record = null, array $options = null) : stdClass {
+    public function create_instance($record = null, array $options = null) : stdClass {
         global $CFG;
         require_once($CFG->dirroot.'/mod/qpractice/locallib.php');
         $record = (object)(array)$record;
