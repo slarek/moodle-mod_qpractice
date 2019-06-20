@@ -1,4 +1,4 @@
-### Moodle Question Practice 1.3 Changes Mar 2019
+### Moodle Question Practice 1.3 Changes June 2019
 - Added a top category of questions for instance setting. Thanks to Steve Gallagher and Scott Hallman for feedback on this.
 - Codechecker and PHPDoc Check conformance
 
