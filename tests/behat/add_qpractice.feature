@@ -22,5 +22,5 @@ Feature: Add a qpractice
     And I add a "Question Practice" to section "1" and I fill the form with:
       | Question Practice name | Question Practice Test |
       | Description | Question Practice Description |
-    And I click on "Save and display"
+   # And I click on "Save and display"
 
