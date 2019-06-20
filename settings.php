@@ -30,11 +30,16 @@ if ($ADMIN->fulltree) {
     );
 
     $behaviours = question_engine::get_behaviour_options('');
+    $enabled = false;
     foreach ($behaviours as $key => $langstring) {
+        if($key == 'interactive'){
+            $enabled = true;
+        }
         if (!in_array('correctness', question_engine::get_behaviour_unused_display_options($key))) {
             $settings->add(
-                new admin_setting_configcheckbox('mod_qpractice/' . $key, $key, $langstring, 1)
+                new admin_setting_configcheckbox('mod_qpractice/' . $key, $key, $langstring,$enabled)
             );
+            $enabled = false;
         }
     }
 }
