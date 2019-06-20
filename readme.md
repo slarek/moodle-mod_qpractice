@@ -1,4 +1,4 @@
-####Moodle Question Practice v1.2 for Moodle maintained by Marcus Green
+####Moodle Question Practice for Moodle maintained by Marcus Green
 
 Allows Quiz questions to be practiced. User can select from multiple
 (top level) categories, documented at
