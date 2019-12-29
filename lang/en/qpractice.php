@@ -25,7 +25,7 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$string['backpractice'] = 'Resume Practice';
+$string['resumepractice'] = 'Resume Practice';
 $string['backurl'] = 'Go back to main page';
 $string['continueurl'] = 'Continue last session';
 $string['createsessions'] = 'Create a new session';
@@ -77,6 +77,9 @@ $string['nopermission'] = 'You do not have permission to view this';
 $string['setuppractice'] = 'Setup Practice';
 $string['categoryselect'] = 'Categories';
 $string['categoryselect_help'] = 'Select from question categories. The number shows the count of questions available';
+$string['systemcontext'] = 'System context';
+$string['systemcontext_text'] = 'Show Questions avilable site wide';
+
 
 
 

@@ -62,15 +62,29 @@ class mod_qpractice_renderer extends plugin_renderer_base {
     public function summary_form(int $sessionid) {
         $actionurl = new moodle_url('/mod/qpractice/summary.php', array('id' => $sessionid));
         $output = '';
-        $output .= html_writer::start_tag('form', array('method' => 'post', 'action' => $actionurl,
-                    'enctype' => 'multipart/form-data', 'id' => 'responseform'));
+        $output .= html_writer::start_tag('form', [
+            'method' => 'post',
+            'action' => $actionurl,
+            'enctype' => 'multipart/form-data',
+            'id' => 'responseform',
+            'class' => 'qpractice']);
         $output .= html_writer::start_tag('div', array('align' => 'center'));
-        $output .= html_writer::empty_tag('input', array('type' => 'submit',
-                    'name' => 'back', 'value' => get_string('backpractice', 'qpractice')));
+        $output .= html_writer::empty_tag('input',
+                    [
+                    'type' => 'submit',
+                    'class' => 'qpbtn submit',
+                    'name' => 'back',
+                    'value' => get_string('resumepractice', 'qpractice')
+                    ]
+                );
         $output .= html_writer::empty_tag('br');
         $output .= html_writer::empty_tag('br');
-        $output .= html_writer::empty_tag('input', array('type' => 'submit',
-                    'name' => 'finish', 'value' => get_string('submitandfinish', 'qpractice')));
+        $output .= html_writer::empty_tag('input', [
+                    'type' => 'submit',
+                    'name' => 'finish',
+                    'class' => 'qpbtn submit',
+                    'value' => get_string('submitandfinish', 'qpractice')]
+                );
         $output .= html_writer::end_tag('div');
         $output .= html_writer::end_tag('form');
 

@@ -1,0 +1,9 @@
+.qpractice .qpbtn{
+    margin-right: 3px;
+    border-radius: 5px;
+    background-color: #ced4da;
+    border-color: #ced4da;
+}
+.qpractice .qpbtn:hover{
+    box-shadow: 0 0 5px #7bc1f7;
+}

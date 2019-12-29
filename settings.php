@@ -28,6 +28,9 @@ if ($ADMIN->fulltree) {
     $settings->add(new admin_setting_heading(
             'qpractice/questionbehaviours', 'Question Behaviours', '')
     );
+    $settings->add(new admin_setting_configcheckbox('qpractice/systemcontext',
+             get_string('systemcontext', 'qpractice'),
+             get_string('systemcontext_text', 'qpractice'), 0));
 
     $behaviours = question_engine::get_behaviour_options('');
     $enabled = false;

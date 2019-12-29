@@ -59,11 +59,19 @@ function qpractice_make_default_categories($context) {
  */
 function qpractice_get_question_categories(\context $context, int $top=null) : array {
     if (empty($context)) {
-        return array();
+
+        return [];
     }
-    $options = array();
-    /* Get all categories in course context (for settings form) */
-    $questioncats = question_category_options([$context]);
+    $options = [];
+    /* Get all categories in course/system context (for settings form) */
+    if (get_config('qpractice', 'systemcontext')) {
+        $questioncats = question_category_options([context_system::instance()]);
+    }
+
+    $coursecats = question_category_options([$context]);
+    $key = key($coursecats);
+    $questioncats[$key] = $coursecats[$key];
+
     if (!empty($questioncats)) {
         foreach ($questioncats as $questioncatcourse) {
             foreach ($questioncatcourse as $key => $questioncat) {
