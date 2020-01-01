@@ -48,8 +48,13 @@ class mod_qpractice_startattempt_form extends moodleform {
         /* Stops headers being collapsible */
         $mform->setDisableShortForms(true);
         $mform->addElement('header', 'general', get_string('setuppractice', 'qpractice'));
-        $mform->addElement('select', 'categories', get_string('category'), $this->_customdata['categories']);
-        $mform->addHelpButton('categories', 'categoryselect', 'qpractice');
+        $categories = $this->_customdata['categories'];
+        if (count($categories) > 1) {
+            $mform->addElement('select', 'categories', get_string('category'), $this->_customdata['categories']);
+            $mform->addHelpButton('categories', 'categoryselect', 'qpractice');
+        }else{
+            $mform->addElement('static', 'categories', get_string('category'), reset($categories));
+        }
 
         $mform->addElement('select', 'behaviour', get_string('behaviour', 'qpractice'), $this->_customdata['behaviours']);
 
