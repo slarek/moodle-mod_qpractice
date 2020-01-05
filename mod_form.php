@@ -144,6 +144,17 @@ class mod_qpractice_mod_form extends moodleform_mod {
             }
         }
     }
+    /**
+     * Load in existing data as form defaults.
+     *
+     * @param mixed $question object or array of default values
+     */
+    public function set_data($default_values) {
+        global $DB;
+        $categories = $DB->get_records('qpractice_categories', ['qpracticeid' => $default_values->id]);
+        parent::set_data($default_values);
+    }
+
 
     /**
      * return errors if no behaviour was selected

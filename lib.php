@@ -84,11 +84,11 @@ function upsert_categories(stdClass $qpractice){
     if(empty($qpractice->categories)){
         return true;
     }
-    $DB->delete_records('qpractice_categories', ['qpracticeid' => $qpractice->id]);
+    $DB->delete_records('qpractice_categories', ['qpracticeid' => $qpractice->coursemodule]);
     $recordstoinsert = [];
     foreach(array_keys($qpractice->categories) as $categoryid){
         $recordstoinsert[] = (object) [
-            'qpracticeid' => $qpractice->id,
+            'qpracticeid' => $qpractice->coursemodule,
             'categoryid' => $categoryid
         ];
     }
