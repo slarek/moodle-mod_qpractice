@@ -87,8 +87,8 @@ class mod_qpractice_mod_form extends moodleform_mod {
         $categories = qpractice_get_question_categories($coursecontext);
 
         $attributes = [];
-        $radioarray[] = $mform->createElement('radio', 'categorydisplay', '', get_string('topcategory','qpractice'), 0, $attributes);
-        $radioarray[] = $mform->createElement('radio', 'categorydisplay', '', get_string('selectcategories','qpractice'), 1, $attributes);
+        $radioarray[] = $mform->createElement('radio', 'category', '', get_string('topcategory','qpractice'), 0, $attributes);
+        $radioarray[] = $mform->createElement('radio', 'category', '', get_string('selectcategories','qpractice'), 1, $attributes);
         $mform->addGroup($radioarray, 'displaytype', '', [' '], 1);
 
         $mform->addElement('select', 'topcategory','', $categories);
@@ -98,7 +98,7 @@ class mod_qpractice_mod_form extends moodleform_mod {
         $mform->addElement('html','<div class="categories">');
         foreach($categories as $key=>$c){
             $row = [];
-            $row[] = $mform->createElement('checkbox',$key,'',$c);
+            $row[] = $mform->createElement('checkbox','cat_'.$key,'',$c);
             $mform->addGroup($row,'categories');
         }
         $mform->addElement('html','</div>');

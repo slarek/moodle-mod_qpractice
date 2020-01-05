@@ -24,15 +24,14 @@
 define(['jquery'], function($) {
     return {
         init: function() {
-            debugger;
-            $('[id^="id_categ_"]').prop('disabled', true);
-            $('#id_radioar_categorydisplay_1').on('click', function() {
+            $('[id^="id_categories_cat"]').prop('disabled', true);
+            $('#id_displaytype_category_1').on('click', function() {
                     $("#id_topcategory").prop('disabled', true);
-                    $('[id^="id_categ_"]').prop('disabled', false);
+                    $('[id^="id_categories_cat"]').prop('disabled', false);
             });
-            $('#id_radioar_categorydisplay_0').on('click', function() {
+            $('#id_displaytype_category_0').on('click', function() {
                 $("#id_topcategory").prop('disabled', false);
-                $('[id^="id_categ_"]').prop('disabled', true);
+                $('[id^="id_categories_cat"]').prop('disabled', true);
             });
         }
     };
