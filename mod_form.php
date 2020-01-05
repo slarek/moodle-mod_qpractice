@@ -46,6 +46,9 @@ class mod_qpractice_mod_form extends moodleform_mod {
      * @return void
      */
     public function definition() {
+        global $PAGE;
+        $PAGE->requires->js_call_amd('mod_qpractice/qpractice', 'init');
+
         global $CFG;
         $mform = $this->_form;
 
@@ -71,7 +74,7 @@ class mod_qpractice_mod_form extends moodleform_mod {
             $this->standard_intro_elements();
         }
 
-        $mform->addElement('header', 'qpracticefieldset', get_string('behaviourandcategories', 'qpractice'));
+        $mform->addElement('header', 'qpracticefieldset', get_string('categories', 'qpractice'));
 
         if (!empty($this->current->preferredbehaviour)) {
             $currentbehaviour = $this->current->preferredbehaviour;
@@ -83,7 +86,24 @@ class mod_qpractice_mod_form extends moodleform_mod {
         $coursecontext = context_course::instance($course->id);
         $categories = qpractice_get_question_categories($coursecontext);
 
-        $mform->addElement('select', 'topcategory', get_string('category'), $categories);
+        $attributes = [];
+        $radioarray[] = $mform->createElement('radio', 'categorydisplay', '', get_string('topcategory','qpractice'), 0, $attributes);
+        $radioarray[] = $mform->createElement('radio', 'categorydisplay', '', get_string('selectcategories','qpractice'), 1, $attributes);
+        $mform->addGroup($radioarray, 'displaytype', '', [' '], 1);
+
+        $mform->addElement('select', 'topcategory','', $categories);
+        $topcategory = 0;
+        $categories = qpractice_get_question_categories($coursecontext, $topcategory);
+
+        $mform->addElement('html','<div class="categories">');
+        foreach($categories as $key=>$c){
+            $row = [];
+            $row[] = $mform->createElement('checkbox',$key,'',$c);
+            $mform->addGroup($row,'categories');
+        }
+        $mform->addElement('html','</div>');
+
+        $mform->addElement('header', 'qpracticefieldset', get_string('behaviours', 'qpractice'));
 
         $behaviours = question_engine::get_behaviour_options($currentbehaviour);
 

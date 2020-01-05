@@ -71,10 +71,25 @@ function qpractice_add_instance(stdClass $qpractice, mod_qpractice_mod_form $mfo
     $qpractice->behaviour = $comma;
 
     $qpractice->id = $DB->insert_record('qpractice', $qpractice);
+    upsert_categories($qpractice);
+
 
     qpractice_after_add_or_update($qpractice);
 
     return $qpractice->id;
+}
+
+function upsert_categories(stdClass $qpractice){
+    global $DB;
+    $DB->delete_records('qpractice_categories', ['qpracticeid' => $qpractice->id]);
+    $recordstoinsert = [];
+    foreach(array_keys($qpractice->categories) as $categoryid){
+        $recordstoinsert[] = (object) [
+            'qpracticeid' => $qpractice->id,
+            'categoryid' => $categoryid
+        ];
+    }
+    $DB->insert_records('qpractice_categories', $recordstoinsert);
 }
 
 /**
@@ -96,8 +111,9 @@ function qpractice_update_instance(stdClass $qpractice, mod_qpractice_mod_form $
     $behaviour = $qpractice->behaviour;
     $comma = implode(",", array_keys($behaviour));
     $qpractice->behaviour = $comma;
-
+    upsert_categories($qpractice);
     return $DB->update_record('qpractice', $qpractice);
+
 }
 
 /**

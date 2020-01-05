@@ -25,6 +25,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 defined('MOODLE_INTERNAL') || die();
+// Might need this
+//    $categories = get_categories_for_contexts($contextslist, 'parent, sortorder, name ASC', $top);
 
 /**
  * Consider for deletion.

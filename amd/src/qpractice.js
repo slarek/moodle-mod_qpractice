@@ -1,4 +1,3 @@
-<?php
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -14,23 +13,27 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-
 /**
- * Defines the version of qpractice
+ * JavaScript code for the gapfill question type.
  *
- * This code fragment is called by moodle_needs_upgrading() and
- * /admin/index.php
- *
- * @package    mod_qpractice
- * @copyright  2019 Marcus Green
+ * @package    qtype
+ * @subpackage gapfill
+ * @copyright  2017 Marcus Green
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
-defined('MOODLE_INTERNAL') || die();
-
-$plugin->version   = 2020010505;      // The current plugin version (Date: YYYYMMDDXX)
-$plugin->requires  = 2013040500;      // Requires this Moodle version.
-$plugin->cron      = 0;               // Period for cron to check this plugin (secs)
-$plugin->component = 'mod_qpractice'; // To check on upgrade, that plugin sits in correct place.
-$plugin->maturity  = MATURITY_STABLE;
-$plugin->release   = '1.3';
+define(['jquery'], function($) {
+    return {
+        init: function() {
+            debugger;
+            $('[id^="id_categ_"]').prop('disabled', true);
+            $('#id_radioar_categorydisplay_1').on('click', function() {
+                    $("#id_topcategory").prop('disabled', true);
+                    $('[id^="id_categ_"]').prop('disabled', false);
+            });
+            $('#id_radioar_categorydisplay_0').on('click', function() {
+                $("#id_topcategory").prop('disabled', false);
+                $('[id^="id_categ_"]').prop('disabled', true);
+            });
+        }
+    };
+});

@@ -7,3 +7,6 @@
 .qpractice .qpbtn:hover{
     box-shadow: 0 0 5px #7bc1f7;
 }
+.categories {
+    background-color: lightgrey;
+}

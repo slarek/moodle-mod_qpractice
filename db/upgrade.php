@@ -56,6 +56,20 @@ function xmldb_qpractice_upgrade($oldversion) {
         // Qpractice savepoint reached.
         upgrade_mod_savepoint(true, 2019031900, 'qpractice');
     }
+    if ($oldversion < 2020010504) {
+
+        if (!$dbman->table_exists('qpractice_categories')) {
+            $table = new xmldb_table('qpractice_categories');
+            $table->add_field('id', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, XMLDB_SEQUENCE, null, null);
+            $table->add_field('qpracticeid', XMLDB_TYPE_INTEGER, '10', null, null, null, null, 'id');
+            $table->add_field('categoryid', XMLDB_TYPE_INTEGER, '10', null, null, null, null, 'qpracticeid');
+            $table->add_key('primary', XMLDB_KEY_PRIMARY, array('id'));
+            $dbman->create_table($table);
+        }
+        // Qpractice savepoint reached.
+        upgrade_mod_savepoint(true, 2020010504, 'qpractice');
+    }
 
     return true;
 }
+
