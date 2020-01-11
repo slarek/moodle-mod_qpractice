@@ -98,7 +98,7 @@ class mod_qpractice_mod_form extends moodleform_mod {
         $mform->addElement('html','<div class="categories">');
         foreach($categories as $key=>$c){
             $row = [];
-            $row[] = $mform->createElement('checkbox','cat_'.$key,'',$c);
+            $row[] = $mform->createElement('checkbox',$key,'',$c);
             $mform->addGroup($row,'categories');
         }
         $mform->addElement('html','</div>');
@@ -152,6 +152,10 @@ class mod_qpractice_mod_form extends moodleform_mod {
     public function set_data($default_values) {
         global $DB;
         $categories = $DB->get_records('qpractice_categories', ['qpracticeid' => $default_values->id]);
+        foreach($categories as $c){
+            $el = 'categories['.$c->categoryid.']';
+            $this->_form->setDefault($el, true);
+        }
         parent::set_data($default_values);
     }
 
