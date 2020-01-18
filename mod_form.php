@@ -87,8 +87,8 @@ class mod_qpractice_mod_form extends moodleform_mod {
         $categories = qpractice_get_question_categories($coursecontext);
 
         $attributes = [];
-        $radioarray[] = $mform->createElement('radio', 'category', '', get_string('topcategory','qpractice'), 0, $attributes);
-        $radioarray[] = $mform->createElement('radio', 'category', '', get_string('selectcategories','qpractice'), 1, $attributes);
+        $radioarray[] = $mform->createElement('radio', 'selectcategories', '', get_string('topcategory','qpractice'), 0, $attributes);
+        $radioarray[] = $mform->createElement('radio', 'selectcategories', '', get_string('selectcategories','qpractice'), 1, $attributes);
         $mform->addGroup($radioarray, 'displaytype', '', [' '], 1);
 
         $mform->addElement('select', 'topcategory','', $categories);
@@ -96,11 +96,14 @@ class mod_qpractice_mod_form extends moodleform_mod {
         $categories = qpractice_get_question_categories($coursecontext, $topcategory);
 
         $mform->addElement('html','<div class="categories">');
-        foreach($categories as $key=>$c){
+
+        foreach ($categories as $key => $c) {
             $row = [];
-            $row[] = $mform->createElement('checkbox',$key,'',$c);
-            $mform->addGroup($row,'categories');
+            $row[] = $mform->createElement('checkbox', $key, '', $c);
+            $mform->addGroup($row, 'categories');
         }
+
+
         $mform->addElement('html','</div>');
 
         $mform->addElement('header', 'qpracticefieldset', get_string('behaviours', 'qpractice'));
@@ -159,6 +162,20 @@ class mod_qpractice_mod_form extends moodleform_mod {
         parent::set_data($default_values);
     }
 
+    /**
+     * Allows module to modify the data returned by form get_data().
+     * This method is also called in the bulk activity completion form.
+     *
+     * Only available on moodleform_mod.
+     *
+     * @param stdClass $data the form data to be modified.
+     */
+    public function data_postprocessing($data) {
+        if($data->displaytype['selectcategories'] == '1'){
+            $data->topcategory = '';
+        }
+        parent::data_postprocessing($data);
+    }
 
     /**
      * return errors if no behaviour was selected
