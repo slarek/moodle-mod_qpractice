@@ -81,9 +81,7 @@ function qpractice_add_instance(stdClass $qpractice, mod_qpractice_mod_form $mfo
 
 function upsert_categories(stdClass $qpractice){
     global $DB;
-    if(empty($qpractice->categories)){
-        return true;
-    }
+
     $DB->delete_records('qpractice_categories', ['qpracticeid' => $qpractice->coursemodule]);
     $recordstoinsert = [];
     foreach(array_keys($qpractice->categories) as $categoryid){
@@ -115,6 +113,9 @@ function qpractice_update_instance(stdClass $qpractice, mod_qpractice_mod_form $
     $comma = implode(",", array_keys($behaviour));
     $qpractice->behaviour = $comma;
     upsert_categories($qpractice);
+    // if($qpractice->displaytype['selectcategories']=='topcat'){
+    //     $qpractice->topcategory = null;
+    // }
     return $DB->update_record('qpractice', $qpractice);
 
 }

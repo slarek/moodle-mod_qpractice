@@ -86,13 +86,13 @@ class mod_qpractice_mod_form extends moodleform_mod {
         $coursecontext = context_course::instance($course->id);
         $categories = qpractice_get_question_categories($coursecontext);
 
-        $attributes = [];
-        $radioarray[] = $mform->createElement('radio', 'selectcategories', '', get_string('topcategory','qpractice'), 0, $attributes);
-        $radioarray[] = $mform->createElement('radio', 'selectcategories', '', get_string('selectcategories','qpractice'), 1, $attributes);
+        $radioarray[] = $mform->createElement('radio', 'selectcategories', '', get_string('topcategory','qpractice'), 'topcat');
+        $radioarray[] = $mform->createElement('radio', 'selectcategories', '', get_string('selectcategories','qpractice'), 'selectcat');
         $mform->addGroup($radioarray, 'displaytype', '', [' '], 1);
 
         $mform->addElement('select', 'topcategory','', $categories);
-        $topcategory = 0;
+        $topcategory = null;
+        //"displaytype[selectcategories]"
         $categories = qpractice_get_question_categories($coursecontext, $topcategory);
 
         $mform->addElement('html','<div class="categories">');
@@ -154,7 +154,14 @@ class mod_qpractice_mod_form extends moodleform_mod {
      */
     public function set_data($default_values) {
         global $DB;
-        $categories = $DB->get_records('qpractice_categories', ['qpracticeid' => $default_values->id]);
+
+        if(isset($default_values->topcategory)){
+            $this->_form->setDefault('displaytype[selectcategories]','topcat');
+        } else{
+            $this->_form->setDefault('displaytype[selectcategories]','selectcat');
+        }
+
+      $categories = $DB->get_records('qpractice_categories', ['qpracticeid' => $default_values->id]);
         foreach($categories as $c){
             $el = 'categories['.$c->categoryid.']';
             $this->_form->setDefault($el, true);
@@ -171,8 +178,8 @@ class mod_qpractice_mod_form extends moodleform_mod {
      * @param stdClass $data the form data to be modified.
      */
     public function data_postprocessing($data) {
-        if($data->displaytype['selectcategories'] == '1'){
-            $data->topcategory = '';
+        if($data->displaytype['selectcategories'] == 'selectcat'){
+            $data->topcategory = null;
         }
         parent::data_postprocessing($data);
     }

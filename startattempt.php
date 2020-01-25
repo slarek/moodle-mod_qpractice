@@ -43,6 +43,7 @@ if ($id) {
         print_error('coursemisconf');
     }
     $qpractice = $DB->get_record('qpractice', array('id' => $cm->instance));
+    $qpractice_categories = $DB->get_records('qpractice_categories', ['qpracticeid' => $cm->id]);
 }
 
 require_login($course, true, $cm);
@@ -50,6 +51,7 @@ global $PAGE;
 
 $context = context_module::instance($cm->id);
 $coursecontext = $context->get_course_context();
+/** mavg */
 $categories = qpractice_get_question_categories($coursecontext, $qpractice->topcategory);
 
 $behaviours = get_options_behaviour($cm);
