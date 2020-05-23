@@ -14,7 +14,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-
 /**
  * Form for creating new instances and editing existing
  * @package    mod_qpractice
@@ -23,10 +22,9 @@
  */
 defined('MOODLE_INTERNAL') || die();
 
-require_once($CFG->dirroot . '/course/moodleform_mod.php');
-require_once($CFG->libdir . '/questionlib.php');
-require_once(dirname(__FILE__) . '/locallib.php');
-
+require_once $CFG->dirroot . '/course/moodleform_mod.php';
+require_once $CFG->libdir . '/questionlib.php';
+require_once dirname(__FILE__) . '/locallib.php';
 
 /**
  * The main qpractice configuration form
@@ -86,16 +84,16 @@ class mod_qpractice_mod_form extends moodleform_mod {
         $coursecontext = context_course::instance($course->id);
         $categories = qpractice_get_question_categories($coursecontext);
 
-        $radioarray[] = $mform->createElement('radio', 'selectcategories', '', get_string('topcategory','qpractice'), 'topcat');
-        $radioarray[] = $mform->createElement('radio', 'selectcategories', '', get_string('selectcategories','qpractice'), 'selectcat');
+        $radioarray[] = $mform->createElement('radio', 'selectcategories', '', get_string('topcategory', 'qpractice'), 'topcat');
+        $radioarray[] = $mform->createElement('radio', 'selectcategories', '', get_string('selectcategories', 'qpractice'), 'selectcat');
         $mform->addGroup($radioarray, 'displaytype', '', [' '], 1);
 
-        $mform->addElement('select', 'topcategory','', $categories);
+        $mform->addElement('select', 'topcategory', '', $categories);
         $topcategory = null;
         //"displaytype[selectcategories]"
         $categories = qpractice_get_question_categories($coursecontext, $topcategory);
 
-        $mform->addElement('html','<div class="categories">');
+        $mform->addElement('html', '<div class="categories">');
 
         foreach ($categories as $key => $c) {
             $row = [];
@@ -103,8 +101,7 @@ class mod_qpractice_mod_form extends moodleform_mod {
             $mform->addGroup($row, 'categories');
         }
 
-
-        $mform->addElement('html','</div>');
+        $mform->addElement('html', '</div>');
 
         $mform->addElement('header', 'qpracticefieldset', get_string('behaviours', 'qpractice'));
 
@@ -155,15 +152,15 @@ class mod_qpractice_mod_form extends moodleform_mod {
     public function set_data($default_values) {
         global $DB;
 
-        if(isset($default_values->topcategory)){
-            $this->_form->setDefault('displaytype[selectcategories]','topcat');
-        } else{
-            $this->_form->setDefault('displaytype[selectcategories]','selectcat');
+        if (isset($default_values->topcategory)) {
+            $this->_form->setDefault('displaytype[selectcategories]', 'topcat');
+        } else {
+            $this->_form->setDefault('displaytype[selectcategories]', 'selectcat');
         }
 
-      $categories = $DB->get_records('qpractice_categories', ['qpracticeid' => $default_values->id]);
-        foreach($categories as $c){
-            $el = 'categories['.$c->categoryid.']';
+        $categories = $DB->get_records('qpractice_categories', ['qpracticeid' => $default_values->id]);
+        foreach ($categories as $c) {
+            $el = 'categories[' . $c->categoryid . ']';
             $this->_form->setDefault($el, true);
         }
         parent::set_data($default_values);
@@ -178,7 +175,7 @@ class mod_qpractice_mod_form extends moodleform_mod {
      * @param stdClass $data the form data to be modified.
      */
     public function data_postprocessing($data) {
-        if($data->displaytype['selectcategories'] == 'selectcat'){
+        if ($data->displaytype['selectcategories'] == 'selectcat') {
             $data->topcategory = null;
         }
         parent::data_postprocessing($data);
@@ -191,10 +188,15 @@ class mod_qpractice_mod_form extends moodleform_mod {
      * @param array $files
      * @return array
      */
-    public function validation($data, $files): array {
+    public function validation($data, $files): array{
         $errors = parent::validation($data, $files);
         if (!isset($data['behaviour'])) {
             $errors['behaviour[adaptive]'] = get_string('selectonebehaviourerror', 'qpractice');
+        }
+        if ($data['displaytype']['selectcategories'] == 'selectcat') {
+            if (empty($data['categories'])) {
+                $errors['displaytype'] = get_string('atleastonecategory', 'qpractice');
+            }
         }
         return $errors;
     }
