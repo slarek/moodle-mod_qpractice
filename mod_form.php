@@ -84,13 +84,12 @@ class mod_qpractice_mod_form extends moodleform_mod {
         $coursecontext = context_course::instance($course->id);
         $categories = qpractice_get_question_categories($coursecontext);
 
-        $radioarray[] = $mform->createElement('radio', 'selectcategories', '', get_string('topcategory', 'qpractice'), 'topcat');
-        $radioarray[] = $mform->createElement('radio', 'selectcategories', '', get_string('selectcategories', 'qpractice'), 'selectcat');
-        $mform->addGroup($radioarray, 'displaytype', '', [' '], 1);
+        $radioarray[] = $mform->createElement('radio', 'selectcategories', '', get_string('topcategory', 'qpractice'), '0');
+        $radioarray[] = $mform->createElement('radio', 'selectcategories', '', get_string('selectcategories', 'qpractice'), '1');
+        $mform->addGroup($radioarray, '', '', [' '], 1);
 
         $mform->addElement('select', 'topcategory', '', $categories);
         $topcategory = null;
-        //"displaytype[selectcategories]"
         $categories = qpractice_get_question_categories($coursecontext, $topcategory);
 
         $mform->addElement('html', '<div class="categories">');
@@ -153,9 +152,9 @@ class mod_qpractice_mod_form extends moodleform_mod {
         global $DB;
 
         if (isset($default_values->topcategory)) {
-            $this->_form->setDefault('displaytype[selectcategories]', 'topcat');
+          $this->_form->setDefault('selectcategories', '0');
         } else {
-            $this->_form->setDefault('displaytype[selectcategories]', 'selectcat');
+            $this->_form->setDefault('selectcategories', '1');
         }
 
         $categories = $DB->get_records('qpractice_categories', ['qpracticeid' => $default_values->id]);
@@ -193,7 +192,7 @@ class mod_qpractice_mod_form extends moodleform_mod {
         if (!isset($data['behaviour'])) {
             $errors['behaviour[adaptive]'] = get_string('selectonebehaviourerror', 'qpractice');
         }
-        if ($data['displaytype']['selectcategories'] == 'selectcat') {
+        if ($data['selectcategories'] == 1) {
             if (empty($data['categories'])) {
                 $errors['displaytype'] = get_string('atleastonecategory', 'qpractice');
             }

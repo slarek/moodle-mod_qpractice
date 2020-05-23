@@ -24,12 +24,13 @@
 define(['jquery'], function($) {
     return {
         init: function() {
-            $('#id_displaytype_selectcategories_1').on('click', function() {
+          debugger;
+            $('#id_selectcategories_1').on('click', function() {
                     $("#id_topcategory").prop('disabled', true);
                     $('[id^="id_categories_"]').prop('disabled', false);
 
             });
-            $('#id_displaytype_selectcategories_0').on('click', function() {
+            $('#id_selectcategories_0').on('click', function() {
                 $("#id_topcategory").prop('disabled', false);
                 $('[id^="id_categories_"]').prop('disabled', true);
             });
