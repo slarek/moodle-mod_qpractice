@@ -64,15 +64,11 @@ class mod_qpractice_mod_form extends moodleform_mod {
         $mform->addRule('name', get_string('maximumchars', '', 255), 'maxlength', 255, 'client');
         $mform->addHelpButton('name', 'qpracticename', 'qpractice');
 
-        // Adding the standard "intro" and "introformat" fields.
-        global $CFG;
-        if ($CFG->version < 2015041700.00) { // Moodle version < 2.9Beta
-            $this->add_intro_editor(); /* deprecated from 2.9beta. */
-        } else {
-            $this->standard_intro_elements();
-        }
+
+        $this->standard_intro_elements();
 
         $mform->addElement('header', 'qpracticefieldset', get_string('categories', 'qpractice'));
+        $mform->setExpanded('qpracticefieldset');
 
         if (!empty($this->current->preferredbehaviour)) {
             $currentbehaviour = $this->current->preferredbehaviour;
@@ -83,12 +79,6 @@ class mod_qpractice_mod_form extends moodleform_mod {
         $course = $this->get_course();
         $coursecontext = context_course::instance($course->id);
         $categories = qpractice_get_question_categories($coursecontext);
-
-        // $radioarray[] = $mform->createElement('radio', 'selectcategories', '', get_string('topcategory', 'qpractice'), '0');
-        // $radioarray[] = $mform->createElement('radio', 'selectcategories', '', get_string('selectcategories', 'qpractice'), '1');
-        // $mform->addGroup($radioarray, '', '', [' '], 1);
-
-        // $mform->addElement('select', 'topcategory', '', $categories);
 
         $topcategory = null;
         $categories = qpractice_get_question_categories($coursecontext, $topcategory);
