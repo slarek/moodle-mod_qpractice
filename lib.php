@@ -113,9 +113,12 @@ function qpractice_update_instance(stdClass $qpractice, mod_qpractice_mod_form $
     $comma = implode(",", array_keys($behaviour));
     $qpractice->behaviour = $comma;
     upsert_categories($qpractice);
-    // if($qpractice->displaytype['selectcategories']=='topcat'){
-    //     $qpractice->topcategory = null;
-    // }
+     if(count($qpractice->categories) > 1){
+         $qpractice->topcategory = null;
+     } else{
+       $category = array_flip($qpractice->categories);
+       $qpractice->topcategory = array_pop($category);
+     }
     return $DB->update_record('qpractice', $qpractice);
 
 }

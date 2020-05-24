@@ -61,7 +61,6 @@ function qpractice_make_default_categories($context) {
  */
 function qpractice_get_question_categories(\context $context, int $top=null) : array {
     if (empty($context)) {
-
         return [];
     }
     $options = [];

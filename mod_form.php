@@ -84,11 +84,12 @@ class mod_qpractice_mod_form extends moodleform_mod {
         $coursecontext = context_course::instance($course->id);
         $categories = qpractice_get_question_categories($coursecontext);
 
-        $radioarray[] = $mform->createElement('radio', 'selectcategories', '', get_string('topcategory', 'qpractice'), '0');
-        $radioarray[] = $mform->createElement('radio', 'selectcategories', '', get_string('selectcategories', 'qpractice'), '1');
-        $mform->addGroup($radioarray, '', '', [' '], 1);
+        // $radioarray[] = $mform->createElement('radio', 'selectcategories', '', get_string('topcategory', 'qpractice'), '0');
+        // $radioarray[] = $mform->createElement('radio', 'selectcategories', '', get_string('selectcategories', 'qpractice'), '1');
+        // $mform->addGroup($radioarray, '', '', [' '], 1);
 
-        $mform->addElement('select', 'topcategory', '', $categories);
+        // $mform->addElement('select', 'topcategory', '', $categories);
+
         $topcategory = null;
         $categories = qpractice_get_question_categories($coursecontext, $topcategory);
 
